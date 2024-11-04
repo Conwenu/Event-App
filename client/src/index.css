@@ -1,0 +1,67 @@
+/* Custom styles for your application */
+:root {
+  --text: #0d1202;
+  --background: #f7fded;
+  --primary: #9de61e;
+  --secondary: #83f1ab;
+  --accent: #5aedcf;
+}
+
+.dark {
+  --text: #f8fded;
+  --background: #0c1202;
+  --primary: #98e119;
+  --secondary: #0e7c36;
+  --accent: #12a588;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Additional custom styles */
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: var(--background); /* Use your custom background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: var(--text); /* Use your custom text color */
+}
+
+
+.App {
+  text-align: center;
+}
+
+/* .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+} */

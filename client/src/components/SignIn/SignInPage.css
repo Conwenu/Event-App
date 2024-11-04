@@ -1,0 +1,39 @@
+/* Custom glassmorphism styles */
+.card {
+    background: rgba(255, 255, 255, 0.8) !important; /* Translucent background */
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  h2 {
+    color: #333;
+  }
+  
+  button {
+    font-weight: bold;
+  }
+  
+  input {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+  
+  .text-center p {
+    color: #555;
+  }
+  
+  .text-center a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .text-center a:hover {
+    text-decoration: underline;
+  }
+  
+  

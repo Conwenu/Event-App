@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    Int      @id @default(autoincrement())
+  username              String   @unique
+  email                 String   @unique
+  password              String
+  profilePic            String?  // Optional field for profile picture
+  eventsCreated         Event[]  @relation("CreatedEvents")
+  eventsRegisteredFor   Reservation[]  @relation("RegisteredEvents")
+
+  // You can add an index if you frequently query by username or email
+  @@index([username])
+  @@index([email])
+}
+
+model Event {
+  id                    Int      @id @default(autoincrement())
+  title                 String
+  description           String
+  status                EventStatus @default(SCHEDULED) // Set default value here
+  image                 String?  // Optional field for image as base64 string
+  creator               User     @relation("CreatedEvents", fields: [creatorId], references: [id])
+  creatorId             Int
+  venue                 String
+  maxReservations       Int
+  reservationsLeft      Int
+  maxReservationsPerUser Int
+  startTime             DateTime
+  endTime               DateTime
+  reservations          Reservation[] @relation("EventReservations")
+
+  // Index on creatorId to speed up queries filtering by creator
+  @@index([creatorId])
+}
+
+model Reservation {
+  id                    Int      @id @default(autoincrement())
+  user                  User     @relation("RegisteredEvents", fields: [userId], references: [id])
+  userId                Int
+  event                 Event    @relation("EventReservations", fields: [eventId], references: [id])
+  eventId               Int
+  seatsReserved         Int
+
+  // Unique constraint to ensure a user can only reserve once per event
+  @@unique([userId, eventId])
+}
+
+enum EventStatus {
+  CANCELLED
+  SCHEDULED
+}
+
+
+
+
+
