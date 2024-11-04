@@ -22,3 +22,15 @@
     100% { transform: rotate(360deg); }
   }
   
+  .event-card {
+    border: none !important; 
+    box-shadow: none !important; 
+  }
+
+  .custom-card-body {
+    padding-top: 0rem !important; /* Adjust top padding */
+    padding-bottom: 0rem !important; /* Adjust bottom padding */
+    padding-left: 0rem !important; /* Adjust left padding */
+    padding-right: 0rem !important; /* Adjust right padding */
+    text-align: start !important;
+}
