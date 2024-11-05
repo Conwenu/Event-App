@@ -39,7 +39,7 @@ function RegisterPage() {
       {/* Glassmorphism Card */}
       <div className="card bg-glass shadow-lg" style={{ maxWidth: '500px', width: '100%' }}>
         <div className="card-body p-5">
-          <h2 className="fw-bold mb-5 text-center">Sign Up</h2>
+          <h2 className="fw-bold mb-5 text-center">Register</h2>
           {/* Form Fields */}
           <div className="mb-4">
             <input
