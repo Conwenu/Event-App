@@ -26,7 +26,7 @@ const TimeBasedFilters = ({
           checked={timeFilter === "today"}
           onChange={handleChange}
         />
-        Filter By Today
+        Filter By Day
       </label>
 
       <label>
