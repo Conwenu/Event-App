@@ -136,7 +136,7 @@ const Sidebar = () => {
                   onDateRangeChange={handleDateRangeChange}
                   setSelectedYear={setSelectedYear}
                 />
-
+                <hr />
                 <EventCharacteristicsFilters
                   selectedEventStatus={multipleFilters.eventStatus}
                   onEventStatusChange={(value) =>
@@ -149,11 +149,13 @@ const Sidebar = () => {
                     handleMultipleFilterChange("reservationAbility", value)
                   }
                 />
-
+                <hr />
                 <SortingFilters
                   selectedSorting={selectedSorting}
                   onSortingChange={handleSortingFilterChange}
                 />
+
+                <hr />
 
                 <div>
                   <label>
@@ -256,6 +258,8 @@ const Sidebar = () => {
             setSelectedYear={setSelectedYear}
           />
 
+          <hr />
+
           <EventCharacteristicsFilters
             selectedEventStatus={multipleFilters.eventStatus}
             onEventStatusChange={(value) =>
@@ -266,12 +270,13 @@ const Sidebar = () => {
               handleMultipleFilterChange("reservationAbility", value)
             }
           />
+          <hr />
 
           <SortingFilters
             selectedSorting={selectedSorting}
             onSortingChange={handleSortingFilterChange}
           />
-
+          <hr />
           <div>
             <label>
               {"Filter by Title / Description:"}
