@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const TimeBasedFilters = ({
   timeFilter,
@@ -6,8 +6,10 @@ const TimeBasedFilters = ({
   startDate,
   endDate,
   onDateRangeChange,
+  selectedYear,
+  setSelectedYear,
 }) => {
-  const handleChange = (e) => {
+  const handleFilterChange = (e) => {
     onTimeFilterChange(e.target.value);
   };
 
@@ -15,6 +17,22 @@ const TimeBasedFilters = ({
     const { name, value } = e.target;
     onDateRangeChange(name, value);
   };
+
+  // Set default year as the current year
+  const currentYear = new Date().getFullYear();
+
+  const handleYearChange = (e) => {
+    const year = parseInt(e.target.value, 10);
+    setSelectedYear(year);
+  };
+
+  // Generate a range of years from 10 years ago to 10 years in the future
+  const startYear = currentYear - 10;
+  const endYear = currentYear + 10;
+  const years = [];
+  for (let year = startYear; year <= endYear; year++) {
+    years.push(year);
+  }
 
   return (
     <div>
@@ -24,9 +42,9 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="today"
           checked={timeFilter === "today"}
-          onChange={handleChange}
+          onChange={handleFilterChange}
         />
-        Filter By Day
+        {" Filter By Day"}
       </label>
 
       <label>
@@ -35,9 +53,9 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="week"
           checked={timeFilter === "week"}
-          onChange={handleChange}
+          onChange={handleFilterChange}
         />
-        Filter By Week
+        {" Filter By Week"}
       </label>
 
       <label>
@@ -46,9 +64,9 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="month"
           checked={timeFilter === "month"}
-          onChange={handleChange}
+          onChange={handleFilterChange}
         />
-        Filter By Month
+        {" Filter By Month"}
       </label>
 
       <label>
@@ -57,9 +75,9 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="year"
           checked={timeFilter === "year"}
-          onChange={handleChange}
+          onChange={() => onTimeFilterChange("year", selectedYear)}
         />
-        Filter By Year
+        {" Filter By Year"}
       </label>
 
       <label>
@@ -68,9 +86,9 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="weekday"
           checked={timeFilter === "weekday"}
-          onChange={handleChange}
+          onChange={handleFilterChange}
         />
-        Day of the Week
+        {" Day of the Week"}
       </label>
 
       <label>
@@ -79,11 +97,12 @@ const TimeBasedFilters = ({
           name="timeFilter"
           value="customRange"
           checked={timeFilter === "customRange"}
-          onChange={handleChange}
+          onChange={handleFilterChange}
         />
-        Custom Date Range
+        {" Custom Date Range"}
       </label>
 
+      {/* Render input fields based on selected time filter */}
       {timeFilter === "today" && (
         <input
           type="date"
@@ -109,12 +128,18 @@ const TimeBasedFilters = ({
         />
       )}
       {timeFilter === "year" && (
-        <input
-          type="number"
-          value={startDate}
-          onChange={handleDateRangeChange}
-          name="startDate"
-        />
+        <select
+          id="year"
+          name="year"
+          onChange={handleYearChange}
+          value={selectedYear}
+        >
+          {years.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
       )}
       {timeFilter === "weekday" && (
         <select
@@ -131,7 +156,6 @@ const TimeBasedFilters = ({
           <option value="saturday">Saturday</option>
         </select>
       )}
-
       {timeFilter === "customRange" && (
         <div>
           <label>Start Date:</label>
