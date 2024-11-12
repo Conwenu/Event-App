@@ -7,7 +7,18 @@
 
 a {
     text-decoration: none;
-    color: var(--text)
+    color: var(--text);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav li {
+    display: inline;
+    float: right;
+    padding: 4px;
 }
 
 nav img {
@@ -24,17 +35,20 @@ nav {
     justify-content: space-between;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background: var(--background);
-    position: sticky;
+    position: fixed;  /* Fixed positioning for navbar */
     top: 0;
-    z-index: 10;
+    left: 0;
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it's on top of everything else */
 }
 
-nav .logo{
-    width: 75px;
+nav .logo {
+    width: 5vw;
 }
+
 .nav-left {
-    width: 5rem;
-    margin-right: 25px
+    width: auto;
+    margin-right: 25px;
 }
 
 .nav-middle .search-box {
@@ -45,7 +59,7 @@ nav .logo{
 }
 
 .nav-middle .search-box input {
-    width: 400px;
+    width: 100%;
     border: 0;
     outline: 0;
     background: transparent;
@@ -58,4 +72,41 @@ nav .logo{
 .nav-right img {
     width: 35px;
     border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 5px 5%; /* Adjust padding on smaller screens */
+    }
+
+    .nav-left {
+        width: auto; /* Make the nav-left section more flexible */
+        margin-right: 10px;
+    }
+
+    .nav-middle .search-box {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .nav-middle .search-box input {
+        width: 100%;  /* Ensure the search input takes up the full width */
+    }
+
+    .nav-right img {
+        width: 30px;  /* Adjust image size for mobile screens */
+    }
+
+    nav .logo {
+        width: 10vw; /* Make the logo resize based on screen width */
+    }
+
+    .nav-right ul {
+        justify-content: center; /* Center the buttons on smaller screens */
+    }
+
+    .nav-right button {
+        font-size: 14px; /* Adjust button font size on smaller screens */
+        padding: 8px 15px; /* Adjust padding for smaller screens */
+    }
 }

@@ -312,6 +312,59 @@ const getUncancelledEventsFromUser = async (userId) => {
     return unCancelledEvents;
 };
 
+// FIXME:
+const getEventsByDay = async (day) =>{
+    const events = await prisma.event.findMany();
+    const dayEvents = [];
+    for(const event of events) {
+        const eventDate = new Date(event.startTime);
+        if(eventDate.getDay() == day) {
+            dayEvents.push(event);
+        }
+    }
+}
+
+const getEventsByMonth = async (month) => {
+    const monthEvents = [];
+    const events = await prisma.event.findMany();
+    for (const event of events) {
+        const eventDate = new Date(event.startTime);
+        if(eventDate.getMonth() + 1 ===  parseInt(month))
+        {
+            monthEvents.push(event);
+        }
+    }
+    return monthEvents;
+}
+
+const getEventsByYear = async (year) => {
+    const yearEvents = [];
+    const eventDate = new Date(event.startTime);
+    const events = await prisma.event.findMany();
+    for (const event of events) {
+        
+        if(eventDate.getFullYear() ===  parseInt(year))
+        {
+            yearEvents.push(event);
+        }
+    }
+    return yearEvents;
+}
+
+const getUpcomingEvents = async() => {
+    const currDate = new Date();
+    const events = await prisma.event.findMany();
+    const upcomingEvents = [];
+    for (const event of events) {
+        const eventDate = new Date(event.startTime);
+        if(currDate < eventDate){
+            upcomingEvents.push(event);
+        }
+    }
+
+    return upcomingEvents;
+}
+
 module.exports = {
     createEvent,
     getEvents,

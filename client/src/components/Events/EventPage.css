@@ -3,16 +3,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Full height to center */
+    height: 100vh; 
     text-align: center;
   }
   
   .spinner {
-    border: 12px solid #f3f3f3; /* Light grey */
-    border-top: 12px solid #3498db; /* Blue */
+    border: 12px solid #f3f3f3; 
+    border-top: 12px solid #3498db; 
     border-radius: 50%;
-    width: 80px; /* Increased size */
-    height: 80px; /* Increased size */
+    width: 80px; 
+    height: 80px; 
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
   }
@@ -34,3 +34,20 @@
     padding-right: 0rem !important; /* Adjust right padding */
     text-align: start !important;
 }
+
+ .card-title {
+  white-space: nowrap;      /* Prevents the text from wrapping */
+  overflow: hidden;         /* Hides the overflowed text */
+  text-overflow: ellipsis;  /* Adds the ellipsis when the text overflows */
+}
+
+ .event-image-container {
+  position: relative; /* Create a positioning context for absolute children */
+  display: inline-block; /* Keep the container sized to the image */
+ }
+
+ .event-badge{
+    position: absolute; /* Position the badge absolutely */
+    top: 10px; /* Adjust the position from the top */
+    right: 10px; /* Adjust the position from the right */
+ }

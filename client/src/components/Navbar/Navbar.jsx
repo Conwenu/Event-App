@@ -5,7 +5,7 @@ import logo from "../../assets/EventAppLogo2.png";
 import "./Navbar.css";
 export default function Navbar() {
   //   const [menuOpen, setMenuOpen] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
+  const [signedIn] = useState(false);
   //setSignIn(signedIn);
   return (
     <>
@@ -19,7 +19,7 @@ export default function Navbar() {
         <div className="nav-middle flex-div">
           <div className="search-box flex-div">
             <input type="text" placeholder="Search Events"></input>
-            <i class="bi bi-search"></i>
+            <i className="bi bi-search"></i>
           </div>
         </div>
 
@@ -28,14 +28,23 @@ export default function Navbar() {
             <img src={horizontal_bars} alt="menu"></img>
           </div>
         ) : (
-          <div>
-            <div className="nav-right flex-div">
-              <a href="/signin">Sign In </a> / <a href="/register"> Register</a>
-            </div>
+          <div className="nav-right flex-div">
+            <ul>
+              <li>
+                <button type="button" className="btn btn-secondary">
+                  Sign Up
+                </button>
+              </li>
+              <li>
+                <button type="button" className="btn btn-success">
+                  Log In
+                </button>
+              </li>
+            </ul>
           </div>
         )}
       </nav>
-      <button onClick={() => setSignedIn(!signedIn)}>test</button>
+      {/* <button onClick={() => setSignedIn(!signedIn)}>test</button> */}
     </>
   );
 }

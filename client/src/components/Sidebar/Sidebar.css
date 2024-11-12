@@ -1,0 +1,218 @@
+/* For the filter button icon (only visible on mobile) */
+.filter-icon {
+    position: fixed;
+    top: 80x;
+    left: 20px;
+    z-index: 20;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Modal Styles */
+.sidebar-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Ensure modal is on top of the sidebar */
+    
+    /* Flexbox to center modal content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--background);
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    position: relative;
+
+    /* Ensure the modal content has a maximum height and is scrollable if necessary */
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Close button for the modal */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Sidebar Styles (visible on large screens) */
+.sidebar {
+    background: var(--background);
+    width: 15%; /* Sidebar width 15% */
+    position: fixed;
+    top: 80px; /* Position the sidebar just below the navbar */
+    left: 0;
+    bottom: 0;
+    z-index: 10; /* Ensure sidebar is below the navbar, but above other content */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start; /* Align sidebar items to the left */
+    padding: 20px;
+    overflow-y: scroll; /* Enable scrolling within the sidebar */
+}
+
+/* Hide scrollbar but still allow scrolling */
+.sidebar::-webkit-scrollbar {
+    width: 0px; /* Remove the scrollbar width */
+    height: 0px; /* Remove scrollbar height */
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent; /* Ensure the track is invisible */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent; /* Ensure the thumb (handle) is invisible */
+}
+
+/* Sidebar Heading Styles */
+.sidebar h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 0;
+}
+
+/* For large screens, ensure the sidebar is always visible */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Hide sidebar on smaller screens */
+    }
+}
+
+/* Mobile specific styling */
+@media (max-width: 768px) {
+    .sidebar-container {
+        position: relative;
+    }
+
+    /* Adjusted positioning for the filter icon button to avoid it being hidden behind the navbar */
+    .filter-icon {
+        position: absolute;
+        top: 60px; /* Adjusted to be lower than the navbar height */
+        left: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 10; /* Make sure it's above other content */
+    }
+
+    /* Modal styles */
+    .sidebar-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Ensure modal content is on top of everything */
+    }
+
+    /* Modal content styling */
+    .modal-content {
+        background-color: var(--background);
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 8px;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    /* Close modal button */
+    .close-modal {
+        position: absolute;
+        top: 10px; /* Lower the button from the top */
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 20; /* Ensure the close button is on top of the modal content */
+    }
+
+    /* Modal Buttons Section */
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px; /* Adds spacing between the buttons */
+        margin-top: 20px;
+    }
+
+    .reset-button,
+    .view-events-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        flex: 1;
+    }
+
+    .reset-button {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+    }
+
+    .reset-button:hover {
+        background-color: #ddd;
+    }
+
+    .view-events-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .view-events-button:hover {
+        background-color: #0056b3;
+    }
+}
+
+/* For the input fields and form elements inside sidebar */
+input[type="number"], input[type="text"], select {
+    width: 100%; /* Ensure inputs take the full width of their container */
+    padding: 8px;
+    margin: 5px 0 15px 0; /* Add some margin to avoid elements being too close to each other */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Add responsive design for different form elements (e.g., min/max duration) */
+input[type="number"] {
+    max-width: 100%; /* Prevent the field from being too wide */
+}
+
+/* For select dropdowns, inputs and labels */
+label {
+    width: 100%; /* Ensures labels do not overflow */
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.sidebar {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}

@@ -24,8 +24,8 @@ export default function EventCard({
   reservationsLeft
 }) {
   
-  const defaultImage1 =
-    "https://wallpapercat.com/w/full/6/2/1/116007-3840x2160-desktop-4k-bleach-wallpaper-photo.jpg";
+  // const defaultImage1 =
+  //   "https://wallpapercat.com/w/full/6/2/1/116007-3840x2160-desktop-4k-bleach-wallpaper-photo.jpg";
 
     const defaultImage = "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80d79040496883.5781e6228fd81.jpg";
   return (
@@ -55,14 +55,14 @@ export default function EventCard({
                   <p className="card-title">{formatDate(startTime)}</p>
                   {/* If the reservation percentage is like over 90% then i'll highlight it red else if the user is registered then highlight it green */}
                   <p>
-                    <i class="bi bi-person-check"> </i>
+                    <i className="bi bi-person-check"> </i>
                     {maxReservations -
                       reservationsLeft +
                       "/" +
                       maxReservations}
                   </p>
                   {/* When I implement application wide user context, i'll check if the client has already registered for this event
-                  <p> <i class="bi bi-person-fill-check"></i> {event.maxReservations - event.reservationsLeft + "/" + event.maxReservations}</p> 
+                  <p> <i className="bi bi-person-fill-check"></i> {event.maxReservations - event.reservationsLeft + "/" + event.maxReservations}</p> 
                 */}
                 </div>
               </div>

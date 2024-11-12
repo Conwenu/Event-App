@@ -3,6 +3,9 @@
   --text: #0d1202;
   --background: #f7fded;
   --primary: #9de61e;
+  --navbar: rgba(157, 230, 30, 1);
+  --navbar2: rgba(157, 230, 30, 1);
+  --navbar3: rgba(157, 230, 120, 1);
   --secondary: #83f1ab;
   --accent: #5aedcf;
 }
@@ -22,6 +25,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background) !important;
+  color: var(--text) !important;
 }
 
 code {
@@ -30,9 +35,9 @@ code {
 }
 
 /* Additional custom styles */
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .App-header {
   background-color: var(--background); /* Use your custom background */
@@ -43,11 +48,6 @@ code {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: var(--text); /* Use your custom text color */
-}
-
-
-.App {
-  text-align: center;
 }
 
 /* .App-header {
