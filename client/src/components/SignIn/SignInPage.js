@@ -11,33 +11,7 @@ function SignInPage() {
   };
 
   return (
-    <div
-      className="container-fluid p-0"
-      style={{
-        position: 'relative',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      {/* Background Image */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url(https://pa1.aminoapps.com/7740/f07024f41c3ad2cad776797001630c9d51815419r1-873-499_00.gif)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(8px)',
-          zIndex: -1, // Send background image to the back
-        }}
-      ></div>
-      {/* Glassmorphism Card */}
+
       <div
         className="card bg-glass shadow-lg"
         style={{ maxWidth: '500px', width: '100%' }}
@@ -83,7 +57,7 @@ function SignInPage() {
             </p>
           </div>
         </div>
-      </div>
+      
     </div>
   );
 }
