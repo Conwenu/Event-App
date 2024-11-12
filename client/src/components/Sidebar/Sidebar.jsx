@@ -10,7 +10,7 @@ const Sidebar = () => {
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedSorting, setSelectedSorting] = useState("");
 
   const [multipleFilters, setMultipleFilters] = useState({
@@ -44,8 +44,11 @@ const Sidebar = () => {
     };
   }, []);
 
-  const handleTimeFilterChange = (value) => {
+  const handleTimeFilterChange = (value, year) => {
     setTimeFilter(value);
+    if (year) {
+      setSelectedYear(year);
+    }
   };
 
   const handleSortingFilterChange = (value) => {
@@ -95,6 +98,7 @@ const Sidebar = () => {
       eventStatus: [],
       reservationAbility: [],
     });
+    setSelectedYear(new Date().getFullYear());
     setDurationFilter({
       min: "",
       max: "",
@@ -127,8 +131,10 @@ const Sidebar = () => {
                   timeFilter={timeFilter}
                   startDate={startDate}
                   endDate={endDate}
+                  selectedYear={selectedYear}
                   onTimeFilterChange={handleTimeFilterChange}
                   onDateRangeChange={handleDateRangeChange}
+                  setSelectedYear={setSelectedYear}
                 />
 
                 <EventCharacteristicsFilters
@@ -242,10 +248,12 @@ const Sidebar = () => {
 
           <TimeBasedFilters
             timeFilter={timeFilter}
+            selectedYear={selectedYear}
             startDate={startDate}
             endDate={endDate}
             onTimeFilterChange={handleTimeFilterChange}
             onDateRangeChange={handleDateRangeChange}
+            setSelectedYear={setSelectedYear}
           />
 
           <EventCharacteristicsFilters
@@ -266,7 +274,7 @@ const Sidebar = () => {
 
           <div>
             <label>
-              Filter by Title / Description:
+              {"Filter by Title / Description:"}
               <input
                 type="text"
                 value={searchFilters.titleOrDescription}
@@ -289,7 +297,7 @@ const Sidebar = () => {
                   handleMultipleFilterChange("reservationAbility", "available")
                 }
               />
-              Events with Available Spots
+              {" Events with Available Spots"}
             </label>
 
             <label>
@@ -305,7 +313,7 @@ const Sidebar = () => {
                   )
                 }
               />
-              Fully Booked Events
+              {" Fully Booked Events"}
             </label>
           </div>
 
