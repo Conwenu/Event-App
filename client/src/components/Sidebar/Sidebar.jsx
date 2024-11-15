@@ -29,13 +29,15 @@ const Sidebar = () => {
     creator: "",
   });
 
+  const maxWidth = 990;
+
   const [showModal, setShowModal] = useState(false);
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= maxWidth);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= maxWidth);
     };
 
     window.addEventListener("resize", handleResize);
@@ -125,7 +127,7 @@ const Sidebar = () => {
           {showModal && (
             <div className="sidebar-modal">
               <div className="modal-content">
-                <h2>Filters</h2>
+                <h3>Filters</h3>
 
                 <TimeBasedFilters
                   timeFilter={timeFilter}
@@ -137,6 +139,7 @@ const Sidebar = () => {
                   setSelectedYear={setSelectedYear}
                 />
                 <hr />
+                <h3>Status</h3>
                 <EventCharacteristicsFilters
                   selectedEventStatus={multipleFilters.eventStatus}
                   onEventStatusChange={(value) =>
@@ -150,13 +153,14 @@ const Sidebar = () => {
                   }
                 />
                 <hr />
+                <h3>Sort By</h3>
                 <SortingFilters
                   selectedSorting={selectedSorting}
                   onSortingChange={handleSortingFilterChange}
                 />
 
                 <hr />
-
+                <h3>Search</h3>
                 <div>
                   <label>
                     Filter by Title / Description:
@@ -170,7 +174,8 @@ const Sidebar = () => {
                     />
                   </label>
                 </div>
-
+                <hr />
+                <h3>Availibility</h3>
                 <div>
                   <label>
                     <input
@@ -185,7 +190,7 @@ const Sidebar = () => {
                         )
                       }
                     />
-                    Events with Available Spots
+                    {" Events with Available Spots"}
                   </label>
 
                   <label>
@@ -201,10 +206,11 @@ const Sidebar = () => {
                         )
                       }
                     />
-                    Fully Booked Events
+                    {" Fully Booked Events"}
                   </label>
                 </div>
-
+                <hr />
+                <h3>Duration</h3>
                 <div>
                   <label>
                     Min Duration (in minutes):
@@ -246,7 +252,7 @@ const Sidebar = () => {
         </>
       ) : (
         <div className="sidebar">
-          <h2>Filters</h2>
+          <h3>Filters</h3>
 
           <TimeBasedFilters
             timeFilter={timeFilter}
@@ -259,7 +265,7 @@ const Sidebar = () => {
           />
 
           <hr />
-
+          <h3>Status</h3>
           <EventCharacteristicsFilters
             selectedEventStatus={multipleFilters.eventStatus}
             onEventStatusChange={(value) =>
@@ -271,12 +277,13 @@ const Sidebar = () => {
             }
           />
           <hr />
-
+          <h3>Sort By</h3>
           <SortingFilters
             selectedSorting={selectedSorting}
             onSortingChange={handleSortingFilterChange}
           />
           <hr />
+          <h3>Search</h3>
           <div>
             <label>
               {"Filter by Title / Description:"}
@@ -290,7 +297,8 @@ const Sidebar = () => {
               />
             </label>
           </div>
-
+          <hr />
+          <h3>Availability</h3>
           <div>
             <label>
               <input
@@ -321,7 +329,8 @@ const Sidebar = () => {
               {" Fully Booked Events"}
             </label>
           </div>
-
+          <hr />
+          <h3>Duration</h3>
           <div>
             <label>
               Min Duration (in minutes):
@@ -345,7 +354,9 @@ const Sidebar = () => {
             </label>
           </div>
 
-          <button onClick={resetFilters}>Reset Filters</button>
+          <button className="reset-button" onClick={resetFilters}>
+            Reset Filters
+          </button>
         </div>
       )}
     </div>
