@@ -1,7 +1,7 @@
 /* For the filter button icon (only visible on mobile) */
 .filter-icon {
     position: fixed;
-    top: 80x;
+    top: 80px;
     left: 20px;
     z-index: 20;
     background: none;
@@ -57,7 +57,7 @@
 /* Sidebar Styles (visible on large screens) */
 .sidebar {
     background: var(--background);
-    width: 15%; /* Sidebar width 15% */
+    width: 20%; /* Increase sidebar width to fit content */
     position: fixed;
     top: 80px; /* Position the sidebar just below the navbar */
     left: 0;
@@ -69,7 +69,8 @@
     justify-content: flex-start;
     align-items: flex-start; /* Align sidebar items to the left */
     padding: 20px;
-    overflow-y: scroll; /* Enable scrolling within the sidebar */
+    overflow-y: auto; /* Enable scrolling within the sidebar */
+    height: calc(100vh - 80px); /* Make sure sidebar fills screen height */
 }
 
 /* Hide scrollbar but still allow scrolling */
@@ -93,15 +94,12 @@
     margin-top: 0;
 }
 
-/* For large screens, ensure the sidebar is always visible */
-@media (max-width: 768px) {
+/* Mobile specific styling */
+@media (max-width: 990px) {
     .sidebar {
         display: none; /* Hide sidebar on smaller screens */
     }
-}
 
-/* Mobile specific styling */
-@media (max-width: 768px) {
     .sidebar-container {
         position: relative;
     }
@@ -211,8 +209,21 @@ label {
     width: 100%; /* Ensures labels do not overflow */
     margin-bottom: 10px;
     font-weight: bold;
+    font-size: small;
 }
 
 .sidebar {
     scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.modal-content hr, .sidebar hr {
+    margin: 1rem 0;
+    color: black;
+    border-top: var(--bs-border-width) solid;
+    /* opacity: 0; */
+    height: 12px;
+    clear: both;
+    width: 96%;
+    z-index: 30;
+    display: block;
 }
