@@ -57,7 +57,7 @@
 /* Sidebar Styles (visible on large screens) */
 .sidebar {
     background: var(--background);
-    width: 20%; /* Increase sidebar width to fit content */
+    width: 15%; /* Increase sidebar width to fit content */
     position: fixed;
     top: 80px; /* Position the sidebar just below the navbar */
     left: 0;
@@ -68,7 +68,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start; /* Align sidebar items to the left */
-    padding: 20px;
+    padding: 15px;
+    padding-left: 10px;
     overflow-y: auto; /* Enable scrolling within the sidebar */
     height: calc(100vh - 80px); /* Make sure sidebar fills screen height */
 }
@@ -88,10 +89,10 @@
 }
 
 /* Sidebar Heading Styles */
-.sidebar h2 {
-    margin-bottom: 20px;
+.sidebar h5 {
     text-align: center;
     margin-top: 0;
+    font-weight: bolder;
 }
 
 .sidebar input {
@@ -234,11 +235,17 @@ input[type="number"] {
     max-width: 100%; /* Prevent the field from being too wide */
 }
 
+input[type="month"], input[type="week"] {
+    width: 75%; /* Prevent the field from being too wide */
+    align-self: start; 
+    display: flex;
+}
+
 /* For select dropdowns, inputs and labels */
 label {
     width: 100%; /* Ensures labels do not overflow */
     margin-bottom: 10px;
-    font-weight: bold;
+    font-weight: normal;
     font-size: small;
 }
 
