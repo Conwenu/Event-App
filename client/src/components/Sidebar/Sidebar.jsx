@@ -6,6 +6,13 @@ import EventCharacteristicsFilters from "./EventCharacteristicsFilters.jsx";
 import FilterIcon from "../../assets/Filter_3_Lines.png";
 
 const Sidebar = () => {
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [availabilityOpen, setAvailabilityOpen] = useState(false);
+  const [durationOpen, setDurationOpen] = useState(false);
+
   const [timeFilter, setTimeFilter] = useState("");
 
   const [startDate, setStartDate] = useState("");
@@ -127,117 +134,176 @@ const Sidebar = () => {
           {showModal && (
             <div className="sidebar-modal">
               <div className="modal-content">
-                <h3>Filters</h3>
-
-                <TimeBasedFilters
-                  timeFilter={timeFilter}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selectedYear={selectedYear}
-                  onTimeFilterChange={handleTimeFilterChange}
-                  onDateRangeChange={handleDateRangeChange}
-                  setSelectedYear={setSelectedYear}
-                />
-                <hr />
-                <h3>Status</h3>
-                <EventCharacteristicsFilters
-                  selectedEventStatus={multipleFilters.eventStatus}
-                  onEventStatusChange={(value) =>
-                    handleMultipleFilterChange("eventStatus", value)
-                  }
-                  selectedReservationAbility={
-                    multipleFilters.reservationAbility
-                  }
-                  onReservationAbilityChange={(value) =>
-                    handleMultipleFilterChange("reservationAbility", value)
-                  }
-                />
-                <hr />
-                <h3>Sort By</h3>
-                <SortingFilters
-                  selectedSorting={selectedSorting}
-                  onSortingChange={handleSortingFilterChange}
-                />
-
-                <hr />
-                <h3>Search</h3>
-                <div>
-                  <label>
-                    Filter by Title / Description:
-                    <input
-                      type="text"
-                      value={searchFilters.titleOrDescription}
-                      onChange={(e) =>
-                        handleSearchChange("titleOrDescription", e.target.value)
-                      }
-                      placeholder="Search by title or description"
-                    />
-                  </label>
+                <div className="sidebar-section">
+                  <h5>Filters</h5>
+                  <i
+                    className={`bi ${
+                      filtersOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setFiltersOpen(!filtersOpen)}
+                  ></i>
                 </div>
+                {filtersOpen && (
+                  <TimeBasedFilters
+                    timeFilter={timeFilter}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectedYear={selectedYear}
+                    onTimeFilterChange={handleTimeFilterChange}
+                    onDateRangeChange={handleDateRangeChange}
+                    setSelectedYear={setSelectedYear}
+                  />
+                )}
                 <hr />
-                <h3>Availibility</h3>
-                <div>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={multipleFilters.reservationAbility.includes(
-                        "available"
-                      )}
-                      onChange={() =>
-                        handleMultipleFilterChange(
-                          "reservationAbility",
+                <div className="sidebar-section">
+                  <h5>Status</h5>
+                  <i
+                    className={`bi ${
+                      statusOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setStatusOpen(!statusOpen)}
+                  ></i>
+                </div>
+                {statusOpen && (
+                  <EventCharacteristicsFilters
+                    selectedEventStatus={multipleFilters.eventStatus}
+                    onEventStatusChange={(value) =>
+                      handleMultipleFilterChange("eventStatus", value)
+                    }
+                    selectedReservationAbility={
+                      multipleFilters.reservationAbility
+                    }
+                    onReservationAbilityChange={(value) =>
+                      handleMultipleFilterChange("reservationAbility", value)
+                    }
+                  />
+                )}
+                <hr />
+                <div className="sidebar-section">
+                  <h5>Sort By</h5>
+                  <i
+                    className={`bi ${
+                      sortOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setSortOpen(!sortOpen)}
+                  ></i>
+                </div>
+                {sortOpen && (
+                  <SortingFilters
+                    selectedSorting={selectedSorting}
+                    onSortingChange={handleSortingFilterChange}
+                  />
+                )}
+                <hr />
+                <div className="sidebar-section">
+                  <h5>Search</h5>
+                  <i
+                    className={`bi ${
+                      searchOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setSearchOpen(!searchOpen)}
+                  ></i>
+                </div>
+                {searchOpen && (
+                  <div>
+                    <label>
+                      Filter by Title / Description:
+                      <input
+                        type="text"
+                        value={searchFilters.titleOrDescription}
+                        onChange={(e) =>
+                          handleSearchChange(
+                            "titleOrDescription",
+                            e.target.value
+                          )
+                        }
+                        placeholder="Search by title or description"
+                      />
+                    </label>
+                  </div>
+                )}
+                <hr />
+                <div className="sidebar-section">
+                  <h5>Availibility</h5>
+                  <i
+                    className={`bi ${
+                      availabilityOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setAvailabilityOpen(!availabilityOpen)}
+                  ></i>
+                </div>
+                {availabilityOpen && (
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={multipleFilters.reservationAbility.includes(
                           "available"
-                        )
-                      }
-                    />
-                    {" Events with Available Spots"}
-                  </label>
-
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={multipleFilters.reservationAbility.includes(
-                        "fullyBooked"
-                      )}
-                      onChange={() =>
-                        handleMultipleFilterChange(
-                          "reservationAbility",
+                        )}
+                        onChange={() =>
+                          handleMultipleFilterChange(
+                            "reservationAbility",
+                            "available"
+                          )
+                        }
+                      />
+                      {" Events with Available Spots"}
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={multipleFilters.reservationAbility.includes(
                           "fullyBooked"
-                        )
-                      }
-                    />
-                    {" Fully Booked Events"}
-                  </label>
-                </div>
+                        )}
+                        onChange={() =>
+                          handleMultipleFilterChange(
+                            "reservationAbility",
+                            "fullyBooked"
+                          )
+                        }
+                      />
+                      {" Fully Booked Events"}
+                    </label>
+                  </div>
+                )}
                 <hr />
-                <h3>Duration</h3>
-                <div>
-                  <label>
-                    Min Duration (in minutes):
-                    <input
-                      type="number"
-                      value={durationFilter.min}
-                      min="0"
-                      onChange={(e) =>
-                        handleDurationChange("min", e.target.value)
-                      }
-                      placeholder="Min duration"
-                    />
-                  </label>
-                  <label>
-                    Max Duration (in minutes):
-                    <input
-                      type="number"
-                      value={durationFilter.max}
-                      min="0"
-                      onChange={(e) =>
-                        handleDurationChange("max", e.target.value)
-                      }
-                      placeholder="Max duration"
-                    />
-                  </label>
+                <div className="sidebar-section">
+                  <h5>Duration</h5>
+                  <i
+                    className={`bi ${
+                      durationOpen ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                    onClick={() => setDurationOpen(!durationOpen)}
+                  ></i>
                 </div>
-
+                {durationOpen && (
+                  <div>
+                    <label>
+                      Min Duration (in minutes):
+                      <input
+                        type="number"
+                        value={durationFilter.min}
+                        min="0"
+                        onChange={(e) =>
+                          handleDurationChange("min", e.target.value)
+                        }
+                        placeholder="Min duration"
+                      />
+                    </label>
+                    <label>
+                      Max Duration (in minutes):
+                      <input
+                        type="number"
+                        value={durationFilter.max}
+                        min="0"
+                        onChange={(e) =>
+                          handleDurationChange("max", e.target.value)
+                        }
+                        placeholder="Max duration"
+                      />
+                    </label>
+                  </div>
+                )}
                 <div className="modal-buttons">
                   <button className="reset-button" onClick={resetFilters}>
                     Reset Filters
@@ -252,107 +318,185 @@ const Sidebar = () => {
         </>
       ) : (
         <div className="sidebar">
-          <h3>Filters</h3>
-
-          <TimeBasedFilters
-            timeFilter={timeFilter}
-            selectedYear={selectedYear}
-            startDate={startDate}
-            endDate={endDate}
-            onTimeFilterChange={handleTimeFilterChange}
-            onDateRangeChange={handleDateRangeChange}
-            setSelectedYear={setSelectedYear}
-          />
-
-          <hr />
-          <h3>Status</h3>
-          <EventCharacteristicsFilters
-            selectedEventStatus={multipleFilters.eventStatus}
-            onEventStatusChange={(value) =>
-              handleMultipleFilterChange("eventStatus", value)
-            }
-            selectedReservationAbility={multipleFilters.reservationAbility}
-            onReservationAbilityChange={(value) =>
-              handleMultipleFilterChange("reservationAbility", value)
-            }
-          />
-          <hr />
-          <h3>Sort By</h3>
-          <SortingFilters
-            selectedSorting={selectedSorting}
-            onSortingChange={handleSortingFilterChange}
-          />
-          <hr />
-          <h3>Search</h3>
-          <div>
-            <label>
-              {"Filter by Title / Description:"}
-              <input
-                type="text"
-                value={searchFilters.titleOrDescription}
-                onChange={(e) =>
-                  handleSearchChange("titleOrDescription", e.target.value)
-                }
-                placeholder="Search by title or description"
-              />
-            </label>
+          <div className="sidebar-section">
+            <h5>Filters</h5>
+            <i
+              className={`bi ${
+                !filtersOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setFiltersOpen(!filtersOpen)}
+            ></i>
           </div>
-          <hr />
-          <h3>Availability</h3>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={multipleFilters.reservationAbility.includes(
-                  "available"
-                )}
-                onChange={() =>
-                  handleMultipleFilterChange("reservationAbility", "available")
-                }
-              />
-              {" Events with Available Spots"}
-            </label>
+          {filtersOpen ? (
+            <TimeBasedFilters
+              timeFilter={timeFilter}
+              selectedYear={selectedYear}
+              startDate={startDate}
+              endDate={endDate}
+              onTimeFilterChange={handleTimeFilterChange}
+              onDateRangeChange={handleDateRangeChange}
+              setSelectedYear={setSelectedYear}
+            />
+          ) : (
+            <></>
+          )}
 
-            <label>
-              <input
-                type="checkbox"
-                checked={multipleFilters.reservationAbility.includes(
-                  "fullyBooked"
-                )}
-                onChange={() =>
-                  handleMultipleFilterChange(
-                    "reservationAbility",
+          <hr />
+          <div className="sidebar-section">
+            <h5>Status</h5>
+            <i
+              className={`bi ${
+                !statusOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setStatusOpen(!statusOpen)}
+            ></i>
+          </div>
+          {statusOpen ? (
+            <EventCharacteristicsFilters
+              selectedEventStatus={multipleFilters.eventStatus}
+              onEventStatusChange={(value) =>
+                handleMultipleFilterChange("eventStatus", value)
+              }
+              selectedReservationAbility={multipleFilters.reservationAbility}
+              onReservationAbilityChange={(value) =>
+                handleMultipleFilterChange("reservationAbility", value)
+              }
+            />
+          ) : (
+            <></>
+          )}
+
+          <hr />
+          <div className="sidebar-section">
+            <h5>Sort By</h5>
+            <i
+              className={`bi ${
+                !sortOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setSortOpen(!sortOpen)}
+            ></i>
+          </div>
+
+          {sortOpen ? (
+            <SortingFilters
+              selectedSorting={selectedSorting}
+              onSortingChange={handleSortingFilterChange}
+            />
+          ) : (
+            <></>
+          )}
+          <hr />
+          <div className="sidebar-section">
+            <h5>Search</h5>
+            <i
+              className={`bi ${
+                !searchOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setSearchOpen(!searchOpen)}
+            ></i>
+          </div>
+
+          {searchOpen ? (
+            <div>
+              <label>
+                <input
+                  type="text"
+                  value={searchFilters.titleOrDescription}
+                  onChange={(e) =>
+                    handleSearchChange("titleOrDescription", e.target.value)
+                  }
+                  placeholder="Enter title or description"
+                />
+              </label>
+            </div>
+          ) : (
+            <></>
+          )}
+          <hr />
+          <div className="sidebar-section">
+            <h5>Availability</h5>
+            <i
+              className={`bi ${
+                !availabilityOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setAvailabilityOpen(!availabilityOpen)}
+            ></i>
+          </div>
+
+          {availabilityOpen ? (
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={multipleFilters.reservationAbility.includes(
+                    "available"
+                  )}
+                  onChange={() =>
+                    handleMultipleFilterChange(
+                      "reservationAbility",
+                      "available"
+                    )
+                  }
+                />
+                {" Events with Available Spots"}
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  checked={multipleFilters.reservationAbility.includes(
                     "fullyBooked"
-                  )
-                }
-              />
-              {" Fully Booked Events"}
-            </label>
-          </div>
+                  )}
+                  onChange={() =>
+                    handleMultipleFilterChange(
+                      "reservationAbility",
+                      "fullyBooked"
+                    )
+                  }
+                />
+                {" Fully Booked Events"}
+              </label>
+            </div>
+          ) : (
+            <></>
+          )}
           <hr />
-          <h3>Duration</h3>
-          <div>
-            <label>
-              Min Duration (in minutes):
-              <input
-                type="number"
-                value={durationFilter.min}
-                min="0"
-                onChange={(e) => handleDurationChange("min", e.target.value)}
-                placeholder="Min duration"
-              />
-            </label>
-            <label>
-              Max Duration (in minutes):
-              <input
-                type="number"
-                value={durationFilter.max}
-                min="0"
-                onChange={(e) => handleDurationChange("max", e.target.value)}
-                placeholder="Max duration"
-              />
-            </label>
+          <div className="sidebar-section">
+            <h5>Duration</h5>
+            <i
+              className={`bi ${
+                !durationOpen ? "bi-chevron-down" : "bi-chevron-up"
+              }`}
+              onClick={() => setDurationOpen(!durationOpen)}
+            ></i>
           </div>
+
+          {durationOpen ? (
+            <div>
+              <label>
+                Min Duration (in minutes):
+                <input
+                  type="number"
+                  value={durationFilter.min}
+                  min="0"
+                  onChange={(e) => handleDurationChange("min", e.target.value)}
+                  placeholder="Min duration"
+                />
+              </label>
+              <label>
+                Max Duration (in minutes):
+                <input
+                  type="number"
+                  value={durationFilter.max}
+                  min="0"
+                  onChange={(e) => handleDurationChange("max", e.target.value)}
+                  placeholder="Max duration"
+                />
+              </label>
+            </div>
+          ) : (
+            <></>
+          )}
 
           <button className="reset-button" onClick={resetFilters}>
             Reset Filters

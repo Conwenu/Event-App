@@ -54,9 +54,16 @@
     cursor: pointer;
 }
 
+.sidebar-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 /* Sidebar Styles (visible on large screens) */
 .sidebar {
     background: var(--background);
+    margin-top: 10px;
     width: 15%; /* Increase sidebar width to fit content */
     position: fixed;
     top: 80px; /* Position the sidebar just below the navbar */
@@ -92,6 +99,7 @@
 .sidebar h5 {
     text-align: center;
     margin-top: 0;
+    margin-bottom: 5px;
     font-weight: bolder;
 }
 
@@ -107,12 +115,13 @@
 
 
 .reset-button {
+    margin-top: 1rem;
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
     align-self: center;
-    flex: 1;
+    flex:  0 0 auto;
 }
 
 .reset-button {
@@ -124,7 +133,9 @@
     background-color: #ddd;
 }
 
-
+.sidebar i {
+    cursor: pointer;
+}
 /* Mobile specific styling */
 @media (max-width: 990px) {
     .sidebar {
@@ -235,10 +246,14 @@ input[type="number"] {
     max-width: 100%; /* Prevent the field from being too wide */
 }
 
-input[type="month"], input[type="week"] {
-    width: 75%; /* Prevent the field from being too wide */
-    align-self: start; 
-    display: flex;
+input[type="month"], input[type="week"], input[type="date"] {
+   
+    width: 100%; /* Ensure inputs take the full width of their container */
+    padding: 8px;
+    margin: 5px 0 15px 0; /* Add some margin to avoid elements being too close to each other */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 /* For select dropdowns, inputs and labels */
@@ -260,7 +275,12 @@ label {
     /* opacity: 0; */
     height: 12px;
     clear: both;
-    width: 96%;
+    width: 100%;
     z-index: 30;
     display: block;
+}
+
+.TimeBasedFilters {
+    width: 100%;
+    
 }
