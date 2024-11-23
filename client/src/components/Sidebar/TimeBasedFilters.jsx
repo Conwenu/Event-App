@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./Sidebar.css";
 const TimeBasedFilters = ({
   timeFilter,
   onTimeFilterChange,
@@ -35,7 +35,7 @@ const TimeBasedFilters = ({
   }
 
   return (
-    <div>
+    <div className="TimeBasedFilters">
       <label>
         <input
           type="radio"
@@ -99,7 +99,7 @@ const TimeBasedFilters = ({
           checked={timeFilter === "customRange"}
           onChange={handleFilterChange}
         />
-        {" Custom Date Range"}
+        {" Date Range"}
       </label>
 
       {/* Render input fields based on selected time filter */}
