@@ -1,0 +1,31 @@
+.event-page-heading {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-page-heading-title {
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.event-page-heading-title-search {
+    border: 1px solid #ccc;
+    margin-right: 15px;
+    padding: 8px 12px;
+    border-radius: 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.event-page-heading-title-search  input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+}
+
+.event-page-heading-title-search .bi-search {
+    width: 15px;
+}
