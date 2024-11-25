@@ -1,0 +1,52 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    border: 0px solid transparent; 
+    background-color: transparent; 
+    width: 100%; 
+    outline: 1px solid green;
+    border-radius: 25px;
+  }
+
+  
+  .search-icon {
+    font-size: 18px;
+    color: #666; 
+    padding: 10px; 
+    background-color: transparent; 
+    border-right: 0; 
+  }
+  
+  .search-input {
+    border: none; 
+    outline: none; 
+    padding: 10px; 
+    flex-grow: 1; 
+    font-size: 16px; 
+    background-color: transparent; 
+    border: #d30000;
+  }
+  
+  .search-container:hover {
+    border-color: transparent; 
+  }
+  
+  .search-container:focus-within {
+    border-color: transparent; 
+  }
+
+  .search-input:focus {
+    background-color: transparent; 
+    border-color: transparent;
+    outline: none;
+  }
+
+  .search-container input:focus {
+    background-color: transparent;
+    border-color: transparent;
+    outline: none;
+    outline: none; 
+    border: 0px solid #000; 
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0);  
+  }
+  
