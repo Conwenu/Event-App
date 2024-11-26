@@ -51,15 +51,22 @@ nav .logo {
     margin-right: 25px;
 }
 
+.nav-middle {
+    flex-grow: 1;
+    
+}
+
 .nav-middle .search-box {
     border: 1px solid #ccc;
     margin-right: 15px;
     padding: 8px 12px;
     border-radius: 25px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .nav-middle .search-box input {
-    width: 100%;
     border: 0;
     outline: 0;
     background: transparent;

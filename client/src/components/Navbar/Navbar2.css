@@ -1,0 +1,126 @@
+.customNavbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--background);
+    padding: 1% 1%;
+    z-index: 1000;
+    position: fixed;
+}
+
+.navbar-logo {
+    cursor: pointer;
+    width: 5vw;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    background: var(--background2);
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+.searchBox input {
+    padding: 6px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--text);
+    font-size: 18px;
+    max-width: 200px;
+}
+
+.searchBox input::placeholder {
+    color: var(--text);
+}
+
+.searchBox img {
+    width: 20px;
+    cursor: pointer;
+}
+
+.navbar-useractions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px;
+    margin: 4px auto;
+}
+
+.navbar-signup, .navbar-login {
+    border-radius: 8px;
+    background-color: var(--primary);
+    padding: 6px 9px;
+    color: var(--text);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    float: left;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);  
+    }
+}
+
+
+.navbar-r {
+    margin-right: 3px;
+}
+
+.navbar-r-ul {
+    margin: 4px auto
+}
+
+.navbar-r li {
+    float: left;
+    padding: 2px;
+    text-align: center;
+    position: relative;
+    display: block;
+    list-style: none;
+    margin: 0;
+}
+
+.navbar-r li a {
+    position: relative;
+}
+
+.menu-title {
+    user-select: none;
+    padding: 6px 9px;
+    display: inline-block;
+    width: 100%;
+    color: var(--text);
+    background-color: var(--primary);
+    border-color: var(--primary);
+    border-width: 1px;
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 16px;
+    /* line-height: 100%; */
+}
+
+
+
+.navbar-log-in {
+    background-color: transparent;
+    border: 1px solid #606162;
+    border-radius: 8px;
+    color: rgba(0, 0, 0, .6);
+}
+
+@media (min-width: 768px) {
+    .navbar-r {
+       float: right !important;
+    }
+}
