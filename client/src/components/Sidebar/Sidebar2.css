@@ -1,0 +1,36 @@
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+
+.sidebar-container .sidebar-section {
+    display: flex;
+    justify-content: space-between;
+    cursor : pointer;
+    padding: 10px;
+    padding-left: 0px;
+    user-select: none;
+    
+}
+
+.reset-filters {
+    
+    display: inline-block;
+    border-radius: 8px;
+    background-color: var(--background2);
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+    padding: 6px 9px;
+    width: 100%;
+    border: 1px solid var(--primary);
+    cursor : pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 16px;
+    user-select: none;
+}
