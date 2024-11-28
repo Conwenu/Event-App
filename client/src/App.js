@@ -6,11 +6,15 @@ import EventPage from './components/Events/EventPage';
 import SignInPage from './components/SignIn/SignInPage';
 import RegisterPage from './components/Register/RegisterPage';
 import EventCard from './components/Events/EventCard';
-import Navbar from './components/Navbar/Navbar';
+// import Navbar from './components/Navbar/Navbar';
+import Navbar2 from './components/Navbar/Navbar2';
 function App() {
   return (
     <Router>
-      <Navbar/>
+      {/* <Navbar/> */}
+      <div className='nav-container'>
+        <Navbar2></Navbar2>
+      </div>
       <div className="App">
         <Routes>
           <Route path="/register" element={<RegisterPage />} />

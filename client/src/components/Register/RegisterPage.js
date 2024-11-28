@@ -15,7 +15,7 @@ function RegisterPage() {
       className="container-fluid p-0"
       style={{
         position: 'relative',
-        height: '100vh',
+        height: '100dvh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

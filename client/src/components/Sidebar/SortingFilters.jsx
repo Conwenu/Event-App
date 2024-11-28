@@ -7,49 +7,18 @@ const SortingFilters = ({ selectedSorting, onSortingChange }) => {
 
   return (
     <div>
-      <label>
-        <input
-          type="radio"
-          name="sortingFilter"
-          value="newestFirst"
-          checked={selectedSorting === "newestFirst"}
-          onChange={handleSortingChange}
-        />
-        {" Newest First"}
-      </label>
-
-      <label>
-        <input
-          type="radio"
-          name="sortingFilter"
-          value="oldestFirst"
-          checked={selectedSorting === "oldestFirst"}
-          onChange={handleSortingChange}
-        />
-        {" Oldest First"}
-      </label>
-
-      <label>
-        <input
-          type="radio"
-          name="sortingFilter"
-          value="startTimeAsc"
-          checked={selectedSorting === "startTimeAsc"}
-          onChange={handleSortingChange}
-        />
-        {" Start Time Ascending"}
-      </label>
-
-      <label>
-        <input
-          type="radio"
-          name="sortingFilter"
-          value="startTimeDesc"
-          checked={selectedSorting === "startTimeDesc"}
-          onChange={handleSortingChange}
-        />
-        {" Start Time Descending"}
-      </label>
+      <select
+        id="sortingFilter"
+        className="form-select"
+        aria-label="Sorting options"
+        value={selectedSorting}
+        onChange={handleSortingChange}
+      >
+        <option value="newestFirst">Newest First</option>
+        <option value="oldestFirst">Oldest First</option>
+        <option value="startTimeAsc">Start Time Ascending</option>
+        <option value="startTimeDesc">Start Time Descending</option>
+      </select>
     </div>
   );
 };

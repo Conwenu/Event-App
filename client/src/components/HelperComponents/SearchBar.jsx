@@ -3,7 +3,7 @@ import "./SearchBar.css";
 
 const SearchBar = () => {
   return (
-    <div className="container">
+    <div style={{ width: "50%", marginRight: "1rem" }}>
       <div className="search-container">
         <i className="bi bi-search search-icon"></i>
         <input

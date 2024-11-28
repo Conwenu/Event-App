@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import "./Sidebar.css";
+
 const TimeBasedFilters = ({
   timeFilter,
   onTimeFilterChange,
@@ -8,6 +9,8 @@ const TimeBasedFilters = ({
   onDateRangeChange,
   selectedYear,
   setSelectedYear,
+  selectedMonth,
+  setSelectedMonth,
 }) => {
   const handleFilterChange = (e) => {
     onTimeFilterChange(e.target.value);
@@ -18,118 +21,209 @@ const TimeBasedFilters = ({
     onDateRangeChange(name, value);
   };
 
-  // Set default year as the current year
-  const currentYear = new Date().getFullYear();
-
   const handleYearChange = (e) => {
-    const year = parseInt(e.target.value, 10);
-    setSelectedYear(year);
+    setSelectedYear(parseInt(e.target.value, 10));
   };
 
-  // Generate a range of years from 10 years ago to 10 years in the future
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  };
+
+  // Set default year and month
+  const currentYear = new Date().getFullYear();
+  const months = [
+    { value: "01", label: "January" },
+    { value: "02", label: "February" },
+    { value: "03", label: "March" },
+    { value: "04", label: "April" },
+    { value: "05", label: "May" },
+    { value: "06", label: "June" },
+    { value: "07", label: "July" },
+    { value: "08", label: "August" },
+    { value: "09", label: "September" },
+    { value: "10", label: "October" },
+    { value: "11", label: "November" },
+    { value: "12", label: "December" },
+  ];
+
+  useEffect(() => {
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0"); // "01" to "12"
+    const currentYear = new Date().getFullYear();
+
+    if (!selectedMonth) {
+      setSelectedMonth(currentMonth);
+    }
+    if (!selectedYear) {
+      setSelectedYear(currentYear);
+    }
+  }, [setSelectedMonth, setSelectedYear, selectedMonth, selectedYear]);
+
+  // Generate a range of years
   const startYear = currentYear - 10;
   const endYear = currentYear + 10;
-  const years = [];
-  for (let year = startYear; year <= endYear; year++) {
-    years.push(year);
-  }
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
 
   return (
     <div className="TimeBasedFilters">
-      <label>
+      {/* Radio buttons */}
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="today"
           checked={timeFilter === "today"}
           onChange={handleFilterChange}
+          id="filterToday"
         />
-        {" Filter By Day"}
-      </label>
+        <label className="form-check-label" htmlFor="filterToday">
+          Filter By Day
+        </label>
+      </div>
 
-      <label>
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="week"
           checked={timeFilter === "week"}
           onChange={handleFilterChange}
+          id="filterWeek"
         />
-        {" Filter By Week"}
-      </label>
+        <label className="form-check-label" htmlFor="filterWeek">
+          Filter By Week
+        </label>
+      </div>
 
-      <label>
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="month"
           checked={timeFilter === "month"}
           onChange={handleFilterChange}
+          id="filterMonth"
         />
-        {" Filter By Month"}
-      </label>
+        <label className="form-check-label" htmlFor="filterMonth">
+          Filter By Month
+        </label>
+      </div>
 
-      <label>
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="year"
           checked={timeFilter === "year"}
-          onChange={() => onTimeFilterChange("year", selectedYear)}
+          onChange={handleFilterChange}
+          id="filterYear"
         />
-        {" Filter By Year"}
-      </label>
+        <label className="form-check-label" htmlFor="filterYear">
+          Filter By Year
+        </label>
+      </div>
 
-      <label>
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="weekday"
           checked={timeFilter === "weekday"}
           onChange={handleFilterChange}
+          id="filterWeekday"
         />
-        {" Day of the Week"}
-      </label>
+        <label className="form-check-label" htmlFor="filterWeekday">
+          Day of the Week
+        </label>
+      </div>
 
-      <label>
+      <div className="form-check">
         <input
           type="radio"
+          className="form-check-input"
           name="timeFilter"
           value="customRange"
           checked={timeFilter === "customRange"}
           onChange={handleFilterChange}
+          id="filterCustomRange"
         />
-        {" Date Range"}
-      </label>
+        <label className="form-check-label" htmlFor="filterCustomRange">
+          Date Range
+        </label>
+      </div>
 
       {/* Render input fields based on selected time filter */}
-      {timeFilter === "today" && (
-        <input
-          type="date"
-          value={startDate}
-          onChange={handleDateRangeChange}
-          name="startDate"
-        />
-      )}
-      {timeFilter === "week" && (
-        <input
-          type="week"
-          value={startDate}
-          onChange={handleDateRangeChange}
-          name="startDate"
-        />
-      )}
-      {timeFilter === "month" && (
-        <input
-          type="month"
-          value={startDate}
-          onChange={handleDateRangeChange}
-          name="startDate"
-        />
-      )}
+      <div className="TimeBasedFilters">
+        {timeFilter === "today" && (
+          <input
+            type="date"
+            className="form-control mt-2"
+            value={startDate}
+            onChange={handleDateRangeChange}
+            name="startDate"
+          />
+        )}
+        {timeFilter === "week" && (
+          <input
+            type="date"
+            className="form-control mt-2"
+            value={startDate}
+            onChange={handleDateRangeChange}
+            name="startDate"
+          />
+        )}
+        {/* Month and Year dropdowns */}
+        {timeFilter === "month" && (
+          <div className=" mt-2 align-items-center">
+            <label htmlFor="month" className="me-2">
+              Select Month:
+            </label>
+            <select
+              id="month"
+              className="form-control me-2"
+              name="month"
+              onChange={handleMonthChange}
+              value={selectedMonth}
+            >
+              <option value="">--Select Month--</option>
+              {months.map((month) => (
+                <option key={month.value} value={month.value}>
+                  {month.label}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="year" className="me-2">
+              Select Year:
+            </label>
+            <select
+              id="year"
+              className="form-control"
+              name="year"
+              onChange={handleYearChange}
+              value={selectedYear}
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Render other time filters (e.g., year, customRange, etc.) */}
       {timeFilter === "year" && (
         <select
           id="year"
+          className="form-control mt-2"
           name="year"
           onChange={handleYearChange}
           value={selectedYear}
@@ -141,8 +235,10 @@ const TimeBasedFilters = ({
           ))}
         </select>
       )}
+
       {timeFilter === "weekday" && (
         <select
+          className="form-control mt-2"
           value={startDate}
           onChange={handleDateRangeChange}
           name="startDate"
@@ -156,11 +252,13 @@ const TimeBasedFilters = ({
           <option value="saturday">Saturday</option>
         </select>
       )}
+
       {timeFilter === "customRange" && (
-        <div>
+        <div className="">
           <label>Start Date:</label>
           <input
             type="date"
+            className="form-control mt-1"
             value={startDate}
             onChange={handleDateRangeChange}
             name="startDate"
@@ -168,6 +266,7 @@ const TimeBasedFilters = ({
           <label>End Date:</label>
           <input
             type="date"
+            className="form-control mt-1"
             value={endDate}
             onChange={handleDateRangeChange}
             name="endDate"

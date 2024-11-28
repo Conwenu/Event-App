@@ -2,6 +2,7 @@
 :root {
   --text: #0d1202;
   --background: #f7fded;
+  --background2: #eaf0e1;
   --primary: #9de61e;
   --navbar: rgba(157, 230, 30, 1);
   --navbar2: rgba(157, 230, 30, 1);
@@ -13,6 +14,7 @@
 .dark {
   --text: #f8fded;
   --background: #0c1202;
+  --background2: #181e0e;
   --primary: #98e119;
   --secondary: #0e7c36;
   --accent: #12a588;
@@ -41,7 +43,7 @@ code {
 
 .App-header {
   background-color: var(--background); /* Use your custom background */
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,4 +66,10 @@ code {
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+} */
+
+/* body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x:hidden;  
 } */
