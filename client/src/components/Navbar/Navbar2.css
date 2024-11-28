@@ -11,7 +11,7 @@
 
 .navbar-logo {
     cursor: pointer;
-    width: 5vw;
+    width: 80px;
 }
 
 .searchBox {
@@ -20,6 +20,8 @@
     background: var(--background2);
     padding: 10px 20px;
     border-radius: 50px;
+    justify-content: space-between;
+    /* width: 50%; */
 }
 
 .searchBox input {
@@ -30,6 +32,7 @@
     color: var(--text);
     font-size: 18px;
     max-width: 200px;
+    /* width: 100%; */
 }
 
 .searchBox input::placeholder {
@@ -88,6 +91,7 @@
 
 .navbar-r li a {
     position: relative;
+    text-decoration: none;
 }
 
 .menu-title {
