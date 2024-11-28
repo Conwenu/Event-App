@@ -3,7 +3,7 @@
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
-  margin-left: 10px;
+  z-index: 500;
   margin-right: 10px;
   /* width: 100%; */
   
