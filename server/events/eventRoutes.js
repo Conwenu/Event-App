@@ -6,6 +6,7 @@ const authController = require('../auth/authController');
 // Create and retrieve events
 router.post('/event', authController.authenticateJWT, eventController.createEvent);
 router.get('/events', eventController.getEvents);
+router.get('/events2', eventController.getEvents2);
 
 // Retrieve, edit, and delete a specific event
 router.get('/event/:id', eventController.getEvent);
