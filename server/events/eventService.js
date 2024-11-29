@@ -51,6 +51,11 @@ const getEvents = async () => {
     return await prisma.event.findMany();
 }
 
+const getEvents2 = async () => {
+    const events = await prisma.event.findMany();
+    return events;
+}
+
 const getEvent = async (id) => {
     return await prisma.event.findUnique({
         where: { id: parseInt(id) },
