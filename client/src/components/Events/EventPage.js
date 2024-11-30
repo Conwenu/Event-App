@@ -100,11 +100,16 @@ const EventPage = () => {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= maxWidth);
 
+  const toggleModal = () => {
+    setShowModal(!showModal);
+    console.log("Modal: ", showModal);
+    console.log("Mobile: ", isMobile);
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= maxWidth);
     };
-
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -157,13 +162,6 @@ const EventPage = () => {
     }));
   };
 
-  const handleSearchChange = (field, value) => {
-    setSearchFilters((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
-  };
-
   const resetFilters = () => {
     setTimeFilter("");
     setStartDate("");
@@ -180,11 +178,7 @@ const EventPage = () => {
       min: "",
       max: "",
     });
-    setSearchFilters({
-      eventName: "",
-      titleOrDescription: "",
-      creator: "",
-    });
+    setSearchFilters("");
   };
 
   // const defaultImage =
@@ -223,58 +217,146 @@ const EventPage = () => {
   return (
     <>
       <div className="full-events-page">
-        <Header2 
-        selectedSorting={selectedSorting}
-        onSortingChange={handleSortingFilterChange}
-        searchFilters={searchFilters}
-        onSearchChange={setSearchFilters}/>
-        {/* <Sidebar /> */}
-        {/* <hr /> */}
-        <div className="events-page">
-          <Sidebar2
-            timeFilter={timeFilter}
-            selectedYear={selectedYear}
-            startDate={startDate}
-            endDate={endDate}
-            onTimeFilterChange={handleTimeFilterChange}
-            onDateRangeChange={handleDateRangeChange}
-            setSelectedYear={setSelectedYear}
-            selectedMonth={selectedMonth}
-            setSelectedMonth={setSelectedMonth}
-            selectedEventStatus={multipleFilters.eventStatus}
-            onEventStatusChange={(value) =>
-              handleMultipleFilterChange("eventStatus", value)
-            }
-            selectedReservationAbility={multipleFilters.reservationAbility}
-            onReservationAbilityChange={(value) =>
-              handleMultipleFilterChange("reservationAbility", value)
-            }
-            durationFilter={durationFilter}
-            handleDurationChange={handleDurationChange}
-            resetFilters={resetFilters}
-          />
+        <Header2
+          selectedSorting={selectedSorting}
+          onSortingChange={handleSortingFilterChange}
+          searchFilters={searchFilters}
+          onSearchChange={setSearchFilters}
+          toggleModal={toggleModal}
+        />
+        {isMobile ? (
+          <>
+            <Sidebar2
+              timeFilter={timeFilter}
+              selectedYear={selectedYear}
+              startDate={startDate}
+              endDate={endDate}
+              onTimeFilterChange={handleTimeFilterChange}
+              onDateRangeChange={handleDateRangeChange}
+              setSelectedYear={setSelectedYear}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              selectedEventStatus={multipleFilters.eventStatus}
+              onEventStatusChange={(value) =>
+                handleMultipleFilterChange("eventStatus", value)
+              }
+              selectedReservationAbility={multipleFilters.reservationAbility}
+              onReservationAbilityChange={(value) =>
+                handleMultipleFilterChange("reservationAbility", value)
+              }
+              durationFilter={durationFilter}
+              handleDurationChange={handleDurationChange}
+              resetFilters={resetFilters}
+              selectedSorting={selectedSorting}
+              onSortingChange={handleSortingFilterChange}
+              isMobile={isMobile}
+              showModal={showModal}
+              toggleModal={toggleModal}
+            />
+            {/* <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
+              {events.map((event) => (
+                <div className="col" key={event.id}>
+                  <EventCard {...event} />
+                </div>
+              ))}
+            </div> */}
 
-          <div>
-            <h1>{timeFilter}</h1> <h1>{startDate + " : " + endDate + " : " + selectedMonth + " : " + selectedYear}</h1>
-            <h1>{multipleFilters.eventStatus}</h1>{" "}
-            <h1>{multipleFilters.reservationAbility}</h1>
-            {durationFilter.min != "" ? <h1>{"Min: " + durationFilter.min}</h1> : <></>}
-            {durationFilter.max != "" ? <h1>{"Max: " + durationFilter.max}</h1> : <></>}
-            <h1>{selectedSorting}</h1>
-            <h1>{searchFilters}</h1>
-          </div> 
+            <div>
+              <h1>{timeFilter}</h1>{" "}
+              <h1>
+                {startDate +
+                  " : " +
+                  endDate +
+                  " : " +
+                  selectedMonth +
+                  " : " +
+                  selectedYear}
+              </h1>
+              <h1>{multipleFilters.eventStatus}</h1>{" "}
+              <h1>{multipleFilters.reservationAbility}</h1>
+              {durationFilter.min != "" ? (
+                <h1>{"Min: " + durationFilter.min}</h1>
+              ) : (
+                <></>
+              )}
+              {durationFilter.max != "" ? (
+                <h1>{"Max: " + durationFilter.max}</h1>
+              ) : (
+                <></>
+              )}
+              <h1>{selectedSorting}</h1>
+              <h1>{searchFilters}</h1>
+            </div>
+          </>
+        ) : (
+          <div className="events-page">
+            <Sidebar2
+              timeFilter={timeFilter}
+              selectedYear={selectedYear}
+              startDate={startDate}
+              endDate={endDate}
+              onTimeFilterChange={handleTimeFilterChange}
+              onDateRangeChange={handleDateRangeChange}
+              setSelectedYear={setSelectedYear}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              selectedEventStatus={multipleFilters.eventStatus}
+              onEventStatusChange={(value) =>
+                handleMultipleFilterChange("eventStatus", value)
+              }
+              selectedReservationAbility={multipleFilters.reservationAbility}
+              onReservationAbilityChange={(value) =>
+                handleMultipleFilterChange("reservationAbility", value)
+              }
+              durationFilter={durationFilter}
+              handleDurationChange={handleDurationChange}
+              resetFilters={resetFilters}
+              selectedSorting={selectedSorting}
+              onSortingChange={handleSortingFilterChange}
+              isMobile={isMobile}
+              showModal={showModal}
+              toggleModal={toggleModal}
+            />
 
-          {/* <h1 className="text-center">Event Page</h1> 
+            <div>
+              <h1>{timeFilter}</h1>{" "}
+              <h1>
+                {startDate +
+                  " : " +
+                  endDate +
+                  " : " +
+                  selectedMonth +
+                  " : " +
+                  selectedYear}
+              </h1>
+              <h1>{multipleFilters.eventStatus}</h1>{" "}
+              <h1>{multipleFilters.reservationAbility}</h1>
+              {durationFilter.min != "" ? (
+                <h1>{"Min: " + durationFilter.min}</h1>
+              ) : (
+                <></>
+              )}
+              {durationFilter.max != "" ? (
+                <h1>{"Max: " + durationFilter.max}</h1>
+              ) : (
+                <></>
+              )}
+              <h1>{selectedSorting}</h1>
+              <h1>{searchFilters}</h1>
+            </div>
+
+            {/* <h1 className="text-center">Event Page</h1> 
           <h2 className="text-start">Events</h2> */}
 
-          {/* <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
+            {/* <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
             {events.map((event) => (
               <div className="col" key={event.id}>
                 <EventCard {...event} />
               </div>
             ))}
           </div> */}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );

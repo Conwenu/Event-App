@@ -127,10 +127,6 @@ const Sidebar = () => {
     <div className="sidebar-container">
       {isMobile ? (
         <>
-          <button className="filter-icon" onClick={toggleModal}>
-            <img src={FilterIcon} alt="Filters" />
-          </button>
-
           {showModal && (
             <div className="sidebar-modal">
               <div className="modal-content">
