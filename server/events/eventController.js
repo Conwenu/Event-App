@@ -5,19 +5,19 @@ const {
   validateStringParameters,
 } = require("../helpers/validateParameters");
 
-function getStartOfWeek(date, startOfWeek = "monday") {
-  const startDate = new Date(date);
+// function getStartOfWeek(date, startOfWeek = "monday") {
+//   const startDate = new Date(date);
 
-  // Set the current date to the beginning of the week (based on specified starting day)
-  const day = startDate.getDay(); // Sunday - Saturday: 0 - 6
-  const diff = startOfWeek === "monday" ? day - 1 : day; // If starting on Monday: subtract 1, if Sunday - Saturday: no change
+//   // Set the current date to the beginning of the week (based on specified starting day)
+//   const day = startDate.getDay(); // Sunday - Saturday: 0 - 6
+//   const diff = startOfWeek === "monday" ? day - 1 : day; // If starting on Monday: subtract 1, if Sunday - Saturday: no change
 
-  // Adjust the date to the start of the week
-  startDate.setDate(startDate.getDate() - diff);
-  startDate.setHours(0, 0, 0, 0); // Set time to midnight
+//   // Adjust the date to the start of the week
+//   startDate.setDate(startDate.getDate() - diff);
+//   startDate.setHours(0, 0, 0, 0); // Set time to midnight
 
-  return startDate;
-}
+//   return startDate;
+// }
 
 const createEvent = async (req, res) => {
   const {
