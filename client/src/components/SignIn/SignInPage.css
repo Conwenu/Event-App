@@ -1,34 +1,53 @@
-/* Custom glassmorphism styles */
-.card {
-    background: rgba(255, 255, 255, 0.8) !important; /* Translucent background */
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-body {
-    padding: 2rem;
-  }
-  
-  h2 {
-    color: #333;
-  }
-  
-  button {
-    font-weight: bold;
-  }
-  
-  .text-center p {
-    color: #555;
-  }
-  
-  .text-center a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .text-center a:hover {
-    text-decoration: underline;
-  }
-  
-  
+/* Scoping styles to the SignInPage */
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Account for navbar height */
+  position: relative;
+  overflow: hidden;
+}
+
+.signin-container .signin-card {
+  max-width: 500px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3); /* Light background with transparency */
+  backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  z-index: 1; /* Ensure it's above the background */
+}
+
+.signin-container .card-body {
+  padding: 2rem;
+}
+
+.signin-container .card-body h2 {
+  color: #333;
+}
+
+.signin-container .card-body button {
+  font-weight: bold;
+}
+
+.signin-container .text-center p {
+  color: #555;
+}
+
+.signin-container .text-center a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signin-container .text-center a:hover {
+  text-decoration: underline;
+}
+
+.signin-container .card-body .password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

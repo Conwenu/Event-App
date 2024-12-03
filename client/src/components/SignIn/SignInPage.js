@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import './SignInPage.css';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./SignInPage.css";
 
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,15 +11,12 @@ function SignInPage() {
   };
 
   return (
-
-      <div
-        className="card bg-glass shadow-lg"
-        style={{ maxWidth: '500px', width: '100%' }}
-      >
-        <div className="card-body p-5">
-          <h2 className="fw-bold mb-5 text-center">Sign In</h2>
+    <div className="signin-container">
+      <div className="signin-card">
+        <div className="card-body">
+          <h2 className="fw-bold mb-4 text-center">Sign In</h2>
           {/* Form Fields */}
-          <div className="mb-4">
+          <div className="mb-3">
             <input
               className="form-control"
               id="usernameoremail"
@@ -27,7 +24,7 @@ function SignInPage() {
               placeholder="Username or Email"
             />
           </div>
-          <div className="mb-4 position-relative">
+          <div className="mb-3 position-relative">
             <input
               className="form-control"
               id="password"
@@ -35,29 +32,24 @@ function SignInPage() {
               placeholder="Password"
             />
             <i
-              className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                cursor: 'pointer'
-              }}
+              className={`password-toggle ${
+                showPassword ? "bi-eye-slash" : "bi-eye"
+              }`}
               onClick={toggleShowPassword}
             ></i>
           </div>
           {/* Sign in Button */}
-          <button className="btn btn-primary w-100 mb-4" type="submit">
+          <button className="btn btn-primary w-100 mb-3" type="submit">
             Sign In
           </button>
           {/* Sign up link */}
           <div className="text-center">
-            <p>
-              Don't have an account? <a href="/register">Register here</a>
+            <p className="mb-0">
+              Don't have an account? <a href="/signup">Register here</a>
             </p>
           </div>
         </div>
-      
+      </div>
     </div>
   );
 }
