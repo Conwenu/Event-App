@@ -1,7 +1,53 @@
-.bg-glass {
-    background: rgba(255, 255, 255, 0.3); /* Light background with transparency */
-    backdrop-filter: blur(10px); /* Blur effect */
-    border-radius: 10px; /* Rounded corners */
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Light border for effect */
-  }
-  
+/* Scoping styles to the RegisterPage */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Account for navbar height */
+  position: relative;
+  overflow: hidden;
+}
+
+.register-container .register-card {
+  max-width: 500px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3); /* Light background with transparency */
+  backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  z-index: 1; /* Ensure it's above the background */
+}
+
+.register-container .card-body {
+  padding: 2rem;
+}
+
+.register-container .card-body h2 {
+  color: #333;
+}
+
+.register-container .card-body button {
+  font-weight: bold;
+}
+
+.register-container .text-center p {
+  color: #555;
+}
+
+.register-container .text-center a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-container .text-center a:hover {
+  text-decoration: underline;
+}
+
+.register-container .card-body .password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
