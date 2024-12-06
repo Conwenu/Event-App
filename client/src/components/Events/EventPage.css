@@ -1,0 +1,63 @@
+.specific-event-page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    width: 100%;
+    align-items: center;
+}
+
+.specific-event-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    max-width: 990px;
+}
+
+.specific-event-res {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 12px;
+}
+
+
+
+.specific-event-reservation-button {
+    display: flex;
+    border-radius: 8px;
+    background-color: var(--primary);
+    justify-content: center;
+}
+
+.specific-event-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+    
+}
+
+.specific-event-info-desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    
+}
+
+.specific-event {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 990px;
+}
+
+.specific-event-res-info {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.specific-event-image {
+    width: 495px;
+}
