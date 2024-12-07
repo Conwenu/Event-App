@@ -29,6 +29,8 @@
 
     .specific-event{
         align-items: center;
+        max-width: 485px !important;
+        padding: 0 1%;
     }
 
     .specific-event-info {
@@ -78,4 +80,5 @@
 
 .specific-event-image {
     width: 495px;
+    border-radius: 8px;
 }
