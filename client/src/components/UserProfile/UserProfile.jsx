@@ -1,26 +1,31 @@
 import React from "react";
-import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
 import "./UserProfile.css";
+import UserEvents from "../UserEvents/UserEvents";
+import CreateEvent from "../UserEvents/CreateEvent";
+import UserSettings from "../UserSettings/UserSettings";
 const UserProfile = () => {
   return (
-    <>
-      <nav class="nav nav-pills flex-column flex-sm-row">
-        <a
-          class="flex-sm-fill text-sm-center nav-link active"
-          aria-current="page"
-          href="#"
-        >
-          View Events
-        </a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="#">
-          Create Event
-        </a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="#">
-          Settings
-        </a>
-      </nav>
-    </>
+    <div className="user-profile-container">
+      <Tabs
+        defaultActiveKey="view-events"
+        id="user-profile-tabs"
+        className="mb-3 nav-justified custom-tabs"
+      >
+        <Tab eventKey="view-events" title="View Events">
+          <div>
+            <UserEvents />
+          </div>
+        </Tab>
+        <Tab eventKey="create-event" title="Create Event">
+          <CreateEvent />
+        </Tab>
+        <Tab eventKey="settings" title="Settings">
+          <UserSettings />
+        </Tab>
+      </Tabs>
+    </div>
   );
 };
 
