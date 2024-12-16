@@ -1,0 +1,63 @@
+.createEventContainer {
+    max-width: 800px;
+    margin: 20px auto;
+    background: var(--background);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .createEventHeader {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .createEventHeader h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .createEventFormContainer form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .createEventFormContainer label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .createEventFormContainer .createEventFormInput,
+  .createEventFormContainer textarea {
+    padding: 10px;
+  }
+
+  .createEventFormContainer input,
+  .createEventFormContainer textarea {
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: var(--background2);
+  }
+  
+  .createEventFormContainer button {
+    align-self: flex-end;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .image-preview {
+    margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+  }
+
