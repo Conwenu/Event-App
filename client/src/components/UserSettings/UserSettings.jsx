@@ -79,7 +79,11 @@ const UserSettings = () => {
           <div className="settings-section">
             <h3 className="section-title">Change Password</h3>
             <form className="section-form" onSubmit={(e) => e.preventDefault()}>
-              <label htmlFor="password" className="form-label">
+              <label
+                htmlFor="password"
+                className="form-label"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
                 {`Current Password: ${
                   showPassword ? password : "************"
                 }`}
