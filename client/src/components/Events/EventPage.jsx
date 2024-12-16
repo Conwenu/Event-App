@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./EventPage.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, Button, Form } from "react-bootstrap";
+
 const idk =
   "Lorem ipsum odor amet, consectetuer adipiscing elit. Fames eleifend per magnis posuere mi porta eros ligula fermentum. Dictumst ultricies est ante bibendum mauris sagittis iaculis. Semper habitasse pulvinar; metus mauris hac velit praesent massa massa. Mus justo ante imperdiet laoreet lacus integer posuere gravida. Facilisis vivamus torquent elit vehicula nisi taciti. Gravida non sollicitudin varius nec conubia mollis aptent phasellus. Tristique nulla primis elementum justo a imperdiet! Consequat eget cras ante ipsum semper faucibus platea.";
 /**
@@ -28,14 +31,15 @@ const idk =
 const EventPage = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [reservedSeats, setReservedSeats] = useState(1);
+
   const getEvent = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3050/api/event/${eventId}`
       );
-
       setEvent(response.data);
-      console.log(event.id);
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +48,8 @@ const EventPage = () => {
   const generateReservationString = (resLeft, maxRes) => {
     return `${maxRes - resLeft + " / " + maxRes}`;
   };
-  function formatTimestamps(startTime1, startTime2) {
+
+  const formatTimestamps = (startTime1, startTime2) => {
     function formatDateTime(timestamp) {
       const options = {
         month: "2-digit",
@@ -76,10 +81,27 @@ const EventPage = () => {
     } else {
       return `${formattedStartTime1} - ${formattedStartTime2}`;
     }
-  }
+  };
+
+  const handleReserve = () => {
+    alert(`Reserved ${reservedSeats} seats for ${event.title}`);
+    setModalOpen(false);
+  };
+
+  const handleIncrement = () => {
+    if (reservedSeats < event.maxReservationsPerUser) {
+      setReservedSeats(reservedSeats + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (reservedSeats > 1) {
+      setReservedSeats(reservedSeats - 1);
+    }
+  };
 
   useEffect(() => {
-    getEvent(eventId);
+    getEvent();
   }, []);
 
   const image = event
@@ -87,6 +109,7 @@ const EventPage = () => {
       ? "https://media.cntraveler.com/photos/5eb18e42fc043ed5d9779733/16:9/w_4288,h_2412,c_limit/BlackForest-Germany-GettyImages-147180370.jpg"
       : event.image
     : "";
+
   return (
     <>
       {event ? (
@@ -94,7 +117,7 @@ const EventPage = () => {
           <div className="specific-event">
             <div className="specific-event-container">
               <div className="specific-event">
-                <img className="specific-event-image" src={image}></img>
+                <img className="specific-event-image" src={image} alt="event" />
               </div>
               <div className="specific-event-res">
                 <div className="specific-event-title">
@@ -117,7 +140,10 @@ const EventPage = () => {
                       )}
                     </div>
                   </div>
-                  <div className="specific-event-reservation-button">
+                  <div
+                    className="specific-event-reservation-button"
+                    onClick={() => setModalOpen(true)}
+                  >
                     Reserve
                   </div>
                 </div>
@@ -133,6 +159,73 @@ const EventPage = () => {
         </div>
       ) : (
         <div></div>
+      )}
+      {modalOpen && (
+        <Modal show={modalOpen} onHide={() => setModalOpen(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Reserve Seats for {event.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label>Event Venue</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={event.venue}
+                  readOnly
+                  disabled
+                  style={{ backgroundColor: "var(--background2)" }}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Event Time</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={formatTimestamps(event.startTime, event.endTime)}
+                  readOnly
+                  disabled
+                  style={{ backgroundColor: "var(--background2)" }}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Reservations</Form.Label>
+                <div className="d-flex align-items-center">
+                  <Button variant="outline-secondary" onClick={handleDecrement}>
+                    -
+                  </Button>
+                  <Form.Control
+                    type="text"
+                    value={reservedSeats}
+                    readOnly
+                    className="text-center mx-2"
+                    style={{ width: "50px" }}
+                  />
+                  <Button variant="outline-secondary" onClick={handleIncrement}>
+                    +
+                  </Button>
+                </div>
+                <Form.Text>
+                  Max Reservations Per User: {event.maxReservationsPerUser}
+                </Form.Text>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setModalOpen(false)}>
+              Close
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleReserve}
+              style={{
+                backgroundColor: "var(--primary)",
+                borderColor: "var(--primary)",
+              }}
+            >
+              Reserve
+            </Button>
+          </Modal.Footer>
+        </Modal>
       )}
     </>
   );
