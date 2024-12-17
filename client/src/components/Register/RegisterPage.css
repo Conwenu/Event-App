@@ -51,3 +51,12 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.register-button{
+  background-color: var(--primary);
+  color: var(--text)
+}
+
+.register-password-toggle{
+  color: #000
+}

@@ -32,14 +32,14 @@ function SignInPage() {
               placeholder="Password"
             />
             <i
-              className={`password-toggle ${
+              className={`signin-password-toggle password-toggle ${
                 showPassword ? "bi-eye-slash" : "bi-eye"
               }`}
               onClick={toggleShowPassword}
             ></i>
           </div>
           {/* Sign in Button */}
-          <button className="btn btn-primary w-100 mb-3" type="submit">
+          <button className="signin-button btn w-100 mb-3" type="submit">
             Sign In
           </button>
           {/* Sign up link */}

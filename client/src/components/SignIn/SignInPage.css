@@ -51,3 +51,12 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.signin-button{
+  background-color: var(--primary);
+  color: var(--text)
+}
+
+.signin-password-toggle{
+  color: #000
+}

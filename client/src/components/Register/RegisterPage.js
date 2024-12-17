@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons CSS
-import "./RegisterPage.css"; // Import custom CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css"; 
+import "./RegisterPage.css"; 
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,11 +12,11 @@ function RegisterPage() {
 
   return (
     <div className="register-container">
-      {/* Glassmorphism Card */}
+      
       <div className="register-card">
         <div className="card-body">
           <h2 className="fw-bold mb-4 text-center">Register</h2>
-          {/* Form Fields */}
+          
           <div className="mb-3">
             <input
               className="form-control"
@@ -41,17 +41,17 @@ function RegisterPage() {
               placeholder="Password"
             />
             <i
-              className={`password-toggle ${
+              className={`register-password-toggle password-toggle ${
                 showPassword ? "bi-eye-slash" : "bi-eye"
               }`}
               onClick={toggleShowPassword}
             ></i>
           </div>
-          {/* Sign up Button */}
-          <button className="btn btn-primary w-100 mb-3" type="submit">
+          
+          <button className="register-button btn w-100 mb-3" type="submit">
             Sign up
           </button>
-          {/* Already registered link */}
+         
           <div className="text-center">
             <p className="mb-0">
               Already registered? <a href="/login">Sign in here</a>
