@@ -10,41 +10,16 @@ const Header2 = ({
   searchFilters,
   onSearchChange,
   toggleModal,
+  isMobile,
 }) => {
   return (
-    <>
-      <div className="event-page-heading">
-        {/* Title Section */}
-        <h1 className="event-page-heading-title">Events</h1>
+    <div className="event-page-heading">
+      {/* Title Section */}
+      <h1 className="event-page-heading-title">Events</h1>
 
-        {/* Desktop Header */}
-        <div className="event-page-heading-filter-a">
-          {/* Search Bar */}
-          <div className="searchBox">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchFilters}
-              onChange={(e) => onSearchChange(e.target.value)}
-            />
-            <img
-              src={search_icon}
-              alt="Search Icon"
-              className="navbar-search-icon"
-            />
-          </div>
-
-          {/* Sorting Filters */}
-          <div className="event-page-heading-sort">
-            <span className="event-page-heading-span">Sort By</span>
-            <SortingFilters
-              selectedSorting={selectedSorting}
-              onSortingChange={onSortingChange}
-            />
-          </div>
-        </div>
-
-        {/* Mobile Header */}
+      {/* Conditionally render based on isMobile */}
+      {isMobile ? (
+        // Mobile Header
         <div className="event-page-heading-mobile">
           {/* Filter Icon */}
           <img
@@ -72,8 +47,35 @@ const Header2 = ({
             />
           </div>
         </div>
-      </div>
-    </>
+      ) : (
+        // Desktop Header
+        <div className="event-page-heading-filter-a">
+          {/* Search Bar */}
+          <div className="searchBox">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchFilters}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <img
+              src={search_icon}
+              alt="Search Icon"
+              className="navbar-search-icon"
+            />
+          </div>
+
+          {/* Sorting Filters */}
+          <div className="event-page-heading-sort">
+            <span className="event-page-heading-span">Sort By</span>
+            <SortingFilters
+              selectedSorting={selectedSorting}
+              onSortingChange={onSortingChange}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

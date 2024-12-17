@@ -63,12 +63,14 @@
 
 /* Mobile-specific layout */
 .event-page-heading-mobile {
-  display: none;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   width: 100%; /* Ensure the mobile header spans the full width */
   padding: 0 10px; /* Add padding for mobile layout */
   box-sizing: border-box;
+  overflow: hidden; /* Prevent horizontal overflow */
 }
 
 .mobile-filter-icon {
@@ -79,21 +81,28 @@
 }
 
 .event-page-heading-mobile .searchBox {
-  flex-grow: 1; /* Make the search bar take the remaining space */
-  display: flex; /* Ensure the search bar is a flex container */
-  align-items: center; /* Center-align the icon and input field */
+  display: flex;
+  align-items: center;
   background: var(--background2);
   border-radius: 50px;
   padding: 10px 15px; /* Adjust padding for better alignment */
+  width: 100%; /* Ensure the search box takes full width */
+  max-width: 100%; /* Prevent the search box from expanding beyond the screen width */
+  box-sizing: border-box;
 }
 
 .event-page-heading-mobile .searchBox input {
-  flex-grow: 1; /* Ensure the input takes the available space */
+  width: 100%; /* Ensure the input takes full width of the parent */
   border: none;
   outline: none;
   background: transparent;
   color: var(--text);
   font-size: 18px;
+  padding: 6px;
+  white-space: normal; /* Allow the text to break into multiple lines if necessary */
+  word-wrap: break-word; /* Break words if they overflow */
+  word-break: break-all; /* Break very long words */
+  box-sizing: border-box;
 }
 
 .event-page-heading-mobile .searchBox input::placeholder {
@@ -104,12 +113,13 @@
   width: 20px;
   height: 20px;
   margin-left: 10px; /* Add spacing between input and icon */
+  cursor: pointer;
 }
 
 /* Responsive styles for small screens */
 @media (max-width: 990px) {
   .event-page-heading-title {
-    display: none; /* Hide the title */
+    display: none; /* Hide the title on mobile */
   }
 
   .event-page-heading-filter-a {
