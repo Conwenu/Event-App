@@ -14,14 +14,11 @@ const Header2 = ({
 }) => {
   return (
     <div className="event-page-heading">
-      {/* Title Section */}
       <h1 className="event-page-heading-title">Events</h1>
 
-      {/* Conditionally render based on isMobile */}
       {isMobile ? (
         // Mobile Header
         <div className="event-page-heading-mobile">
-          {/* Filter Icon */}
           <img
             src={FilterIcon}
             alt="Filter"
@@ -32,7 +29,6 @@ const Header2 = ({
             }}
           />
 
-          {/* Search Bar */}
           <div className="searchBox">
             <input
               type="text"
@@ -50,7 +46,6 @@ const Header2 = ({
       ) : (
         // Desktop Header
         <div className="event-page-heading-filter-a">
-          {/* Search Bar */}
           <div className="searchBox">
             <input
               type="text"
@@ -65,7 +60,6 @@ const Header2 = ({
             />
           </div>
 
-          {/* Sorting Filters */}
           <div className="event-page-heading-sort">
             <span className="event-page-heading-span">Sort By</span>
             <SortingFilters

@@ -1,4 +1,3 @@
-/* General header styles */
 .event-page-heading {
   display: flex;
   justify-content: space-between;
@@ -9,7 +8,6 @@
   z-index: 500;
 }
 
-/* Title styling */
 .event-page-heading-title {
   font-size: 32px;
   font-weight: 400;
