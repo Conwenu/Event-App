@@ -15,6 +15,10 @@
     width: 80px;
 }
 
+.dark .navbar-logo {
+    filter: invert(93%) sepia(6%) saturate(1859%) hue-rotate(31deg) brightness(107%) contrast(98%);
+}
+
 .searchBox {
     display: flex;
     align-items: center;

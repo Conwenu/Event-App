@@ -20,8 +20,12 @@ const Navbar2 = ({ toggleTheme, isDarkMode }) => {
 
   return (
     <div className="customNavbar">
-      <a href="/">
-        <img src={logo} alt="Logo" className="navbar-logo" />
+      <a className="customNavbarImageLink" href="/">
+        <img
+          src={logo}
+          alt="Logo"
+          className={`${isDarkMode ? "dark" : ""} navbar-logo`}
+        />
       </a>
 
       {!isMobile && (
