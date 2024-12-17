@@ -24,7 +24,7 @@
 }
 
 .signin-container .card-body h2 {
-  color: #333;
+  color: var(--text);
 }
 
 .signin-container .card-body button {
@@ -32,7 +32,7 @@
 }
 
 .signin-container .text-center p {
-  color: #555;
+  color: var(--text);
 }
 
 .signin-container .text-center a {

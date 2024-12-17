@@ -24,7 +24,7 @@
 }
 
 .register-container .card-body h2 {
-  color: #333;
+  color: var(--text);
 }
 
 .register-container .card-body button {
@@ -32,7 +32,7 @@
 }
 
 .register-container .text-center p {
-  color: #555;
+  color: var(--text);
 }
 
 .register-container .text-center a {
