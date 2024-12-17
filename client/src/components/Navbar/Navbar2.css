@@ -123,14 +123,6 @@
 }
 
 
-
-.navbar-log-in {
-    background-color: transparent;
-    border: 1px solid #606162;
-    border-radius: 8px;
-    color: rgba(0, 0, 0, .6);
-}
-
 @media (min-width: 768px) {
     .navbar-r {
        float: right !important;

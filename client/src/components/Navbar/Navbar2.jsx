@@ -51,7 +51,7 @@ const Navbar2 = ({ toggleTheme, isDarkMode }) => {
             </a>
           </li>
           <li className="log-in-button-container">
-            <a href="/login" className="menu-title navbar-log-in nav-btn">
+            <a href="/login" className="menu-title navbar-sign-up">
               Log In
             </a>
           </li>
