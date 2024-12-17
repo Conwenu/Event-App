@@ -174,7 +174,10 @@ const EventPage = () => {
                   value={event.venue}
                   readOnly
                   disabled
-                  style={{ backgroundColor: "var(--background2)" }}
+                  style={{
+                    backgroundColor: "var(--background2)",
+                    color: "var(--text)",
+                  }}
                 ></Form.Control>
               </Form.Group>
               <Form.Group>
@@ -184,7 +187,10 @@ const EventPage = () => {
                   value={formatTimestamps(event.startTime, event.endTime)}
                   readOnly
                   disabled
-                  style={{ backgroundColor: "var(--background2)" }}
+                  style={{
+                    backgroundColor: "var(--background2)",
+                    color: "var(--text)",
+                  }}
                 ></Form.Control>
               </Form.Group>
               <Form.Group>
@@ -198,20 +204,30 @@ const EventPage = () => {
                     value={reservedSeats}
                     readOnly
                     className="text-center mx-2"
-                    style={{ width: "50px" }}
+                    style={{
+                      width: "50px",
+                      backgroundColor: "var(--background2)",
+                      color: "var(--text)",
+                    }}
                   />
                   <Button variant="outline-secondary" onClick={handleIncrement}>
                     +
                   </Button>
                 </div>
-                <Form.Text>
+                <Form.Text style={{ color: "var(--text)" }}>
                   Max Reservations Per User: {event.maxReservationsPerUser}
                 </Form.Text>
               </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setModalOpen(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setModalOpen(false)}
+              style={{
+                color: "var(--text)",
+              }}
+            >
               Close
             </Button>
             <Button
@@ -220,6 +236,7 @@ const EventPage = () => {
               style={{
                 backgroundColor: "var(--primary)",
                 borderColor: "var(--primary)",
+                color: "var(--text)",
               }}
             >
               Reserve
