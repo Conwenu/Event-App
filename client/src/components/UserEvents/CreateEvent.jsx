@@ -170,7 +170,7 @@ const CreateEvent = () => {
             required
           />
 
-          <button type="submit" className="btn btn-primary mt-3">
+          <button type="submit" className="create-event-submit-button btn mt-3">
             Create Event
           </button>
         </form>

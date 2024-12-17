@@ -5,6 +5,17 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-decoration-color: var(--text);
+  }
+
+  .createEventContainer label {
+    color: var(--text);
+  }
+
+  .createEventContainer svg,
+  .createEventContainer input,
+  .createEventContainer textarea {
+    color: var(--text);
   }
   
   .createEventHeader {
@@ -15,7 +26,7 @@
   .createEventHeader h2 {
     font-size: 24px;
     font-weight: bold;
-    color: #333;
+    color: var(--text);
   }
   
   .createEventFormContainer form {
@@ -61,3 +72,9 @@
     padding: 5px;
   }
 
+
+  .create-event-submit-button{
+    background-color: var(--primary) !important;
+    outline: 1px var(--primary) solid !important;
+    color: var(--text)
+  }
