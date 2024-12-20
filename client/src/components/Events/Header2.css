@@ -78,6 +78,10 @@
   flex-shrink: 0; /* Prevent the filter icon from shrinking */
 }
 
+.dark .mobile-filter-icon {
+  filter: invert(93%) sepia(6%) saturate(1859%) hue-rotate(31deg) brightness(107%) contrast(98%);
+}
+
 .event-page-heading-mobile .searchBox {
   display: flex;
   align-items: center;
