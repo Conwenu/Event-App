@@ -2,6 +2,7 @@ import React from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import "./UserEvents.css";
+import UserEventCalendar from "./UserEventCalendar";
 
 const UserEvents = () => {
   return (
@@ -13,13 +14,14 @@ const UserEvents = () => {
       >
         <Tab eventKey="events-rsvpd" title="Events RSVP'd For">
           <div>
-            <h2>Events RSVP'd For</h2>
+            {/* <h2>Events RSVP'd For</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
               ipsum praesentium voluptatem eligendi iusto labore accusantium
               ipsa dolorum, reprehenderit beatae reiciendis? Velit odio facere
               illo tempora exercitationem quia ab totam!
-            </p>
+            </p> */}
+            <UserEventCalendar />
           </div>
         </Tab>
         <Tab eventKey="events-created" title="Events Created">
