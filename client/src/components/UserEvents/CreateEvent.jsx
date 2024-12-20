@@ -129,12 +129,12 @@ const CreateEvent = () => {
             />
           </LocalizationProvider>
 
-          <div class="mb-3">
-            <label htmlFor="image" class="form-label">
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">
               Image
             </label>
             <input
-              class="form-control"
+              className="form-control"
               type="file"
               id="image"
               name="image"
