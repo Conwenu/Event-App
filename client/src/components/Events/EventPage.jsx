@@ -32,7 +32,10 @@ const EventPage = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const [editRSVPModalOpen, setEditRSVPModalOpen] = useState(false);
   const [reservedSeats, setReservedSeats] = useState(1);
+
+  const hasRSVPd = true;
 
   const getEvent = async () => {
     try {
@@ -89,15 +92,27 @@ const EventPage = () => {
   };
 
   const handleIncrement = () => {
-    if (reservedSeats < event.maxReservationsPerUser) {
+    if (
+      reservedSeats <
+      Math.min(event.maxReservationsPerUser, event.reservationsLeft)
+    ) {
       setReservedSeats(reservedSeats + 1);
     }
   };
 
   const handleDecrement = () => {
-    if (reservedSeats > 1) {
+    if (reservedSeats > Math.min(1, event.reservationsLeft)) {
       setReservedSeats(reservedSeats - 1);
     }
+  };
+
+  const handleCancelReservation = async () => {
+    alert(`Cancelled reserved seats for ${event.title}`);
+    setEditRSVPModalOpen(false);
+  };
+  const handleSaveChanges = async () => {
+    alert(`Reserved ${reservedSeats} seats for ${event.title}`);
+    setEditRSVPModalOpen(false);
   };
 
   useEffect(() => {
@@ -142,9 +157,11 @@ const EventPage = () => {
                   </div>
                   <div
                     className="specific-event-reservation-button"
-                    onClick={() => setModalOpen(true)}
+                    onClick={() =>
+                      hasRSVPd ? setEditRSVPModalOpen(true) : setModalOpen(true)
+                    }
                   >
-                    Reserve
+                    {hasRSVPd ? "Edit Reservation" : "Reserve"}
                   </div>
                 </div>
               </div>
@@ -217,6 +234,10 @@ const EventPage = () => {
                 <Form.Text style={{ color: "var(--text)" }}>
                   Max Reservations Per User: {event.maxReservationsPerUser}
                 </Form.Text>
+                <br />
+                <Form.Text style={{ color: "var(--text)" }}>
+                  Reservations Left: {event.reservationsLeft}
+                </Form.Text>
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -241,6 +262,112 @@ const EventPage = () => {
             >
               Reserve
             </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+      {editRSVPModalOpen && (
+        <Modal
+          show={editRSVPModalOpen}
+          onHide={() => setEditRSVPModalOpen(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Reservation for {event.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label>Event Venue</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={event.venue}
+                  readOnly
+                  disabled
+                  style={{
+                    backgroundColor: "var(--background2)",
+                    color: "var(--text)",
+                  }}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Event Time</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={formatTimestamps(event.startTime, event.endTime)}
+                  readOnly
+                  disabled
+                  style={{
+                    backgroundColor: "var(--background2)",
+                    color: "var(--text)",
+                  }}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Edit Reserved Seats</Form.Label>
+                <div className="d-flex align-items-center">
+                  <Button variant="outline-secondary" onClick={handleDecrement}>
+                    -
+                  </Button>
+                  <Form.Control
+                    type="text"
+                    value={reservedSeats}
+                    readOnly
+                    className="text-center mx-2"
+                    style={{
+                      width: "50px",
+                      backgroundColor: "var(--background2)",
+                      color: "var(--text)",
+                    }}
+                  />
+                  <Button variant="outline-secondary" onClick={handleIncrement}>
+                    +
+                  </Button>
+                </div>
+                <Form.Text style={{ color: "var(--text)" }}>
+                  Max Reservations Per User: {event.maxReservationsPerUser}
+                </Form.Text>
+                <br />
+                <Form.Text style={{ color: "var(--text)" }}>
+                  Reservations Left: {event.reservationsLeft}
+                </Form.Text>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-between">
+            <Button
+              variant="danger"
+              onClick={handleCancelReservation}
+              style={{
+                backgroundColor: "var(--bs-danger)",
+                borderColor: "var(--bs-danger)",
+                color: "var(--text)",
+              }}
+            >
+              Cancel Reservation
+            </Button>
+            <div>
+              <Button
+                variant="secondary"
+                onClick={() => setEditRSVPModalOpen(false)}
+                style={{
+                  color: "var(--text)",
+                }}
+              >
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleSaveChanges}
+                style={{
+                  backgroundColor: "var(--primary)",
+                  borderColor: "var(--primary)",
+                  color: "var(--text)",
+                  marginLeft: "10px",
+                }}
+              >
+                Edit Reservation
+              </Button>
+            </div>
           </Modal.Footer>
         </Modal>
       )}
