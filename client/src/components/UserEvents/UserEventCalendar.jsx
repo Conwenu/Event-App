@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-
+import "./UserEventCalendar.css";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function UserEventCalendar() {
@@ -48,6 +48,45 @@ function UserEventCalendar() {
     fetchEvents();
   }, []);
 
+  const getEventClassNames = (eventInfo) => {
+    const now = new Date();
+    const start = new Date(eventInfo.event.start);
+    const end = new Date(eventInfo.event.end);
+
+    if (end < now) {
+      return "event-passed";
+    } else if (start <= now && end >= now) {
+      return "event-ongoing";
+    } else {
+      return "event-scheduled";
+    }
+  };
+
+  const renderEventContent = (eventInfo) => {
+    const now = new Date();
+    const start = new Date(eventInfo.event.start);
+    const end = new Date(eventInfo.event.end);
+
+    let bulletColor;
+    if (end < now) {
+      bulletColor = "gray";
+    } else if (start <= now && end >= now) {
+      bulletColor = "green";
+    } else {
+      bulletColor = "blue";
+    }
+
+    return (
+      <div className="custom-event-content">
+        <span
+          className="custom-event-bullet"
+          style={{ backgroundColor: bulletColor }}
+        ></span>
+        <span>{eventInfo.event.title}</span>
+      </div>
+    );
+  };
+
   return (
     <div>
       <Fullcalendar
@@ -66,6 +105,8 @@ function UserEventCalendar() {
           day: "Day",
           list: "List View",
         }}
+        eventClassNames={getEventClassNames}
+        eventContent={renderEventContent}
         height="auto"
         contentHeight="auto"
         themeSystem="bootstrap5"
