@@ -21,6 +21,7 @@ const idk =
  * @property {number} maxReservationsPerUser
  * @property {string} startTime
  * @property {string} endTime
+ * @property {string} finalRSVPTime
  */
 
 /**
@@ -46,6 +47,14 @@ const EventPage = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const hasFinalRSVPTimePassed = () => {
+    if (event.finalRSVPTime == null) {
+      event.finalRSVPTime = event.startTime;
+    }
+    const finalRSVPDate = new Date(event.finalRSVPTime);
+    return new Date() >= finalRSVPDate;
   };
 
   const generateReservationString = (resLeft, maxRes) => {
@@ -157,11 +166,28 @@ const EventPage = () => {
                   </div>
                   <div
                     className="specific-event-reservation-button"
-                    onClick={() =>
-                      hasRSVPd ? setEditRSVPModalOpen(true) : setModalOpen(true)
-                    }
+                    onClick={() => {
+                      if (hasFinalRSVPTimePassed()) {
+                        return;
+                      }
+                      hasRSVPd
+                        ? setEditRSVPModalOpen(true)
+                        : setModalOpen(true);
+                    }}
+                    style={{
+                      cursor: `${
+                        hasFinalRSVPTimePassed() ? "default" : "pointer"
+                      }`,
+                      backgroundColor: `${
+                        hasFinalRSVPTimePassed() && "var(--bs-danger)"
+                      }`,
+                    }}
                   >
-                    {hasRSVPd ? "Edit Reservation" : "Reserve"}
+                    {hasFinalRSVPTimePassed()
+                      ? "RSVP Closed"
+                      : hasRSVPd
+                      ? "Edit Reservation"
+                      : "Reserve"}
                   </div>
                 </div>
               </div>
