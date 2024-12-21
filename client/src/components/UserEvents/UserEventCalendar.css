@@ -1,0 +1,61 @@
+.event-passed {
+    background-color: lightgray;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.dark .event-passed {
+    background-color: darkgray;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.event-ongoing {
+    background-color: lightgreen;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.dark .event-ongoing {
+    background-color: darkgreen;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.event-scheduled {
+    background-color: lightblue;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.dark .event-scheduled {
+    background-color: darkblue;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.event-passed:hover {
+    background-color: gray;
+    color: white;
+}
+
+.event-ongoing:hover {
+    background-color: green;
+    color: white;
+}
+
+.event-scheduled:hover {
+    background-color: blue;
+    color: white;
+}
+
+.custom-event-content {
+    display: flex;
+    align-items: center;
+}
+.custom-event-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
