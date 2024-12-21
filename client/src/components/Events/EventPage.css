@@ -51,6 +51,7 @@
     border-radius: 8px;
     background-color: var(--primary);
     justify-content: center;
+    cursor: pointer;
 }
 
 .specific-event-info {
