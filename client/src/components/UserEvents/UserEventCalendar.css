@@ -34,9 +34,10 @@
     cursor: pointer;
 }
 
+/* Look into this part*/
 .event-passed:hover {
     background-color: gray;
-    color: white;
+    color: var(--text);
 }
 
 .event-ongoing:hover {
@@ -48,6 +49,7 @@
     background-color: blue;
     color: white;
 }
+/* */
 
 .custom-event-content {
     display: flex;
@@ -59,3 +61,195 @@
     border-radius: 50%;
     margin-right: 5px;
 }
+
+/* Calendar Styles */
+.fc {
+    background-color: var(--background); 
+    border-radius: 8px;
+    padding: 10px;
+  }
+.fc a {
+    text-decoration: none !important;
+    color: var(--text)
+}
+  
+  .fc-header-toolbar {
+    background-color: var(--primary); 
+    border-radius: 4px;
+    color: var(--text);
+  }
+  
+  .fc-daygrid-day-number {
+    color: #000; 
+  }
+  
+  .fc-daygrid-day.fc-day-today {
+    background-color: var(--text); 
+  }
+  
+  /* List View Styles */
+  .fc-list {
+    background-color: var(--secondary); 
+  }
+
+
+  /* */
+
+
+/* Days of the Week Part*/
+.fc-col-header-cell {
+    background-color: var(--secondary); 
+    color: var(--text); 
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .fc-daygrid-day-number {
+    color: #000; 
+  }
+  
+  .fc-daygrid-day.fc-day-today {
+    background-color: #e1f5fe;
+  }
+  
+  .fc .fc-button {
+    border-radius: 5px; 
+    padding: 5px 10px; 
+  }
+  
+  .fc .fc-button-primary {
+    background-color: var(--accent) !important; 
+    border-color: var(--accent) !important;
+    color: var(--text) !important;
+  }
+  
+  .fc .fc-button-primary:hover {
+    background-color: var(--secondary) !important; 
+    border-color: var(--background) !important;
+    color : black !important;
+  }
+
+  .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color: var(--secondary); 
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  
+  /* List View Specific Styles */
+  .fc .fc-list-event-dot {
+    display: none !important;
+  }
+
+  .custom-event-content:hover {
+    background-color: transparent !important;
+  }
+
+
+  .fc .fc-list-event:hover td {
+    background-color: var(--primary) !important;
+    color: black;
+  }
+
+  .fc-theme-standard .fc-list-day-cushion {
+    background-color: var(--secondary);
+  }
+
+  .fc-daygrid-dot-event.fc-event-mirror, .fc-daygrid-dot-event:hover {
+    background-color: var(--primary);
+    color: black;
+  }
+
+  .fc-v-event .fc-event-main {
+    color: var(--text);
+  }
+
+  .fc-v-event .fc-event-main:hover {
+    color: var(--text);
+    background-color: var(--primary);
+    color: black;
+  }
+
+
+  /* */
+
+
+.fc-header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+  }
+  
+  .fc-header-toolbar .fc-left, 
+  .fc-header-toolbar .fc-center, 
+  .fc-header-toolbar .fc-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+  }
+  
+  .fc-header-toolbar .fc-left {
+    flex: 1;
+  }
+  
+  .fc-header-toolbar .fc-center {
+    flex: 2;
+    justify-content: center;
+  }
+  
+  .fc-header-toolbar .fc-right {
+    flex: 1;
+  }
+  
+  
+  @media (max-width: 767px) {
+    
+    .fc-header-toolbar {
+      flex-direction: column;
+      align-items: stretch; 
+    }
+  
+    .fc-header-toolbar .fc-left,
+    .fc-header-toolbar .fc-center,
+    .fc-header-toolbar .fc-right {
+      width: 100%;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+  
+    
+    .fc-header-toolbar .fc-left .fc-button,
+    .fc-header-toolbar .fc-center .fc-button,
+    .fc-header-toolbar .fc-right .fc-button {
+      width: 100%; 
+      text-align: center; 
+    }
+  
+    
+    .fc-button {
+      font-size: 14px; 
+      padding: 8px 12px; 
+    }
+  
+    
+    .fc-header-toolbar .fc-center .fc-toolbar-title {
+      font-size: 16px; 
+      margin: 10px 0; 
+    }
+  }
+  
+  
+  @media (max-width: 768px){
+    .fc-header-toolbar {
+      flex-direction: column; 
+    }
+  
+    .fc-header-toolbar .fc-left .fc-button,
+    .fc-header-toolbar .fc-center .fc-button,
+    .fc-header-toolbar .fc-right .fc-button {
+      width: 100%; 
+      text-align: center; 
+    }
+  }
+  

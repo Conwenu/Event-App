@@ -5,12 +5,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import "./UserEventCalendar.css";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 const API_URL = process.env.REACT_APP_API_URL;
 
 function UserEventCalendar() {
   const [events, setEvents] = useState([]);
   const [initialDate, setInitialDate] = useState(new Date().toISOString()); // Default to the current date
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -23,6 +25,7 @@ function UserEventCalendar() {
           start: event.startTime,
           end: event.endTime,
           extendedProps: {
+            eventId: event.id,
             description: event.description,
             creatorId: event.creatorId,
             venue: event.venue,
@@ -46,6 +49,17 @@ function UserEventCalendar() {
     };
 
     fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const getEventClassNames = (eventInfo) => {
@@ -87,11 +101,16 @@ function UserEventCalendar() {
     );
   };
 
+  const handleEventClick = (eventInfo) => {
+    const eventId = eventInfo.event.extendedProps.eventId;
+    navigate(`/events/${eventId}`);
+  };
+
   return (
     <div>
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-        initialView="dayGridMonth"
+        initialView={isMobile ? "listWeek" : "dayGridMonth"}
         initialDate={initialDate}
         headerToolbar={{
           start: "prevYear,prev,today,next,nextYear",
@@ -111,6 +130,7 @@ function UserEventCalendar() {
         contentHeight="auto"
         themeSystem="bootstrap5"
         events={events}
+        eventClick={handleEventClick}
       />
     </div>
   );
