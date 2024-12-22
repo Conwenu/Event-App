@@ -49,8 +49,8 @@ function App() {
           <Route path="/login" element={<SignInPage />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
           <Route path="/" element={<EventsPage />} />
-          <Route path="/api/events" element={<EventsPage />} />
-          <Route path="/api/events/:eventId" element={<EventPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:eventId" element={<EventPage />} />
           <Route path="/test/event" element={<EventCard />} />
         </Routes>
       </div>
