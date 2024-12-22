@@ -130,9 +130,9 @@
   }
 
   .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-    background-color: var(--secondary); 
-    border-color: var(--accent);
-    color: var(--text);
+    background-color: var(--secondary) !important; 
+    border-color: var(--accent) !important;
+    color: var(--text) !important;
   }
   
   /* List View Specific Styles */
