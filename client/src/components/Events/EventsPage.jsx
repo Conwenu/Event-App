@@ -9,6 +9,7 @@ import Sidebar from "../Sidebar/Sidebar.jsx";
 import Header2 from "./Header2.jsx";
 import Sidebar2 from "../Sidebar/Sidebar2.jsx";
 import SortingFilters from "../Sidebar/SortingFilters.jsx";
+import { useNavigate } from "react-router-dom";
 const API_URL = process.env.REACT_APP_API_URL;
 
 // function formatDate(isoTime) {
@@ -33,6 +34,7 @@ const EventsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   // const [sortOpen, setSortOpen] = useState(false);
   // const [selectedSorting, setSelectedSorting] = useState("");
   // const handleSortingFilterChange = (value) => {

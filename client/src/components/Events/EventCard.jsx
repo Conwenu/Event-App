@@ -4,6 +4,7 @@
 // import axios from "axios";
 import EventHelperFunctions from "./EventHelperFunctions.js";
 import { Badge } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 function formatDate(isoTime) {
   const date = new Date(isoTime);
 
@@ -21,52 +22,61 @@ export default function EventCard({
   image,
   status,
   maxReservations,
-  reservationsLeft
+  reservationsLeft,
+  id,
 }) {
-  
+  const navigate = useNavigate();
+
+  const handleEventClick = () => {
+    const eventId = id;
+    navigate(`/events/${eventId}`);
+  };
+
   // const defaultImage1 =
   //   "https://wallpapercat.com/w/full/6/2/1/116007-3840x2160-desktop-4k-bleach-wallpaper-photo.jpg";
 
-    const defaultImage = "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80d79040496883.5781e6228fd81.jpg";
+  const defaultImage =
+    "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80d79040496883.5781e6228fd81.jpg";
   return (
     <>
-      <div className=" mt-4 event-card">
-              <div className="event-image-container">
-                <img
-                  src={defaultImage}
-                  className="card-img-top"
-                  alt={title}
-                  style={{ borderRadius: "8px" }}
-                />
-                <Badge
-                  className={`${EventHelperFunctions.mapStatusToColor(
-                    status
-                  )} bg-pill`}
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
-                >
-                  {status}
-                </Badge>
-                {/* <span className="event-badge badge badge-secondary">{event.status}</span> */}
-              </div>
+      <div
+        className=" mt-4 event-card"
+        onClick={handleEventClick}
+        style={{ cursor: "pointer" }}
+      >
+        <div className="event-image-container">
+          <img
+            src={defaultImage}
+            className="card-img-top"
+            alt={title}
+            style={{ borderRadius: "8px" }}
+          />
+          <Badge
+            className={`${EventHelperFunctions.mapStatusToColor(
+              EventHelperFunctions.determineStatus(startTime, endTime, status)
+            )} bg-pill`}
+            style={{ position: "absolute", top: "10px", right: "10px" }}
+          >
+            {EventHelperFunctions.determineStatus(startTime, endTime, status)}
+          </Badge>
+          {/* <span className="event-badge badge badge-secondary">{event.status}</span> */}
+        </div>
 
-              <div className="card-body custom-card-body">
-                <h5 className="card-title">{title}</h5>
-                <div className="d-flex justify-content-between">
-                  <p className="card-title">{formatDate(startTime)}</p>
-                  {/* If the reservation percentage is like over 90% then i'll highlight it red else if the user is registered then highlight it green */}
-                  <p>
-                    <i className="bi bi-person-check"> </i>
-                    {maxReservations -
-                      reservationsLeft +
-                      "/" +
-                      maxReservations}
-                  </p>
-                  {/* When I implement application wide user context, i'll check if the client has already registered for this event
+        <div className="card-body custom-card-body">
+          <h5 className="card-title">{title}</h5>
+          <div className="d-flex justify-content-between">
+            <p className="card-title">{formatDate(startTime)}</p>
+            {/* If the reservation percentage is like over 90% then i'll highlight it red else if the user is registered then highlight it green */}
+            <p>
+              <i className="bi bi-person-check"> </i>
+              {maxReservations - reservationsLeft + "/" + maxReservations}
+            </p>
+            {/* When I implement application wide user context, i'll check if the client has already registered for this event
                   <p> <i className="bi bi-person-fill-check"></i> {event.maxReservations - event.reservationsLeft + "/" + event.maxReservations}</p> 
                 */}
-                </div>
-              </div>
-            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
