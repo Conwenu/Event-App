@@ -9,6 +9,8 @@ const Header2 = ({
   onSortingChange,
   searchFilters,
   onSearchChange,
+  handleSearchChange,
+  handleSearchButtonClick,
   toggleModal,
   isMobile,
 }) => {
@@ -35,11 +37,13 @@ const Header2 = ({
               placeholder="Search"
               value={searchFilters}
               onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={handleSearchChange}
             />
             <img
               src={search_icon}
               alt="Search Icon"
               className="navbar-search-icon"
+              onClick={handleSearchButtonClick}
             />
           </div>
         </div>
@@ -52,11 +56,13 @@ const Header2 = ({
               placeholder="Search"
               value={searchFilters}
               onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={handleSearchChange}
             />
             <img
               src={search_icon}
               alt="Search Icon"
               className="navbar-search-icon"
+              onClick={handleSearchButtonClick}
             />
           </div>
 
