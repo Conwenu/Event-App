@@ -5,7 +5,7 @@ import EventCard from "./EventCard.jsx";
 import Sidebar from "../Sidebar/Sidebar.jsx";
 import Header2 from "./Header2.jsx";
 import Sidebar2 from "../Sidebar/Sidebar2.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const EventsPage = () => {
@@ -13,25 +13,7 @@ const EventsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // const updateSearchParams = (filters) => {
-  //   const currentParams = Object.fromEntries(searchParams.entries());
-  //   const updatedParams = { ...currentParams, ...filters };
-
-  //   Object.keys(updatedParams).forEach((key) => {
-  //     if (
-  //       updatedParams[key] === undefined ||
-  //       updatedParams[key] === null ||
-  //       updatedParams[key] === ""
-  //     ) {
-  //       delete updatedParams[key];
-  //     }
-  //   });
-
-  //   setSearchParams(updatedParams);
-  // };
 
   const updateSearchParams = (filters) => {
     const currentParams = Object.fromEntries(searchParams.entries());
@@ -150,20 +132,12 @@ const EventsPage = () => {
 
   const [searchFilters, setSearchFilters] = useState("");
 
-  // const handleSearchChange = (e) => {
-  //   const value = e.target.value;
-  //   setSearchFilters(value);
-  //   if (e.key === "Enter") {
-  //     updateSearchParams({ searchQuery: value });
-  //   }
-  // };
-
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchFilters(value);
     if (e.key === "Enter") {
       if (value.trim() === "") {
-        updateSearchParams({ searchQuery: null }); // Remove search query if empty
+        updateSearchParams({ searchQuery: null }); // remove search query if empty
       } else {
         updateSearchParams({ searchQuery: value });
       }
@@ -177,14 +151,12 @@ const EventsPage = () => {
   const getCurrentDateFormatted = () => {
     var currentDate = new Date();
     var year = currentDate.getFullYear();
-    var month = currentDate.getMonth() + 1; // Months are 0-indexed, so we add 1
+    var month = currentDate.getMonth() + 1;
     var day = currentDate.getDate();
 
-    // Format the month and day to ensure they are always two digits (e.g., 01, 09)
     month = month < 10 ? "0" + month : month;
     day = day < 10 ? "0" + day : day;
 
-    // Return the formatted date in YYYY-MM-DD format
     return year + "-" + month + "-" + day;
   };
 
@@ -210,89 +182,6 @@ const EventsPage = () => {
     };
   }, []);
 
-  // const handleTimeFilterChange = (value, data) => {
-  //   const year = data?.year;
-  //   const month = data?.month;
-  //   const weekday = data?.weekday;
-  //   setTimeFilter(value);
-  //   updateSearchParams({ timeFilter: value });
-  //   if (value == "year" && year) {
-  //     setSelectedYear(year);
-  //     updateSearchParams({ timeFilter: value, selectedYear: year });
-  //   } else if (value == "month" && month) {
-  //     setSelectedMonth(data.month);
-  //     updateSearchParams({
-  //       timeFilter: value,
-  //       selectedYear: data.year,
-  //       selectedMonth: data.month,
-  //     });
-  //   } else if (value == "weekday" && weekday) {
-  //     setSelectedMonth(data.weekday);
-  //     updateSearchParams({ timeFilter: value, selectedWeekday: weekday });
-  //   }
-  // };
-
-  // const handleTimeFilterChange = (value, data) => {
-  //   const year = data?.year;
-  //   const month = data?.month;
-  //   const weekday = data?.weekday;
-
-  //   setTimeFilter(value); // Set the new time filter
-
-  //   // Base parameters that will always be included
-  //   let updatedParams = { timeFilter: value };
-
-  //   if (value === "year" && year) {
-  //     // If the filter is year, update the selected year
-  //     setSelectedYear(year);
-  //     updatedParams = { ...updatedParams, selectedYear: year };
-  //   } else if (value === "month" && month) {
-  //     // If the filter is month, update the selected year and month
-  //     setSelectedMonth(month);
-  //     updatedParams = {
-  //       ...updatedParams,
-  //       selectedYear: data.year,
-  //       selectedMonth: month,
-  //     };
-  //   } else if (value === "weekday" && weekday) {
-  //     // If the filter is weekday, update the selected weekday
-  //     setSelectedMonth(data.weekday);
-  //     updatedParams = { ...updatedParams, selectedWeekday: weekday };
-  //   }
-
-  //   // Remove irrelevant parameters based on the selected time filter
-  //   if (value !== "year" && value !== "month") {
-  //     delete updatedParams.selectedYear; // Remove selectedYear if not filtering by year
-  //   }
-  //   if (value !== "month") {
-  //     delete updatedParams.selectedMonth; // Remove selectedMonth if not filtering by month
-  //   }
-  //   if (value !== "weekday") {
-  //     delete updatedParams.selectedWeekday; // Remove selectedWeekday if not filtering by weekday
-  //   }
-
-  //   // Remove other parameters that aren't needed
-  //   const currentParams = Object.fromEntries(searchParams.entries());
-  //   Object.keys(currentParams).forEach((key) => {
-  //     // Ensure that irrelevant params are removed from the current URL
-  //     if (
-  //       (value === "year" && key !== "selectedYear" && key !== "timeFilter") ||
-  //       (value === "month" &&
-  //         key !== "selectedMonth" &&
-  //         key !== "selectedYear" &&
-  //         key !== "timeFilter") ||
-  //       (value === "weekday" &&
-  //         key !== "selectedWeekday" &&
-  //         key !== "timeFilter")
-  //     ) {
-  //       delete updatedParams[key];
-  //     }
-  //   });
-
-  //   // Update the search parameters
-  //   setSearchParams(updatedParams); // Ensure this properly updates the URL
-  // };
-
   const handleTimeFilterChange = (value, data) => {
     const year = data?.year;
     const month = data?.month;
@@ -314,7 +203,6 @@ const EventsPage = () => {
     if (currentParams.searchQuery)
       updatedParams.searchQuery = currentParams.searchQuery;
 
-    // Time filter logic
     if (value === "year" && year) {
       setSelectedYear(year);
       updatedParams = { ...updatedParams, selectedYear: year };
@@ -337,7 +225,6 @@ const EventsPage = () => {
       updatedParams.startDate = currentParams.startDate;
     }
 
-    // Clean up non-time filters from the updatedParams if they're not needed
     if (value !== "year" && value !== "month") {
       delete updatedParams.selectedYear;
     }
@@ -347,8 +234,6 @@ const EventsPage = () => {
     if (value !== "weekday") {
       delete updatedParams.selectedWeekday;
     }
-
-    // Update the searchParams with the modified params
     setSearchParams(updatedParams);
   };
 
