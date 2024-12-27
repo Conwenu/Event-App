@@ -3,7 +3,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import "./UserEvents.css";
 import UserEventCalendar from "./UserEventCalendar";
-
+import UserEventGrid from "./UserEventGrid";
 const UserEvents = () => {
   return (
     <div className="user-events-container">
@@ -26,13 +26,7 @@ const UserEvents = () => {
         </Tab>
         <Tab eventKey="events-created" title="Events Created">
           <div>
-            <h2>Events Created</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit
-              reiciendis molestiae facere! Ea quibusdam nulla ipsa temporibus
-              assumenda voluptatibus aut facere adipisci quis optio? Corporis
-              nemo quidem voluptates neque quibusdam!
-            </p>
+            <UserEventGrid />
           </div>
         </Tab>
       </Tabs>
