@@ -13,6 +13,8 @@ const Sidebar2 = ({
   setSelectedYear,
   selectedMonth,
   setSelectedMonth,
+  selectedWeekday,
+  setSelectedWeekday,
   selectedEventStatus,
   onEventStatusChange,
   selectedReservationAbility,
@@ -60,6 +62,8 @@ const Sidebar2 = ({
                     setSelectedYear={setSelectedYear}
                     selectedMonth={selectedMonth}
                     setSelectedMonth={setSelectedMonth}
+                    selectedWeekday={selectedWeekday}
+                    setSelectedWeekday={setSelectedWeekday}
                   />
                 ) : (
                   <></>
@@ -245,6 +249,8 @@ const Sidebar2 = ({
                 setSelectedYear={setSelectedYear}
                 selectedMonth={selectedMonth}
                 setSelectedMonth={setSelectedMonth}
+                selectedWeekday={selectedWeekday}
+                setSelectedWeekday={setSelectedWeekday}
               />
             ) : (
               <></>
