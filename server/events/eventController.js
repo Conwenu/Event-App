@@ -67,18 +67,16 @@ const getEvents2 = async (req, res) => {
       endDate,
       selectedMonth,
       selectedYear,
-      scheduled,
-      inProgress,
-      completed,
-      cancelled,
-      available,
-      fullyBooked,
+      selectedWeekday,
+      eventStatus,
+      reservationAbility,
       minDuration,
       maxDuration,
-      newestFirst,
-      oldestFirst,
-      startTimeAscending,
-      startTimeDescending,
+      sort,
+      // newestFirst,
+      // oldestFirst,
+      // startTimeAscending,
+      // startTimeDescending,
       searchQuery,
     } = req.query;
 
@@ -89,38 +87,99 @@ const getEvents2 = async (req, res) => {
     const queryEndDate = new Date(endDate);
     const events = await eventService.getEvents();
 
+    const scheduled = eventStatus?.includes("scheduled") ? "true" : "false";
+    const inProgress = eventStatus?.includes("inProgress") ? "true" : "false";
+    const completed = eventStatus?.includes("completed") ? "true" : "false";
+    const cancelled = eventStatus?.includes("cancelled") ? "true" : "false";
+
+    const available = reservationAbility?.includes("available")
+      ? "true"
+      : "false";
+    const fullyBooked = reservationAbility?.includes("fullyBooked")
+      ? "true"
+      : "false";
+
+    const newestFirst =
+      sort?.includes("newestFirst") || !sort ? "true" : "false";
+    const oldestFirst = sort?.includes("oldestFirst") ? "true" : "false";
+    const startTimeAscending = sort?.includes("startTimeAscending")
+      ? "true"
+      : "false";
+    const startTimeDescending = sort?.includes("startTimeDescending")
+      ? "true"
+      : "false";
+
     // Normalize the search query for case-insensitive search
-    const normalizedSearchQuery = searchQuery ? searchQuery.trim().toLowerCase() : "";
+    const normalizedSearchQuery = searchQuery
+      ? searchQuery.trim().toLowerCase()
+      : "";
 
     // Filter events
-    const filteredEvents = events.filter(event => {
+    const filteredEvents = events.filter((event) => {
       const eventStartTime = new Date(event.startTime);
       const eventEndTime = new Date(event.endTime);
       let eventLengthInMinutes = (eventEndTime - eventStartTime) / 60000; // Convert milliseconds to minutes
 
       // Status Filters
+      // if (cancelled === "true" && event.status !== "CANCELLED") return false;
+      // if (scheduled === "true" && event.status !== "SCHEDULED") return false;
+      // if (completed === "true" && (event.status !== "SCHEDULED" && !(eventEndTime < currentDate))) return false;
+      // if (inProgress === "true" && !(eventStartTime <= currentDate && eventEndTime >= currentDate)) return false;
       if (cancelled === "true" && event.status !== "CANCELLED") return false;
       if (scheduled === "true" && event.status !== "SCHEDULED") return false;
-      if (completed === "true" && (event.status !== "SCHEDULED" && eventEndTime > currentDate)) return false;
-      if (inProgress === "true" && !(eventStartTime <= currentDate && eventEndTime >= currentDate)) return false;
+      if (scheduled === "true" && eventStartTime <= currentDate) return false; // Event should be in the future to be considered scheduled
+
+      if (completed === "true" && event.status !== "SCHEDULED") return false;
+      if (completed === "true" && eventEndTime >= currentDate) return false; // Event should have already ended to be considered completed
+
+      if (inProgress === "true" && event.status !== "SCHEDULED") return false;
+      if (
+        inProgress === "true" &&
+        (eventStartTime > currentDate || eventEndTime < currentDate)
+      )
+        return false; // Event should be ongoing
+
       if (available === "true" && event.reservationsLeft <= 0) return false;
       if (fullyBooked === "true" && event.reservationsLeft > 0) return false;
 
       // Duration Filters
       if (minDuration || maxDuration) {
-        const min = parseInt(minDuration) || 0;
-        const max = parseInt(maxDuration) || Infinity;
-        if (eventLengthInMinutes < min || eventLengthInMinutes > max) return false;
+        const min = minDuration ? parseInt(minDuration) : 0;
+        const max = maxDuration ? parseInt(maxDuration) : Infinity;
+
+        if (minDuration && maxDuration) {
+          if (eventLengthInMinutes < min || eventLengthInMinutes > max) {
+            return false;
+          }
+        } else if (minDuration) {
+          if (eventLengthInMinutes < min) return false;
+        } else if (maxDuration) {
+          if (eventLengthInMinutes > max) return false;
+        }
       }
 
       // Time Filter Logic
-      if (timeFilter && !checkTimeFilter(timeFilter, eventStartTime, queryStartDate, selectedMonth, selectedYear)) {
+      if (
+        timeFilter &&
+        !checkTimeFilter(
+          timeFilter,
+          eventStartTime,
+          queryStartDate,
+          queryEndDate,
+          selectedMonth,
+          selectedYear,
+          selectedWeekday
+        )
+      ) {
         return false;
       }
 
       // Search Query Logic
-      if (normalizedSearchQuery && !event.title.toLowerCase().includes(normalizedSearchQuery) &&
-          !event.description.toLowerCase().includes(normalizedSearchQuery)) {
+      if (
+        normalizedSearchQuery &&
+        !event.title.toLowerCase().includes(normalizedSearchQuery) &&
+        !event.description.toLowerCase().includes(normalizedSearchQuery)
+      ) {
         return false;
       }
 
@@ -131,15 +190,21 @@ const getEvents2 = async (req, res) => {
     // Oldest first and startTimeAscending are the same so I'll remove one of them
     let sortedEvents = [...filteredEvents];
     if (newestFirst === "true") {
-      sortedEvents.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+      sortedEvents.sort(
+        (a, b) => new Date(b.startTime) - new Date(a.startTime)
+      );
     } else if (oldestFirst === "true" || startTimeAscending === "true") {
-      sortedEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+      sortedEvents.sort(
+        (a, b) => new Date(a.startTime) - new Date(b.startTime)
+      );
     } else if (startTimeDescending === "true") {
-      sortedEvents.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+      sortedEvents.sort(
+        (a, b) => new Date(b.startTime) - new Date(a.startTime)
+      );
     }
 
     // Send filtered and sorted events
-    res.json({ results: sortedEvents });
+    res.json({ events: sortedEvents });
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: "Failed to fetch events" });
@@ -147,7 +212,15 @@ const getEvents2 = async (req, res) => {
 };
 
 // Helper function for checking time-based filters
-const checkTimeFilter = (timeFilter, eventStartTime, queryStartDate, selectedMonth, selectedYear) => {
+const checkTimeFilter = (
+  timeFilter,
+  eventStartTime,
+  queryStartDate,
+  queryEndDate,
+  selectedMonth,
+  selectedYear,
+  querySelectedWeekday
+) => {
   switch (timeFilter) {
     case "day":
       const eventStartDateOnly = new Date(eventStartTime.setHours(0, 0, 0, 0));
@@ -156,15 +229,21 @@ const checkTimeFilter = (timeFilter, eventStartTime, queryStartDate, selectedMon
 
     case "week":
       const queryWeekStart = getStartOfWeek(queryStartDate, "monday");
-      const eventWeekStart = getStartOfWeek(eventStartDate, "monday");
+      const eventWeekStart = getStartOfWeek(eventStartTime, "monday");
       return queryWeekStart.getTime() === eventWeekStart.getTime();
 
     case "month":
-      const selectedMonthIndex = [
-        "January", "February", "March", "April", "May", "June", "July", "August",
-        "September", "October", "November", "December"
-      ].indexOf(selectedMonth);
+      const selectedMonthIndex = parseInt(selectedMonth, 10) - 1; // subtract 1 to convert from 1-based to 0-based month index
+
+      // ensure selectedMonthIndex is within a valid range (0 to 11)
+      if (selectedMonthIndex < 0 || selectedMonthIndex > 11) {
+        return false;
+      }
+
+      // start of the month (1st day of the selected month at midnight)
       const startOfMonth = new Date(selectedYear, selectedMonthIndex, 1);
+
+      // end of the month (last day of the selected month at the end of the day)
       const endOfMonth = new Date(selectedYear, selectedMonthIndex + 1, 0);
       return eventStartTime >= startOfMonth && eventStartTime <= endOfMonth;
 
@@ -174,15 +253,56 @@ const checkTimeFilter = (timeFilter, eventStartTime, queryStartDate, selectedMon
       return eventStartTime >= startOfYear && eventStartTime <= endOfYear;
 
     case "weekday":
-      const selectedWeekday = selectedWeekday.toLowerCase();
-      const weekdays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      const selectedWeekday = querySelectedWeekday.toLowerCase();
+      const weekdays = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+      ];
       const selectedWeekdayIndex = weekdays.indexOf(selectedWeekday);
       return eventStartTime.getDay() === selectedWeekdayIndex;
 
     case "dateRange":
-      const rangeStartDate = new Date(queryStartDate);
-      const rangeEndDate = new Date(queryEndDate);
-      return eventStartTime >= rangeStartDate && eventStartTime <= rangeEndDate;
+      const isValidDate = (date) => {
+        const parsedDate = new Date(date);
+        return !isNaN(parsedDate.getTime()); // returns true if the date is valid
+      };
+
+      const validStartDate = queryStartDate && isValidDate(queryStartDate);
+      const validEndDate = queryEndDate && isValidDate(queryEndDate);
+
+      // If both start and end dates are invalid (invalid or not provided)
+      if (!validStartDate && !validEndDate) {
+        // console.log("Neither queryStartDate nor queryEndDate provided or both are invalid.");
+        return true; // no filtering, return all events
+      }
+
+      if (validStartDate && validEndDate) {
+        // console.log("Both queryStartDate and queryEndDate provided", queryStartDate, queryEndDate);
+        const rangeStartDate = new Date(queryStartDate);
+        const rangeEndDate = new Date(queryEndDate);
+        return (
+          eventStartTime >= rangeStartDate && eventStartTime <= rangeEndDate
+        );
+
+      } else if (validStartDate) {
+        //console.log("queryStartDate provided and valid");
+        const rangeStartDate = new Date(queryStartDate);
+        return eventStartTime >= rangeStartDate;
+
+      } else if (validEndDate) {
+        console.log("queryEndDate provided and valid");
+        const rangeEndDate = new Date(queryEndDate);
+        return eventStartTime <= rangeEndDate;
+
+      } else {
+        //console.log("Invalid date inputs detected.");
+        return true; 
+      }
 
     default:
       return true;
@@ -192,13 +312,15 @@ const checkTimeFilter = (timeFilter, eventStartTime, queryStartDate, selectedMon
 // Helper function to get the start of the week
 const getStartOfWeek = (date, firstDay = "sunday") => {
   const day = date.getDay();
-  const diff = (day < (firstDay === "monday" ? 1 : 0) ? 7 : 0) + day - (firstDay === "monday" ? 1 : 0);
+  const diff =
+    (day < (firstDay === "monday" ? 1 : 0) ? 7 : 0) +
+    day -
+    (firstDay === "monday" ? 1 : 0);
   const startOfWeek = new Date(date);
   startOfWeek.setDate(date.getDate() - diff);
   startOfWeek.setHours(0, 0, 0, 0);
   return startOfWeek;
 };
-
 
 const getEvent = async (req, res) => {
   const { id } = req.params;
