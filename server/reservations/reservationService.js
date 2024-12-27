@@ -73,7 +73,7 @@ const getReservation = async (userId, eventId) => {
   });
 
   if (!reservation) {
-    throw AppError('Reservation not found', 400)
+    throw new AppError('Reservation not found', 400)
   }
   return reservation;
 };
