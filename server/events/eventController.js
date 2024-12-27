@@ -221,13 +221,24 @@ const checkTimeFilter = (
   selectedYear,
   querySelectedWeekday
 ) => {
+  const isValidDate = (date) => {
+    const parsedDate = new Date(date);
+    return !isNaN(parsedDate.getTime()); // returns true if the date is valid
+  };
+
   switch (timeFilter) {
     case "day":
+      if(!isValidDate(queryStartDate)) {
+        return true; // The date might not be provided yet so just assume it's not a valid date
+      }
       const eventStartDateOnly = new Date(eventStartTime.setHours(0, 0, 0, 0));
       const queryStartDateOnly = new Date(queryStartDate.setHours(0, 0, 0, 0));
       return eventStartDateOnly.getTime() === queryStartDateOnly.getTime();
 
     case "week":
+      if(!isValidDate(queryStartDate)) {
+        return true; 
+      }
       const queryWeekStart = getStartOfWeek(queryStartDate, "monday");
       const eventWeekStart = getStartOfWeek(eventStartTime, "monday");
       return queryWeekStart.getTime() === eventWeekStart.getTime();
@@ -267,11 +278,6 @@ const checkTimeFilter = (
       return eventStartTime.getDay() === selectedWeekdayIndex;
 
     case "dateRange":
-      const isValidDate = (date) => {
-        const parsedDate = new Date(date);
-        return !isNaN(parsedDate.getTime()); // returns true if the date is valid
-      };
-
       const validStartDate = queryStartDate && isValidDate(queryStartDate);
       const validEndDate = queryEndDate && isValidDate(queryEndDate);
 
