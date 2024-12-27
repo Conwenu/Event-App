@@ -18,7 +18,7 @@ function UserEventCalendar() {
       try {
         const response = await fetch(`${API_URL}/reservation/user/10`);
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
 
         const mappedEvents = data.map(({ event }) => ({
           title: event.title,
