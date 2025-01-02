@@ -10,6 +10,8 @@ import RegisterPage from './components/Register/RegisterPage';
 import EventCard from './components/Events/EventCard';
 // import Navbar from './components/Navbar/Navbar';
 import Navbar2 from './components/Navbar/Navbar2';
+import AuthNavbar from './components/Navbar/AuthNavbar';
+import NonAuthNavbar from './components/Navbar/NonAuthNavbar';
 import UserProfile from './components/UserProfile/UserProfile';
 function App() {
 
@@ -41,7 +43,9 @@ function App() {
     <Router>
       {/* <Navbar/> */}
       <div className='nav-container'>
-        <Navbar2 toggleTheme={toggleTheme} isDarkMode={isDarkMode}></Navbar2>
+        <NonAuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/>
+        {/* <AuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
+        {/* <Navbar2 toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
       </div>
       <div className="App">
         <Routes>
