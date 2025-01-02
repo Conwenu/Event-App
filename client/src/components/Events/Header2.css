@@ -65,10 +65,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  width: 100%; /* Ensure the mobile header spans the full width */
-  padding: 0 10px; /* Add padding for mobile layout */
+  width: 100%; 
   box-sizing: border-box;
-  overflow: hidden; /* Prevent horizontal overflow */
+  overflow: hidden;
 }
 
 .mobile-filter-icon {
