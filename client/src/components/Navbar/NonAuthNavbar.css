@@ -1,0 +1,50 @@
+.non-auth-navbar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1rem;
+    background-color: var(--background);
+}
+.non-auth-navbar-right-side{
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.non-auth-navbar-logo, .non-auth-navbar-theme-toggle {
+    cursor: pointer;
+}
+
+.dark .non-auth-navbar-logo {
+    filter: invert(93%) sepia(6%) saturate(1859%) hue-rotate(31deg) brightness(107%) contrast(98%);
+}
+
+.non-auth-navbar-profile-icon {
+    cursor: pointer;
+}
+
+.non-auth-navbar-profile-icon-link {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.non-auth-navbar-profile-icon-link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.dark .non-auth-navbar-profile-icon-link:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.non-auth-navbar-button {
+    color: var(--text);
+    background-color: var(--primary);
+    outline: none;
+}
+
+.non-auth-navbar-button:hover {
+    color: var(--text);
+    background-color: var(--primary);
+}
