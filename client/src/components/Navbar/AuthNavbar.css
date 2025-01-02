@@ -1,0 +1,40 @@
+.auth-navbar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1rem;
+    background-color: var(--background);
+}
+.auth-navbar-right-side{
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.auth-navbar-logo, .auth-navbar-theme-toggle {
+    cursor: pointer;
+}
+
+.dark .auth-navbar-logo {
+    filter: invert(93%) sepia(6%) saturate(1859%) hue-rotate(31deg) brightness(107%) contrast(98%);
+}
+
+.auth-navbar-profile-icon {
+    cursor: pointer;
+}
+
+.auth-navbar-profile-icon-link {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.auth-navbar-profile-icon-link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.dark .auth-navbar-profile-icon-link:hover {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
