@@ -58,7 +58,7 @@ const UserEventGrid = () => {
         selectedSort={selectedSort}
         onSortChange={onSortChange}
       />
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container user-event-grid-event-container">
         {loading ? (
           <div
             className="d-flex justify-content-center align-items-center w-100"
