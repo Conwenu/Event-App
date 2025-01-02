@@ -14,19 +14,12 @@ const UserEvents = () => {
       >
         <Tab eventKey="events-rsvpd" title="Events RSVP'd For">
           <div>
-            {/* <h2>Events RSVP'd For</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
-              ipsum praesentium voluptatem eligendi iusto labore accusantium
-              ipsa dolorum, reprehenderit beatae reiciendis? Velit odio facere
-              illo tempora exercitationem quia ab totam!
-            </p> */}
             <UserEventCalendar />
           </div>
         </Tab>
         <Tab eventKey="events-created" title="Events Created">
           <div>
-            <UserEventGrid />
+            <UserEventGrid style={{ paddingLeft: "5px" }} />
           </div>
         </Tab>
       </Tabs>
