@@ -114,6 +114,12 @@ const getEvents2 = async (req, res) => {
       ? searchQuery.trim().toLowerCase()
       : "";
 
+      const areAllFiltersTheSame = () => {
+      const filters = [scheduled, inProgress, completed, cancelled];
+      const allTrue = filters.every((filter) => filter === true);
+      const allFalse = filters.every((filter) => filter === false);
+      return allTrue || allFalse;
+    };
     // Filter events
     const filteredEvents = events.filter((event) => {
       const eventStartTime = new Date(event.startTime);
@@ -121,23 +127,47 @@ const getEvents2 = async (req, res) => {
       let eventLengthInMinutes = (eventEndTime - eventStartTime) / 60000; // Convert milliseconds to minutes
 
       // Status Filters
-      // if (cancelled === "true" && event.status !== "CANCELLED") return false;
-      // if (scheduled === "true" && event.status !== "SCHEDULED") return false;
-      // if (completed === "true" && (event.status !== "SCHEDULED" && !(eventEndTime < currentDate))) return false;
-      // if (inProgress === "true" && !(eventStartTime <= currentDate && eventEndTime >= currentDate)) return false;
-      if (cancelled === "true" && event.status !== "CANCELLED") return false;
-      if (scheduled === "true" && event.status !== "SCHEDULED") return false;
-      if (scheduled === "true" && eventStartTime <= currentDate) return false; // Event should be in the future to be considered scheduled
-
-      if (completed === "true" && event.status !== "SCHEDULED") return false;
-      if (completed === "true" && eventEndTime >= currentDate) return false; // Event should have already ended to be considered completed
-
-      if (inProgress === "true" && event.status !== "SCHEDULED") return false;
-      if (
-        inProgress === "true" &&
-        (eventStartTime > currentDate || eventEndTime < currentDate)
-      )
-        return false; // Event should be ongoing
+    if (cancelled === "true" && scheduled === "true" && inProgress === "true" && completed === "true") {
+        // No action needed
+    } else if (cancelled === "false" && scheduled === "false" && inProgress === "false" && completed === "false") {
+        // No action needed
+    } else if (scheduled === "true" && cancelled === "false" && inProgress === "true" && completed === "true") {
+        if (event.status !== "SCHEDULED") return false;
+    } else if (cancelled === "true" && scheduled === "true" && inProgress === "false" && completed === "true") {
+        if (!(event.status === "CANCELLED" || event.status === "SCHEDULED" || eventEndTime < currentDate)) return false;
+    } else if (scheduled === "***true" && cancelled === "false" && inProgress === "false" && completed === "true") {
+        if (!(event.status === "SCHEDULED" || eventEndTime < currentDate || currentDate < eventStartTime)) return false;
+    } else if (cancelled === "true" && scheduled === "false" && inProgress === "true" && completed === "true") {
+        if (!(event.status === "SCHEDULED" && eventEndTime >= currentDate && eventStartTime <= currentDate)) return false;
+    } else if (cancelled === "true" && scheduled === "false" && inProgress === "true" && completed === "false") {
+        if (event.status !== "SCHEDULED" || eventStartTime > currentDate || eventEndTime < currentDate) return false;
+    } else if (scheduled === "true" && cancelled === "false" && inProgress === "false" && completed === "false") {
+        if (event.status !== "SCHEDULED" || eventStartTime <= currentDate) return false;
+    } else if (inProgress === "true" && cancelled === "false" && scheduled === "false" && completed === "false") {
+        if (!(eventStartTime <= currentDate && eventEndTime >= currentDate)) return false;
+    } else if (cancelled === "true" && scheduled === "false" && inProgress === "false" && completed === "true") {
+        if (event.status !== "SCHEDULED" || eventEndTime >= currentDate) return false;
+    } else if (cancelled === "false" && scheduled === "false" && inProgress === "true" && completed === "true") {
+        if (event.status !== "SCHEDULED" || !( eventEndTime < currentDate ||(eventStartTime <= currentDate && eventEndTime >= currentDate))) return false;
+    } else if (cancelled === "true" && scheduled === "true" && inProgress === "false" && completed === "false") {
+        if ((event.status !== "CANCELLED" && event.status !== "SCHEDULED") || (eventStartTime <= currentDate && eventEndTime >= currentDate) || currentDate > eventEndTime ) return false;
+    } else if (completed === "true" && cancelled === "false" && scheduled === "false" && inProgress === "false") {
+        if (!(event.status === "SCHEDULED" && eventEndTime < currentDate)) return false;
+    } else if (cancelled === "true" && scheduled === "true" && inProgress === "true" && completed === "false") {
+        if (!(event.status === "CANCELLED" || event.status === "SCHEDULED" || (eventStartTime <= currentDate && eventEndTime >= currentDate))) return false;
+    } else if (cancelled === "false" && scheduled === "true" && inProgress === "true" && completed === "false") {
+        if (event.status !== "SCHEDULED" || !(eventStartTime > currentDate || (eventStartTime <= currentDate && eventEndTime >= currentDate))) return false;
+    } else if (cancelled === "true" && scheduled === "false" && inProgress === "false" && completed === "false") {
+        if (event.status !== "CANCELLED") return false;
+    } else if (scheduled === "true" && cancelled === "false" && inProgress === "false" && completed === "false") {
+        if (event.status !== "SCHEDULED" || eventStartTime <= currentDate) return false;
+    } else if (completed === "true" && cancelled === "false" && scheduled === "false" && inProgress === "true") {
+        if (!(event.status === "SCHEDULED" && eventStartTime <= currentDate && eventEndTime >= currentDate)) return false;
+    }
+    else {
+      console.log("No filter conditions applied");
+    }
+    
 
       if (available === "true" && event.reservationsLeft <= 0) return false;
       if (fullyBooked === "true" && event.reservationsLeft > 0) return false;
