@@ -135,7 +135,7 @@ const getEvents2 = async (req, res) => {
         if (event.status !== "SCHEDULED") return false;
     } else if (cancelled === "true" && scheduled === "true" && inProgress === "false" && completed === "true") {
         if (!(event.status === "CANCELLED" || event.status === "SCHEDULED" || eventEndTime < currentDate)) return false;
-    } else if (scheduled === "***true" && cancelled === "false" && inProgress === "false" && completed === "true") {
+    } else if (scheduled === "true" && cancelled === "false" && inProgress === "false" && completed === "true") {
         if (!(event.status === "SCHEDULED" || eventEndTime < currentDate || currentDate < eventStartTime)) return false;
     } else if (cancelled === "true" && scheduled === "false" && inProgress === "true" && completed === "true") {
         if (!(event.status === "SCHEDULED" && eventEndTime >= currentDate && eventStartTime <= currentDate)) return false;
