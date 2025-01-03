@@ -43,6 +43,7 @@ const EventsPage = () => {
           params: apiParams,
         });
         setEvents(response.data.events);
+        setIsError(false);
       } catch (err) {
         setIsError(true);
         setError(err.message);
@@ -314,27 +315,6 @@ const EventsPage = () => {
   // const defaultImage =
   //   "https://wallpapercat.com/w/full/6/2/1/116007-3840x2160-desktop-4k-bleach-wallpaper-photo.jpg";
 
-  if (isLoading)
-    return (
-      <>
-        <Sidebar />
-        <div className="loading-container">
-          <div className="spinner"></div>
-          <p>Loading events...</p>
-        </div>
-      </>
-    );
-
-  if (isError)
-    return (
-      <>
-        <Sidebar />
-        <div className="error-container">
-          <p>Error loading events: {error}</p>
-        </div>
-      </>
-    );
-
   return (
     <>
       <div className="full-events-page">
@@ -380,7 +360,24 @@ const EventsPage = () => {
               toggleModal={toggleModal}
             />
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
-              {events && events.length > 0 ? (
+              {isLoading ? (
+                <div
+                  className="d-flex justify-content-center align-items-center w-100"
+                  style={{ height: "300px" }}
+                >
+                  <div className="loading-container">
+                    <div className="spinner"></div>
+                    <h4>Loading events...</h4>
+                  </div>
+                </div>
+              ) : isError ? (
+                <div
+                  className="d-flex justify-content-center align-items-center w-100"
+                  style={{ height: "300px" }}
+                >
+                  <h4 className="">Error loading events: {error}</h4>
+                </div>
+              ) : events && events.length > 0 ? (
                 events.map((event) => (
                   <div className="col" key={event.id}>
                     <EventCard {...event} />
@@ -391,37 +388,10 @@ const EventsPage = () => {
                   className="d-flex justify-content-center align-items-center w-100"
                   style={{ height: "200px" }}
                 >
-                  <p className="text-center mb-0">No events found.</p>
+                  <h4 className="text-center mb-0">No events found</h4>
                 </div>
               )}
             </div>
-
-            {/* <div>
-              <h1>{timeFilter}</h1>{" "}
-              <h1>
-                {startDate +
-                  " : " +
-                  endDate +
-                  " : " +
-                  selectedMonth +
-                  " : " +
-                  selectedYear}
-              </h1>
-              <h1>{multipleFilters.eventStatus}</h1>{" "}
-              <h1>{multipleFilters.reservationAbility}</h1>
-              {durationFilter.min != "" ? (
-                <h1>{"Min: " + durationFilter.min}</h1>
-              ) : (
-                <></>
-              )}
-              {durationFilter.max != "" ? (
-                <h1>{"Max: " + durationFilter.max}</h1>
-              ) : (
-                <></>
-              )}
-              <h1>{selectedSorting}</h1>
-              <h1>{searchFilters}</h1>
-            </div> */}
           </>
         ) : (
           <div className="events-page">
@@ -454,39 +424,25 @@ const EventsPage = () => {
               showModal={showModal}
               toggleModal={toggleModal}
             />
-
-            {/* <div>
-              <h1>{timeFilter}</h1>{" "}
-              <h1>
-                {startDate +
-                  " : " +
-                  endDate +
-                  " : " +
-                  selectedMonth +
-                  " : " +
-                  selectedYear}
-              </h1>
-              <h1>{multipleFilters.eventStatus}</h1>{" "}
-              <h1>{multipleFilters.reservationAbility}</h1>
-              {durationFilter.min != "" ? (
-                <h1>{"Min: " + durationFilter.min}</h1>
-              ) : (
-                <></>
-              )}
-              {durationFilter.max != "" ? (
-                <h1>{"Max: " + durationFilter.max}</h1>
-              ) : (
-                <></>
-              )}
-              <h1>{selectedSorting}</h1>
-              <h1>{searchFilters}</h1>
-            </div> */}
-
-            {/* <h1 className="text-center">Event Page</h1> 
-          <h2 className="text-start">Events</h2> */}
-
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
-              {events && events.length > 0 ? (
+              {isLoading ? (
+                <div
+                  className="d-flex justify-content-center align-items-center w-100"
+                  style={{ height: "300px" }}
+                >
+                  <div className="loading-container">
+                    <div className="spinner"></div>
+                    <h4>Loading events...</h4>
+                  </div>
+                </div>
+              ) : isError ? (
+                <div
+                  className="d-flex justify-content-center align-items-center w-100"
+                  style={{ height: "300px" }}
+                >
+                  <h4 className="">Error loading events: {error}</h4>
+                </div>
+              ) : events && events.length > 0 ? (
                 events.map((event) => (
                   <div className="col" key={event.id}>
                     <EventCard {...event} />
@@ -497,7 +453,7 @@ const EventsPage = () => {
                   className="d-flex justify-content-center align-items-center w-100"
                   style={{ height: "200px" }}
                 >
-                  <p className="text-center mb-0">No events found.</p>
+                  <h4 className="text-center mb-0">No events found</h4>
                 </div>
               )}
             </div>
