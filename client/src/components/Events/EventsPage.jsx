@@ -36,6 +36,7 @@ const EventsPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        setIsLoading(true);
         const apiParams = mapQueryToApiParams(
           Object.fromEntries(searchParams.entries())
         );
