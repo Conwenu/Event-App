@@ -1,7 +1,6 @@
 .non-auth-navbar {
     display: flex;
     justify-content: space-between;
-    margin: 0 1rem;
     background-color: var(--background);
 }
 .non-auth-navbar-right-side{
@@ -9,10 +8,12 @@
     justify-content: space-between;
     gap: 1.5rem;
     align-items: center;
+    padding-right: 0.5rem;
 }
 
 .non-auth-navbar-logo, .non-auth-navbar-theme-toggle {
     cursor: pointer;
+    padding-left: 0.5rem;
 }
 
 .dark .non-auth-navbar-logo {

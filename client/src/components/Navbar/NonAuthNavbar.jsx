@@ -4,7 +4,7 @@ import "./NonAuthNavbar.css";
 const NonAuthNavbar = ({ toggleTheme, isDarkMode }) => {
   return (
     <>
-      <div>
+      <div className="w-100">
         <nav className="non-auth-navbar navbar navbar-light justify-content-between">
           <a className="non-auth-navbar-logo navbar-brand" href="/">
             <img className="logo" src={logo} alt="logo" width="80px"></img>
