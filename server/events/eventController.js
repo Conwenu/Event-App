@@ -73,10 +73,6 @@ const getEvents2 = async (req, res) => {
       minDuration,
       maxDuration,
       sort,
-      // newestFirst,
-      // oldestFirst,
-      // startTimeAscending,
-      // startTimeDescending,
       searchQuery,
     } = req.query;
 
@@ -136,9 +132,9 @@ const getEvents2 = async (req, res) => {
     } else if (cancelled === "true" && scheduled === "true" && inProgress === "false" && completed === "true") {
         if (!(event.status === "CANCELLED" || event.status === "SCHEDULED" || eventEndTime < currentDate)) return false;
     } else if (scheduled === "true" && cancelled === "false" && inProgress === "false" && completed === "true") {
-        if (!(event.status === "SCHEDULED" || eventEndTime < currentDate || currentDate < eventStartTime)) return false;
+        if(!((event.status === "SCHEDULED") && currentDate < eventStartTime || eventEndTime < currentDate)) return false;
     } else if (cancelled === "true" && scheduled === "false" && inProgress === "true" && completed === "true") {
-        if (!(event.status === "SCHEDULED" && eventEndTime >= currentDate && eventStartTime <= currentDate)) return false;
+        if(event.status == "CANCELLED" || !(eventStartTime <= currentDate && eventEndTime >= currentDate) || !(eventEndTime < currentDate)) return false;
     } else if (cancelled === "true" && scheduled === "false" && inProgress === "true" && completed === "false") {
         if (event.status !== "SCHEDULED" || eventStartTime > currentDate || eventEndTime < currentDate) return false;
     } else if (scheduled === "true" && cancelled === "false" && inProgress === "false" && completed === "false") {
@@ -154,7 +150,7 @@ const getEvents2 = async (req, res) => {
     } else if (completed === "true" && cancelled === "false" && scheduled === "false" && inProgress === "false") {
         if (!(event.status === "SCHEDULED" && eventEndTime < currentDate)) return false;
     } else if (cancelled === "true" && scheduled === "true" && inProgress === "true" && completed === "false") {
-        if (!(event.status === "CANCELLED" || event.status === "SCHEDULED" || (eventStartTime <= currentDate && eventEndTime >= currentDate))) return false;
+        if(!(event.status === "CANCELLED" || (eventStartTime <= currentDate && eventEndTime >= currentDate) || currentDate < eventStartTime)) return false;
     } else if (cancelled === "false" && scheduled === "true" && inProgress === "true" && completed === "false") {
         if (event.status !== "SCHEDULED" || !(eventStartTime > currentDate || (eventStartTime <= currentDate && eventEndTime >= currentDate))) return false;
     } else if (cancelled === "true" && scheduled === "false" && inProgress === "false" && completed === "false") {
@@ -358,6 +354,60 @@ const getStartOfWeek = (date, firstDay = "sunday") => {
   return startOfWeek;
 };
 
+const getEventsByUserQuery = async (req, res) => {
+  try {
+    const {userId, searchQuery, sort} = req.query;
+    const events = await eventService.getEventsByUser(userId);
+    const newestFirst =
+      sort?.includes("newestFirst") || !sort ? "true" : "false";
+    const oldestFirst = sort?.includes("oldestFirst") ? "true" : "false";
+    const startTimeAscending = sort?.includes("startTimeAscending")
+      ? "true"
+      : "false";
+    const startTimeDescending = sort?.includes("startTimeDescending")
+      ? "true"
+      : "false";
+
+    const normalizedSearchQuery = searchQuery
+      ? searchQuery.trim().toLowerCase()
+      : "";
+
+      const filteredEvents = events.filter((event) => {
+        // Search Query Logic
+      if (
+        normalizedSearchQuery &&
+        !event.title.toLowerCase().includes(normalizedSearchQuery) &&
+        !event.description.toLowerCase().includes(normalizedSearchQuery)
+      ) {
+        return false;
+      }
+
+      return true; 
+      })
+
+      let sortedEvents = [...filteredEvents];
+      if (newestFirst === "true") {
+        sortedEvents.sort(
+          (a, b) => new Date(b.startTime) - new Date(a.startTime)
+        );
+      } else if (oldestFirst === "true" || startTimeAscending === "true") {
+        sortedEvents.sort(
+          (a, b) => new Date(a.startTime) - new Date(b.startTime)
+        );
+      } else if (startTimeDescending === "true") {
+        sortedEvents.sort(
+          (a, b) => new Date(b.startTime) - new Date(a.startTime)
+        );
+      }
+  
+      res.json({ events: sortedEvents });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(400).json({ error: "Failed to fetch events" });
+  }
+}
+
 const getEvent = async (req, res) => {
   const { id } = req.params;
   try {
@@ -524,4 +574,5 @@ module.exports = {
   getCancelledEventsFromUser,
   getUncancelledEventsFromUser,
   getEvents2,
+  getEventsByUserQuery,
 };

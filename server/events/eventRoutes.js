@@ -8,7 +8,7 @@ const authController = require('../auth/authController');
 router.post('/event', eventController.createEvent);
 router.get('/events', eventController.getEvents);
 router.get('/events2', eventController.getEvents2);
-
+router.get('/userEvents', eventController.getEventsByUserQuery);
 // Retrieve, edit, and delete a specific event
 router.get('/event/:id', eventController.getEvent);
 router.put('/event/:id', eventController.editEvent);
