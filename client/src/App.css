@@ -56,7 +56,8 @@
   width: 100%;
   height: 80px;
   background-color: transparent;
-  position: absolute;
+  position: fixed;
+  z-index: 1000;
 }
 
 a {
