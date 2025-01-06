@@ -8,9 +8,17 @@ const UserEventGrid = () => {
   const [events, setEvents] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedSort, setSelectedSort] = useState("");
+  const [searchFilters, setSearchFilters] = useState("");
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`${API_URL}/event/user/10`);
+      const response = await axios.get(`${API_URL}/userEvents`, {
+        params: {
+          userId: 19,
+          searchQuery: searchFilters,
+          sort: selectedSort,
+        },
+      });
       setEvents(response.data.events);
       setLoading(false);
     } catch (err) {
@@ -22,10 +30,7 @@ const UserEventGrid = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
-
-  const [selectedSort, setSelectedSort] = useState("");
-  const [searchFilters, setSearchFilters] = useState("");
+  }, [searchFilters, selectedSort]);
 
   const onSearchChange = (value) => {
     setSearchFilters(value);
