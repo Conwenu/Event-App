@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./EventPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import EventHelperFunctions from "./EventHelperFunctions.js";
 import { Modal, Button, Form } from "react-bootstrap";
-
-const idk =
-  "Lorem ipsum odor amet, consectetuer adipiscing elit. Fames eleifend per magnis posuere mi porta eros ligula fermentum. Dictumst ultricies est ante bibendum mauris sagittis iaculis. Semper habitasse pulvinar; metus mauris hac velit praesent massa massa. Mus justo ante imperdiet laoreet lacus integer posuere gravida. Facilisis vivamus torquent elit vehicula nisi taciti. Gravida non sollicitudin varius nec conubia mollis aptent phasellus. Tristique nulla primis elementum justo a imperdiet! Consequat eget cras ante ipsum semper faucibus platea.";
+const API_URL = process.env.REACT_APP_API_URL;
+// const idk =
+//   "Lorem ipsum odor amet, consectetuer adipiscing elit. Fames eleifend per magnis posuere mi porta eros ligula fermentum. Dictumst ultricies est ante bibendum mauris sagittis iaculis. Semper habitasse pulvinar; metus mauris hac velit praesent massa massa. Mus justo ante imperdiet laoreet lacus integer posuere gravida. Facilisis vivamus torquent elit vehicula nisi taciti. Gravida non sollicitudin varius nec conubia mollis aptent phasellus. Tristique nulla primis elementum justo a imperdiet! Consequat eget cras ante ipsum semper faucibus platea.";
 /**
  * @typedef {Object} Event
  * @property {number} id
@@ -31,20 +32,37 @@ const idk =
 
 const EventPage = () => {
   const { eventId } = useParams();
+  const userId = 10;
   const [event, setEvent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [editRSVPModalOpen, setEditRSVPModalOpen] = useState(false);
   const [reservedSeats, setReservedSeats] = useState(1);
-
-  const hasRSVPd = true;
+  const isLoggedIn = true;
+  const [reservation, setReservation] = useState(null);
+  // const [openLogInPromptModal, setOpenLogInPromptModal] = useState(false);
+  // const hasRSVPd = true;
 
   const getEvent = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3050/api/event/${eventId}`
-      );
+      const response = await axios.get(`${API_URL}/event/${eventId}`);
       setEvent(response.data);
     } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getReservation = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/reservation/${userId}/${eventId}`
+      );
+      setReservation(response.data);
+      if (response.data) {
+        setReservedSeats(response.data.seatsReserved);
+      }
+      console.log(response.data);
+    } catch (err) {
+      setReservation(null);
       console.log(err);
     }
   };
@@ -53,51 +71,31 @@ const EventPage = () => {
     if (event.finalRSVPTime == null) {
       event.finalRSVPTime = event.startTime;
     }
-    const finalRSVPDate = new Date(event.finalRSVPTime);
-    return new Date() >= finalRSVPDate;
+    // const finalRSVPDate = new Date(event.finalRSVPTime);
+    // return new Date() >= finalRSVPDate;
+    return false;
   };
 
-  const generateReservationString = (resLeft, maxRes) => {
-    return `${maxRes - resLeft + " / " + maxRes}`;
-  };
-
-  const formatTimestamps = (startTime1, startTime2) => {
-    function formatDateTime(timestamp) {
-      const options = {
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      };
-      const dateTimeString = new Date(timestamp).toLocaleDateString(
-        "en-US",
-        options
+  const handleReserve = async () => {
+    const postData = { seatsReserved: reservedSeats };
+    try {
+      const response = await axios.post(
+        `${API_URL}/reservation/${userId}/${eventId}`,
+        postData
       );
-      const [date, time, period] = dateTimeString.split(/, | /);
-      const formattedTime = `${time}${period.toLowerCase()}`;
-      return `${date} ${formattedTime}`;
+      alert(`Reserved ${reservedSeats} seats for ${event.title}`);
+      setModalOpen(false);
+      console.log("Reservation successful:", response.data);
+      setReservation(response.data);
+    } catch (error) {
+      console.error(
+        "There was an error making the reservation:",
+        error.response ? error.response.data : error.message
+      );
+      alert(
+        "There was an error making the reservation. Please try again or try at a later time."
+      );
     }
-
-    const formattedStartTime1 = formatDateTime(startTime1);
-    const formattedStartTime2 = formatDateTime(startTime2);
-
-    const date1 = formattedStartTime1.split(" ")[0];
-    const date2 = formattedStartTime2.split(" ")[0];
-
-    if (date1 === date2) {
-      return `${date1} ${formattedStartTime1.split(" ")[1]} - ${
-        formattedStartTime2.split(" ")[1]
-      }`;
-    } else {
-      return `${formattedStartTime1} - ${formattedStartTime2}`;
-    }
-  };
-
-  const handleReserve = () => {
-    alert(`Reserved ${reservedSeats} seats for ${event.title}`);
-    setModalOpen(false);
   };
 
   const handleIncrement = () => {
@@ -119,13 +117,14 @@ const EventPage = () => {
     alert(`Cancelled reserved seats for ${event.title}`);
     setEditRSVPModalOpen(false);
   };
-  const handleSaveChanges = async () => {
+  const handleEditReservation = async () => {
     alert(`Reserved ${reservedSeats} seats for ${event.title}`);
     setEditRSVPModalOpen(false);
   };
 
   useEffect(() => {
     getEvent();
+    getReservation();
   }, []);
 
   const image = event
@@ -148,7 +147,11 @@ const EventPage = () => {
                   <h1>{event.title}</h1>
                   <div>Venue: {event.venue}</div>
                   <div>
-                    Date: {formatTimestamps(event.startTime, event.endTime)}
+                    Date:{" "}
+                    {EventHelperFunctions.formatTimestamps(
+                      event.startTime,
+                      event.endTime
+                    )}
                   </div>
                 </div>
                 <div className="specific-event-res-info-container">
@@ -158,7 +161,7 @@ const EventPage = () => {
                     )}
                     <div>
                       <i className="bi bi-person-check"> </i>
-                      {generateReservationString(
+                      {EventHelperFunctions.generateReservationString(
                         event.reservationsLeft,
                         event.maxReservations
                       )}
@@ -170,24 +173,30 @@ const EventPage = () => {
                       if (hasFinalRSVPTimePassed()) {
                         return;
                       }
-                      hasRSVPd
-                        ? setEditRSVPModalOpen(true)
-                        : setModalOpen(true);
+                      isLoggedIn
+                        ? reservation
+                          ? setEditRSVPModalOpen(true)
+                          : setModalOpen(true)
+                        : console.log("?");
                     }}
                     style={{
                       cursor: `${
                         hasFinalRSVPTimePassed() ? "default" : "pointer"
                       }`,
                       backgroundColor: `${
-                        hasFinalRSVPTimePassed() && "var(--bs-danger)"
+                        hasFinalRSVPTimePassed()
+                          ? "var(--bs-danger)"
+                          : "var(--primary)"
                       }`,
                     }}
                   >
                     {hasFinalRSVPTimePassed()
                       ? "RSVP Closed"
-                      : hasRSVPd
-                      ? "Edit Reservation"
-                      : "Reserve"}
+                      : isLoggedIn
+                      ? reservation
+                        ? "Edit Reservation"
+                        : "Reserve"
+                      : "Log In To Reserve Seats"}
                   </div>
                 </div>
               </div>
@@ -227,7 +236,10 @@ const EventPage = () => {
                 <Form.Label>Event Time</Form.Label>
                 <Form.Control
                   type="text"
-                  value={formatTimestamps(event.startTime, event.endTime)}
+                  value={EventHelperFunctions.formatTimestamps(
+                    event.startTime,
+                    event.endTime
+                  )}
                   readOnly
                   disabled
                   style={{
@@ -319,7 +331,10 @@ const EventPage = () => {
                 <Form.Label>Event Time</Form.Label>
                 <Form.Control
                   type="text"
-                  value={formatTimestamps(event.startTime, event.endTime)}
+                  value={EventHelperFunctions.formatTimestamps(
+                    event.startTime,
+                    event.endTime
+                  )}
                   readOnly
                   disabled
                   style={{
@@ -383,7 +398,7 @@ const EventPage = () => {
               </Button>
               <Button
                 variant="primary"
-                onClick={handleSaveChanges}
+                onClick={handleEditReservation}
                 style={{
                   backgroundColor: "var(--primary)",
                   borderColor: "var(--primary)",
