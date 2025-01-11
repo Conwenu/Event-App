@@ -42,6 +42,8 @@ model Event {
   maxReservationsPerUser Int
   startTime             DateTime
   endTime               DateTime
+  finalRSVPTime         DateTime
+  specialNote           String?
   reservations          Reservation[] @relation("EventReservations")
 
   // Index on creatorId to speed up queries filtering by creator
