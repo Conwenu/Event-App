@@ -1,0 +1,54 @@
+.event-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 52.9%;
+    overflow: hidden;
+  }
+  
+  .card-img-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;  
+    object-fit: cover; 
+  }
+  
+  .event-card {
+    width: 100%;         
+    max-width: 355px;    
+    margin: 0 auto;      
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  
+  .custom-card-body {
+    padding: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    .event-card {
+      max-width: 100%; 
+    }
+  
+    .event-image-container {
+      padding-top: 56.25%; 
+    }
+  }
+  
+
+.edit-event-card-buttons {
+    display: flex; 
+    justify-content :end;
+    gap: 0.5rem;
+}
+
+.edit-event-card-buttons button {
+    cursor: pointer;
+    background-color: var(--primary) ;
+    outline: 1px var(--primary) solid ;
+    color: var(--text);
+}
