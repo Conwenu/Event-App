@@ -440,7 +440,6 @@ const editEvent = async (req, res) => {
     image,
   } = req.body;
   try {
-    console.log(title, description, status, venue, startTime, endTime, specialNote);
     const event = await eventService.editEvent(id, {
       title,
       description,
@@ -473,8 +472,9 @@ const deleteEvent = async (req, res) => {
 
 const cancelEvent = async (req, res) => {
   const { id } = req.params;
+  const { reason } = req.body;
   try {
-    await eventService.cancelEvent(id);
+    await eventService.cancelEvent(id, reason);
     res.json({ message: "Event cancelled successfully" });
   } catch (error) {
     res.status(400).json({ error: error });

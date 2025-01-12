@@ -199,7 +199,6 @@ const editEvent = async (id, eventData) => {
       "You cannont edit this event because it currently ongoing or completed."
     );
   } else {
-    console.log("Can edit");
     if (eventData.title !== currentEvent.title) {
       const title = eventData.title;
       if (title.length < 8) {
@@ -399,7 +398,7 @@ const getEventsByUser = async (userId) => {
   });
 };
 
-const cancelEvent = async (id) => {
+const cancelEvent = async (id, reason) => {
   const event = await prisma.event.findUnique({
     where: { id: parseInt(id) },
   });
@@ -417,9 +416,22 @@ const cancelEvent = async (id) => {
     return { message: "Event is already cancelled." };
   }
 
+  if(!reason)
+  {
+    throw new Error("Please provide a reason for cancelling the event.");
+  }
+  if(reason.length < 8)
+  {
+    throw new Error("Your reason should be at least 8 characters");
+  }
+  if(reason.length > 240)
+  {
+    throw new Error("Your reason should be at most 240 characters");
+  }
+  // In prisma add a field in the event body called cancelReason.
   await prisma.event.update({
     where: { id: parseInt(id) },
-    data: { status: "CANCELLED" },
+    data: { status: "CANCELLED", cancelReason : reason },
   });
 
   return { message: "Event has been cancelled successfully." };
@@ -445,7 +457,7 @@ const unCancelEvent = async (id) => {
 
   await prisma.event.update({
     where: { id: parseInt(id) },
-    data: { status: "SCHEDULED" },
+    data: { status: "SCHEDULED", cancelReason : null},
   });
 
   return { message: "Event has been restored to scheduled status." };
