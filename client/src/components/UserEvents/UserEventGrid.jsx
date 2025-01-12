@@ -3,13 +3,15 @@ import "./UserEventGrid.css";
 import axios from "axios";
 import UserEventGridHeader from "./UserEventGridHeader.jsx";
 import EventCard from "../Events/EventCard.jsx";
+import EditEventCard from "./EditEventCard.jsx";
 const API_URL = process.env.REACT_APP_API_URL;
 const UserEventGrid = () => {
   const [events, setEvents] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [selectedSort, setSelectedSort] = useState("");
   const [searchFilters, setSearchFilters] = useState("");
+  const [openEditModal, setOpenEditModal] = useState(false);
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${API_URL}/userEvents`, {
@@ -23,7 +25,7 @@ const UserEventGrid = () => {
       setLoading(false);
     } catch (err) {
       console.error("Error fetching events:", err);
-      setError("Failed to load events. Please try again later.");
+      setErrorMessage("Failed to load events. Please try again later.");
       setLoading(false);
     }
   };
@@ -73,17 +75,21 @@ const UserEventGrid = () => {
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        ) : error ? (
+        ) : errorMessage ? (
           <div
             className="d-flex justify-content-center align-items-center w-100"
             style={{ height: "200px" }}
           >
-            <p className="text-center mb-0">{error}</p>
+            <p className="text-center mb-0">{errorMessage}</p>
           </div>
         ) : events && events.length > 0 ? (
           events.map((event) => (
             <div className="col" key={event.id}>
-              <EventCard {...event} />
+              <EditEventCard
+                {...event}
+                event={event}
+                fetchEvents={fetchEvents}
+              />
             </div>
           ))
         ) : (
