@@ -51,7 +51,8 @@ function App() {
         <Routes>
           <Route path="/signup" element={<RegisterPage />} />
           <Route path="/login" element={<SignInPage />} />
-          <Route path="/profile/:userId" element={<UserProfile />} />
+          <Route path="/profile/:tabId/:userId/:innerTabId" element={<UserProfile />} />
+          {/* <Route path="/profile/:userId" element={<UserProfile />} /> */}
           <Route path="/" element={<EventsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:eventId" element={<EventPage />} />
