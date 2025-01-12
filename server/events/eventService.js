@@ -83,9 +83,9 @@ const createEvent = async (eventData) => {
   if (maxReservations < 1) {
     throw new Error("Max Reservations must be at least 1");
   }
-  else if(maxReservations > 1000)
+  else if(maxReservations > 100)
   {
-    throw new Error("Max Reservations must be at most 1000");
+    throw new Error("Max Reservations must be at most 100");
   }
 
   if (maxReservationsPerUser < 1) {
@@ -328,9 +328,9 @@ const editEvent = async (id, eventData) => {
           if (parseInt(eventData.maxReservations) < 1 ) {
             throw new Error("Max Reservations must be at least 1");
           }
-          else if(parseInt(eventData.maxReservations) > 1000)
+          else if(parseInt(eventData.maxReservations) > 100)
           {
-            throw new Error("Max Reservations must be at most 1000");
+            throw new Error("Max Reservations must be at most 100");
           }
           eventData.reservationsLeft = eventData.maxReservations;
         }
