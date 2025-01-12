@@ -45,6 +45,7 @@ model Event {
   finalRSVPTime         DateTime
   specialNote           String?
   reservations          Reservation[] @relation("EventReservations")
+  cancelReason          String?
 
   // Index on creatorId to speed up queries filtering by creator
   @@index([creatorId])
