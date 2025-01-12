@@ -49,6 +49,11 @@
 .edit-event-card-buttons button {
     cursor: pointer;
     background-color: var(--primary) ;
-    outline: 1px var(--primary) solid ;
+    outline: transparent !important ;
     color: var(--text);
+}
+
+
+.css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input {
+  color: var(--text) !important;
 }
