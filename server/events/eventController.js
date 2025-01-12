@@ -30,6 +30,9 @@ const createEvent = async (req, res) => {
     maxReservationsPerUser,
     startTime,
     endTime,
+    finalRSVPTime,
+    image,
+    specialNote
   } = req.body;
   try {
     const event = await eventService.createEvent({
@@ -43,6 +46,9 @@ const createEvent = async (req, res) => {
       maxReservationsPerUser,
       startTime,
       endTime,
+      finalRSVPTime,
+      image,
+      specialNote
     });
     res.json(event);
   } catch (error) {
@@ -426,25 +432,31 @@ const editEvent = async (req, res) => {
     status,
     venue,
     maxReservations,
-    reservationsLeft,
     maxReservationsPerUser,
     startTime,
     endTime,
+    finalRSVPTime,
+    specialNote,
+    image,
   } = req.body;
   try {
+    console.log(title, description, status, venue, startTime, endTime, specialNote);
     const event = await eventService.editEvent(id, {
       title,
       description,
       status,
       venue,
       maxReservations,
-      reservationsLeft: parseInt(maxReservations),
       maxReservationsPerUser,
       startTime,
       endTime,
+      finalRSVPTime,
+      specialNote,
+      image,
     });
     res.json(event);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 };
