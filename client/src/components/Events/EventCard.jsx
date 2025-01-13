@@ -5,6 +5,7 @@
 import EventHelperFunctions from "./EventHelperFunctions.js";
 import { Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./EventCard.css";
 function formatDate(isoTime) {
   const date = new Date(isoTime);
 
@@ -36,20 +37,28 @@ export default function EventCard({
   //   "https://wallpapercat.com/w/full/6/2/1/116007-3840x2160-desktop-4k-bleach-wallpaper-photo.jpg";
 
   const defaultImage =
+    image ||
     "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80d79040496883.5781e6228fd81.jpg";
+  // const defaultImage = image;
   return (
     <>
       <div
         className=" mt-4 event-card"
         onClick={handleEventClick}
-        style={{ cursor: "pointer" }}
+        style={{
+          cursor: "pointer",
+        }}
       >
         <div className="event-image-container">
           <img
             src={defaultImage}
             className="card-img-top"
             alt={title}
-            style={{ borderRadius: "8px" }}
+            style={{
+              borderRadius: "8px",
+              width: "355px ",
+              height: "188px ",
+            }}
           />
           <Badge
             className={`${EventHelperFunctions.mapStatusToColor(
@@ -69,7 +78,10 @@ export default function EventCard({
             {/* If the reservation percentage is like over 90% then i'll highlight it red else if the user is registered then highlight it green */}
             <p>
               <i className="bi bi-person-check"> </i>
-              {maxReservations - reservationsLeft + "/" + maxReservations}
+              {parseInt(maxReservations) -
+                parseInt(reservationsLeft) +
+                "/" +
+                maxReservations}
             </p>
             {/* When I implement application wide user context, i'll check if the client has already registered for this event
                   <p> <i className="bi bi-person-fill-check"></i> {event.maxReservations - event.reservationsLeft + "/" + event.maxReservations}</p> 
