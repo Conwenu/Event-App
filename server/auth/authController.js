@@ -1,23 +1,32 @@
 const authService = require('./authService');
-
+const {
+    validateIntegerParameters,
+    validateStringParameters,
+  } = require("../helpers/validateParameters");
 const login = async (req, res) => {
     const { username, email, password } = req.body;
-    
     try {
-        if (!username || !email) {
-            return res.status(400).json({ error: 'Username or Email is required' });
-        }
-        if (!password) {
-            return res.status(400).json({ error: 'Password is required' });
-        }
-
         validateStringParameters({username, email, password}, res);
-        await authService.login({ username, email, password });
+        const user = await authService.login({ username, email, password }, res);
         res.json(user);
     } catch (error) {
-        res.status(400).json({ error: 'Failed to login' });
+        res.status(error.statusCode || 500).json({ error: error.message });
     }
 };
+
+const register = async (req, res) => {
+    const { username, email, password } = req.body;
+    try {
+        await authService.register({ username, email, password})
+        res.json({message: 'Registration successful. Please check your email for a verification message.'});
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+}
+
+const logout = async (req, res) => {
+
+}
 
 const authenticateJWT = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1]; // Get token from Authorization header
@@ -37,5 +46,7 @@ const authenticateJWT = async (req, res, next) => {
 
 module.exports = {
     login,
-    authenticateJWT
+    register,
+    logout,
+    authenticateJWT,
 };
