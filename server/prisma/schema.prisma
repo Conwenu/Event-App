@@ -22,7 +22,7 @@ model User {
   profilePic            String?  // Optional field for profile picture
   eventsCreated         Event[]  @relation("CreatedEvents")
   eventsRegisteredFor   Reservation[]  @relation("RegisteredEvents")
-
+  isAccountVerified Boolean @default(false)
   // You can add an index if you frequently query by username or email
   @@index([username])
   @@index([email])

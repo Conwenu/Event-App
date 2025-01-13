@@ -1,6 +1,10 @@
 -- opens up prisma studio
 npx prisma studio 
 
+-- to apply changes to the schema 
+npx prisma migrate dev --name add-test
+
+
 -- starts the react frontend
 cd client
 npm start
