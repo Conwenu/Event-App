@@ -57,6 +57,14 @@
   color: var(--text)
 }
 
+.signin-button:hover{
+  background-color: var(--bs-success);
+}
+
 .signin-password-toggle{
   color: #000
+}
+
+.signin-form-label{
+  font-weight: bold;
 }
