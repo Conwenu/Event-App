@@ -57,6 +57,14 @@
   color: var(--text)
 }
 
+.register-button:hover{
+  background-color: var(--bs-success);
+}
+
 .register-password-toggle{
   color: #000
+}
+
+.register-form-label{
+  font-weight: bold;
 }
