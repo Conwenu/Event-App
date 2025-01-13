@@ -4,17 +4,20 @@ const path = require('path');
 const eventRoutes = require('./events/eventRoutes');
 const userRoutes = require('./users/userRoutes');
 const reservationRoutes = require('./reservations/reservationRoutes');
+const authRoutes = require('./auth/authRoutes');
+const cookieParser =  require('cookie-parser');
 const cors = require('cors');
 const app = express();
 app.use(express.json({ limit: "1.3mb" }));
-app.use(cors());
+app.use(cors({origin : process.env.CLIENT_URL, method: ['GET', 'POST', 'PUT', 'DELETE '], credentials : true}));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use('/api', eventRoutes);
 app.use('/api', userRoutes);
-app.use('/api', reservationRoutes)
-
-
+app.use('/api', reservationRoutes);
+app.use('/auth', authRoutes);
+app.use(cookieParser());
+console.log(process.env.CLIENT_URL)
 // const authenticate = (req, res, next) => {
 //     const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
 
