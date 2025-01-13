@@ -18,7 +18,7 @@ const NonAuthNavbar = ({ toggleTheme, isDarkMode }) => {
             ></i>
             <a href="/signup">
               <button
-                class="btn my-2 my-sm-0 non-auth-navbar-button"
+                className="btn my-2 my-sm-0 non-auth-navbar-button"
                 type="button"
               >
                 Sign Up
@@ -26,7 +26,7 @@ const NonAuthNavbar = ({ toggleTheme, isDarkMode }) => {
             </a>
             <a href="/login">
               <button
-                class="btn my-2 my-sm-0 non-auth-navbar-button"
+                className="btn my-2 my-sm-0 non-auth-navbar-button"
                 type="button"
               >
                 Log In
