@@ -28,9 +28,6 @@ const registrationSchema = Yup.object().shape({
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleRegistration = async (values) => {
     try {
@@ -103,12 +100,6 @@ function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />
-                  <i
-                    className={`register-password-toggle password-toggle ${
-                      showPassword ? "bi-eye-slash" : "bi-eye"
-                    }`}
-                    onClick={toggleShowPassword}
-                  ></i>
                   <ErrorMessage
                     name="password"
                     component="div"

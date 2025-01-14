@@ -25,9 +25,7 @@ const signInSchema = Yup.object().shape({
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+
 
   const handleSignIn = async (values) => {
     try {
@@ -82,12 +80,6 @@ function SignInPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />
-                  <i
-                    className={`signin-password-toggle password-toggle ${
-                      showPassword ? "bi-eye-slash" : "bi-eye"
-                    }`}
-                    onClick={toggleShowPassword}
-                  ></i>
                   <ErrorMessage name="password" component="div" className="text-danger" />
                 </div>
 
@@ -100,6 +92,9 @@ function SignInPage() {
           </Formik>
      
           <div className="text-center">
+          <p className="mb-0">
+              Forgot Password? <a href="/signup">Click here</a>
+            </p>
             <p className="mb-0">
               Don't have an account? <a href="/signup">Register here</a>
             </p>
