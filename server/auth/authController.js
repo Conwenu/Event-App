@@ -25,7 +25,12 @@ const register = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-
+    const cookies = req.cookies;
+    try {
+        await authService.logout(cookies, res);
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
 }
 
 const authenticateJWT = async (req, res, next) => {
@@ -44,9 +49,34 @@ const authenticateJWT = async (req, res, next) => {
     }
 };
 
+// for access
+const verifyJWT = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    try {
+        await authService.verifyJWT(req, authHeader);
+        next();
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+};
+
+const handleRefreshToken = async (req, res) => {
+    const cookies = req.cookies;
+    console.log('Refresh token');
+    try {
+        await authService.handleRefreshToken(cookies, res);
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+}
+
+
+
 module.exports = {
     login,
     register,
     logout,
     authenticateJWT,
+    verifyJWT,
+    handleRefreshToken,
 };

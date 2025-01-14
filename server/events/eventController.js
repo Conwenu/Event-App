@@ -52,7 +52,7 @@ const createEvent = async (req, res) => {
     });
     res.json(event);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -61,7 +61,7 @@ const getEvents = async (req, res) => {
     const events = await eventService.getEvents();
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -239,7 +239,7 @@ const getEvents2 = async (req, res) => {
     res.json({ events: sortedEvents });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -410,7 +410,7 @@ const getEventsByUserQuery = async (req, res) => {
   }
   catch (error) {
     console.error(error);
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 }
 
@@ -420,7 +420,7 @@ const getEvent = async (req, res) => {
     const event = await eventService.getEvent(id);
     res.json(event);
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch event" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -466,7 +466,7 @@ const deleteEvent = async (req, res) => {
     await eventService.deleteEvent(id);
     res.json({ message: "Event deleted successfully" });
   } catch (error) {
-    res.status(400).json({ error: "Failed to delete event" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -477,7 +477,7 @@ const cancelEvent = async (req, res) => {
     await eventService.cancelEvent(id, reason);
     res.json({ message: "Event cancelled successfully" });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -487,7 +487,7 @@ const getEventsByUser = async (req, res) => {
     const events = await eventService.getEventsByUser(userId);
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -497,7 +497,7 @@ const deleteEventsByUser = async (req, res) => {
     await eventService.deleteEventsByUser(userId);
     res.json({ message: "Deleted events from user successfully" });
   } catch (error) {
-    res.status(400).json({ error: "Failed to delete events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -507,7 +507,7 @@ const cancelEventsByUser = async (req, res) => {
     const result = await eventService.cancelEventsByUser(userId);
     res.json({ message: result });
   } catch (error) {
-    res.status(400).json({ error: "Failed to cancel events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -517,7 +517,7 @@ const unCancelEvent = async (req, res) => {
     await eventService.unCancelEvent(id);
     res.json({ message: "Event restored successfully" });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -527,7 +527,7 @@ const unCancelEventsByUser = async (req, res) => {
     const result = await eventService.unCancelEventsByUser(userId);
     res.json({ message: result });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -536,7 +536,7 @@ const getCancelledEvents = async (req, res) => {
     const events = await eventService.getCancelledEvents(userId);
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -545,7 +545,7 @@ const getUncancelledEvents = async (req, res) => {
     const events = await eventService.getUncancelledEvents(userId);
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -555,7 +555,7 @@ const getCancelledEventsFromUser = async (req, res) => {
     const events = await eventService.getCancelledEventsFromUser(userId);
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 
@@ -565,7 +565,7 @@ const getUncancelledEventsFromUser = async (req, res) => {
     const events = await eventService.getUncancelledEventsFromUser(userId);
     res.json({ events });
   } catch (error) {
-    res.status(400).json({ error: "Failed to fetch events" });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 

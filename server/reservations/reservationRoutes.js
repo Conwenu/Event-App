@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const reservationController = require('./reservationController');
-
 // Create a reservation
 router.post('/reservation/:userId/:eventId', reservationController.createReservation);
 
