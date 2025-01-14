@@ -43,8 +43,8 @@ function App() {
     <Router>
       {/* <Navbar/> */}
       <div className='nav-container'>
-        <NonAuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/>
-        {/* <AuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
+        {/* <NonAuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
+        <AuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/>
         {/* <Navbar2 toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
       </div>
       <div className="App">
