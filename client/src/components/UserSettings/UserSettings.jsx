@@ -1,6 +1,26 @@
 import React, { useState } from "react";
 import "./UserSettings.css";
-
+import * as Yup from "yup";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+const AUTH_URL = process.env.REACT_APP_AUTH_URL;
+const usernameSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(8, "Username must be at least 8 characters long")
+    .max(20, "Username must be at most 20 characters long")
+    .matches(/^[a-zA-Z0-9]+$/, "Username can only contain letters and numbers")
+    .required("Please provide a username"),
+});
+const emailSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Please provide a valid email address")
+    .required("Please provide an email address"),
+});
+const passwordSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters long")
+    .max(20, "Password must be at most 20 characters long")
+    .required("Please provide a Password"),
+});
 const UserSettings = () => {
   const username = "JohnDoe";
   const email = "JohnDoe@gmail.com";
