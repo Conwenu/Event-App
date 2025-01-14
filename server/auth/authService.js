@@ -69,7 +69,7 @@ const login = async (userData, res) => {
     // WHEN I DEPLOY SET THE COOKIE SECURE OPTION TO TRUE!
     // Step 5: Respond with User Info and Token
     res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite : 'None' });
     return {
         user: {
             id: existingUser.id,
@@ -153,7 +153,7 @@ const logout = async (cookies, res) => {
     const foundUser = await prisma.user.findFirst({ where: { refreshToken: refreshToken } });
     if(!foundUser)
     {
-        await res.clearCookie('refreshToken', {httpOnly : true});
+        await res.clearCookie('refreshToken', {httpOnly : true, secure: true, sameSite : 'None'});
         
         await res.clearCookie('accessToken');
         return res.sendStatus(204);
@@ -163,7 +163,7 @@ const logout = async (cookies, res) => {
         where: { id: foundUser.id },
         data: { refreshToken: null },
     });
-    await res.clearCookie('refreshToken', {httpOnly : true});
+    await res.clearCookie('refreshToken', {httpOnly : true, secure: true, sameSite : 'None'});
         
     await res.clearCookie('accessToken');
 
