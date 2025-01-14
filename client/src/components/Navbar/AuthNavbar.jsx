@@ -2,8 +2,21 @@ import React from "react";
 import logo from "../../assets/EventAppLogo2.png";
 import "./AuthNavbar.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 const AuthNavbar = ({ toggleTheme, isDarkMode }) => {
   const navigate = useNavigate();
+  const handleLogOut = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const response = await axios.post(`${AUTH_URL}/logout`);
+      if (response.status === 204) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <div>
@@ -19,9 +32,13 @@ const AuthNavbar = ({ toggleTheme, isDarkMode }) => {
               onClick={toggleTheme}
             ></i>
             <a className="auth-navbar-profile-icon-link" href={`/profile/4`}>
-              <i class="bi bi-person-circle auth-navbar-profile-icon fs-3 my-2 my-sm-0"></i>
+              <i className="bi bi-person-circle auth-navbar-profile-icon fs-3 my-2 my-sm-0"></i>
             </a>
-            <button class="btn btn-outline-danger my-2 my-sm-0" type="">
+            <button
+              className="btn my-2 my-sm-0 auth-navbar-button"
+              type="button"
+              onClick={handleLogOut}
+            >
               Log Out
             </button>
           </div>

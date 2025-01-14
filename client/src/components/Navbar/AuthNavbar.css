@@ -38,3 +38,20 @@
     text-decoration: none;
 }
 
+.auth-navbar-button {
+    background-color: var(--primary);
+    color: var(--text);
+
+    &:hover {
+        background-color: var(--bs-success);
+    }
+}
+
+.auth-navbar-button {
+    background-color: var(--primary);
+    color: black;
+
+    &:hover {
+        background-color: var(--bs-success);
+    }
+}
