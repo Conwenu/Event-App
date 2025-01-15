@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./UserSettings.css";
 import * as Yup from "yup";
+import axios from "axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 const usernameSchema = Yup.object().shape({
@@ -16,10 +20,22 @@ const emailSchema = Yup.object().shape({
     .required("Please provide an email address"),
 });
 const passwordSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters long")
-    .max(20, "Password must be at most 20 characters long")
-    .required("Please provide a Password"),
+  currentPassword: Yup.string()
+    .required("Current password is required")
+    .min(8, "Current password must be at least 8 characters long"),
+
+  newPassword: Yup.string()
+    .required("New password is required")
+    .min(8, "New password must be at least 8 characters long")
+    .max(20, "New password must be at most 20 characters long")
+    .notOneOf(
+      [Yup.ref("currentPassword"), null],
+      "New password cannot be the same as the current password"
+    ),
+
+  confirmPassword: Yup.string()
+    .required("Please confirm your new password")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 const UserSettings = () => {
   const username = "JohnDoe";
@@ -27,9 +43,23 @@ const UserSettings = () => {
   const password = "password";
   const [showPassword, setShowPassword] = useState(false);
   const [activeModal, setActiveModal] = useState("");
-  const [currentPasswordInput, setCurrentPasswordInput] = useState("");
-  const [newPasswordInput, setNewPasswordInput] = useState("");
-  const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const { auth, setAuth } = useContext(AuthContext);
+  const handleLogOut = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const response = await axios.post(`${AUTH_URL}/logout`);
+      if (response.status === 204) {
+        console.log(auth);
+        //setAuth({});
+
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleModalShow = (modalName) => {
     setActiveModal(modalName);
@@ -39,23 +69,87 @@ const UserSettings = () => {
     setActiveModal("");
   };
 
-  const handlePasswordUpdate = () => {
-    if (!currentPasswordInput || !newPasswordInput || !confirmPasswordInput) {
-      alert("All fields are required.");
-      return;
+  const usernameInputRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+
+  // Focus the input field when the modal is shown
+  useEffect(() => {
+    console.log(auth);
+    if (activeModal === "username" && usernameInputRef.current) {
+      usernameInputRef.current.focus();
+    } else if (activeModal === "email" && emailInputRef.current) {
+      emailInputRef.current.focus();
+    } else if (activeModal === "password" && passwordInputRef.current) {
+      passwordInputRef.current.focus();
     }
-    if (newPasswordInput !== confirmPasswordInput) {
-      alert("New passwords do not match.");
-      return;
+  }, [activeModal]);
+
+  const handleChangeUsername = async (values) => {
+    try {
+      const response = await axiosPrivate.put(
+        `${AUTH_URL}/updateUsername`,
+        values,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        handleLogOut();
+      }
+      console.log(response.data);
+      setActiveModal(null);
+    } catch (error) {
+      console.error(error);
     }
-    // API call
-    alert("Password updated successfully!");
-    handleModalClose();
   };
 
-  const handleDeleteAccount = () => {
-    console.log("Account deleted");
-    setActiveModal(null);
+  const handleEmailChange = async (values) => {
+    try {
+      const response = await axiosPrivate.put(
+        `${AUTH_URL}/updateEmail`,
+        values
+      );
+      if (response.status === 200) {
+        handleLogOut();
+      }
+      console.log(response.data);
+      setActiveModal(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePasswordChange = async (values) => {
+    try {
+      const response = await axiosPrivate.put(
+        `${AUTH_URL}/updatePassword`,
+        values
+      );
+      if (response.status === 200) {
+        handleLogOut();
+      }
+      console.log(response.data);
+      setActiveModal(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteAccount = async (values) => {
+    try {
+      const response = await axiosPrivate.delete(
+        `${AUTH_URL}/deleteAccount`,
+        values
+      );
+      if (response.status === 200) {
+        handleLogOut();
+      }
+      console.log(response.data);
+      setActiveModal(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -103,16 +197,7 @@ const UserSettings = () => {
                 htmlFor="password"
                 className="form-label"
                 style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                {`Current Password: ${
-                  showPassword ? password : "************"
-                }`}
-                <i
-                  className={`bi ${!showPassword ? "bi-eye" : "bi-eye-slash"}`}
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{ cursor: "pointer", marginLeft: "10px" }}
-                ></i>
-              </label>
+              ></label>
               <button
                 type="button"
                 className="form-button"
@@ -156,27 +241,52 @@ const UserSettings = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <input
-                    type="text"
-                    id="newUsername"
-                    className="form-control"
-                    placeholder="Enter new username"
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={handleModalClose}
+                  <Formik
+                    initialValues={{ username: "" }}
+                    validationSchema={usernameSchema}
+                    onSubmit={handleChangeUsername}
                   >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn user-settings-modal-button"
-                  >
-                    Save Changes
-                  </button>
+                    {() => (
+                      <Form>
+                        <label
+                          className="change-username-form-label"
+                          htmlFor="username"
+                        >
+                          Username
+                        </label>
+                        <div className="mb-3">
+                          <Field
+                            innerRef={usernameInputRef} // Set ref here to focus
+                            className="form-control"
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Enter new username"
+                          />
+                          <ErrorMessage
+                            name="username"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={handleModalClose}
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn user-settings-modal-button"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
                 </div>
               </div>
             </div>
@@ -192,7 +302,7 @@ const UserSettings = () => {
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">Update Email</h5>
+                  <h5 className="modal-title">Update Username</h5>
                   <button
                     type="button"
                     className="btn-close"
@@ -200,27 +310,52 @@ const UserSettings = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <input
-                    type="email"
-                    id="newEmail"
-                    className="form-control"
-                    placeholder="Enter new email"
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={handleModalClose}
+                  <Formik
+                    initialValues={{ email: "" }}
+                    validationSchema={emailSchema}
+                    onSubmit={handleEmailChange}
                   >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn user-settings-modal-button"
-                  >
-                    Save Changes
-                  </button>
+                    {() => (
+                      <Form>
+                        <label
+                          className="change-email-form-label"
+                          htmlFor="email"
+                        >
+                          Email
+                        </label>
+                        <div className="mb-3">
+                          <Field
+                            innerRef={emailInputRef} // Set ref here to focus
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="Enter new email"
+                          />
+                          <ErrorMessage
+                            name="email"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={handleModalClose}
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn user-settings-modal-button"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
                 </div>
               </div>
             </div>
@@ -244,58 +379,102 @@ const UserSettings = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <form>
-                    <div className="mb-3">
-                      <input
-                        type="password"
-                        id="currentPassword"
-                        className="form-control"
-                        placeholder="Enter current password"
-                        value={currentPasswordInput}
-                        onChange={(e) =>
-                          setCurrentPasswordInput(e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        type="password"
-                        id="newPassword"
-                        className="form-control"
-                        placeholder="Enter new password"
-                        value={newPasswordInput}
-                        onChange={(e) => setNewPasswordInput(e.target.value)}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        type="password"
-                        id="confirmPassword"
-                        className="form-control"
-                        placeholder="Re-enter new password"
-                        value={confirmPasswordInput}
-                        onChange={(e) =>
-                          setConfirmPasswordInput(e.target.value)
-                        }
-                      />
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={handleModalClose}
+                  <Formik
+                    initialValues={{
+                      currentPassword: "",
+                      newPassword: "",
+                      confirmPassword: "",
+                    }}
+                    validationSchema={passwordSchema} // validation schema with Yup
+                    onSubmit={handlePasswordChange} // handle form submission
                   >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary user-settings-modal-button"
-                    onClick={handlePasswordUpdate}
-                  >
-                    Save Changes
-                  </button>
+                    {({ setFieldValue }) => (
+                      <Form>
+                        {/* Current Password Field */}
+                        <label
+                          className="change-password-form-label"
+                          htmlFor="currentPassword"
+                        >
+                          Current Password
+                        </label>
+                        <div className="mb-3">
+                          <Field
+                            className="form-control"
+                            id="currentPassword"
+                            name="currentPassword"
+                            type="password"
+                            placeholder="Enter current password"
+                          />
+                          <ErrorMessage
+                            name="currentPassword"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+
+                        {/* New Password Field */}
+                        <label
+                          className="change-password-form-label"
+                          htmlFor="newPassword"
+                        >
+                          New Password
+                        </label>
+                        <div className="mb-3">
+                          <Field
+                            className="form-control"
+                            id="newPassword"
+                            name="newPassword"
+                            type="password"
+                            placeholder="Enter new password"
+                          />
+                          <ErrorMessage
+                            name="newPassword"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+
+                        {/* Confirm Password Field */}
+                        <label
+                          className="change-password-form-label"
+                          htmlFor="confirmPassword"
+                        >
+                          Confirm New Password
+                        </label>
+                        <div className="mb-3">
+                          <Field
+                            className="form-control"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            placeholder="Re-enter new password"
+                          />
+                          <ErrorMessage
+                            name="confirmPassword"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={handleModalClose}
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn user-settings-modal-button"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
                 </div>
               </div>
             </div>

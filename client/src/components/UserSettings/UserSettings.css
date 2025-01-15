@@ -97,3 +97,22 @@
     border: 0;
     color: var(--text);
 }
+
+.user-settings-modal-button:hover {
+  background-color: var(--bs-success);
+}
+
+.change-username-form-label
+{
+  font-weight: bolder;
+}
+
+.change-email-form-label
+{
+  font-weight: bolder;
+}
+
+.change-password-form-label
+{
+  font-weight: bolder;
+}
