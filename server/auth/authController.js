@@ -70,6 +70,54 @@ const handleRefreshToken = async (req, res) => {
     }
 }
 
+const handleUsernameChange = async (req, res) => {
+    console.log('Username change');
+    try {
+        console.log(req.body);
+        await authService.handleUsernameChange(req, req.body);
+        res.json({message: 'Successfully Updated Username.'});
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+};
+
+const handleEmailChange = async (req, res) => {
+    try {
+        console.log(req.body);
+        await authService.handleEmailChange(req, req.body);
+        res.json({message: 'Successfully Updated Email.'});
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+};
+const handlePasswordChange = async (req, res) => {
+    try {
+        console.log(req.body);
+        await authService.handlePasswordChange(req, req.body);
+        res.json({message: 'Successfully Updated Password.'});
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+};
+const deleteAccount = async (req, res) => {
+    try {
+        console.log(req.body);
+        await authService.handleDeleteAccount(req, req.body);
+        res.json({message: 'Successfully Deleted Account.'});
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
+    }
+}
+
+const credentials = (req, res, next) => {
+    const origin = req.headers.origin;
+    if(origin == process.env.CLIENT_URL)
+    {
+        res.header('Access-Control-Allow-Credentials', true)
+    }
+    next();
+
+}
 
 
 module.exports = {
@@ -79,4 +127,9 @@ module.exports = {
     authenticateJWT,
     verifyJWT,
     handleRefreshToken,
+    handleUsernameChange,
+    handleEmailChange,
+    handlePasswordChange,
+    deleteAccount,
+    credentials
 };

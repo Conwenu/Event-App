@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const { AppError } = require('../helpers/AppError')
 const prisma = new PrismaClient();
+const userService = require('../users/userService');
 
 const login = async (userData, res) => {
     const { username, email, password } = userData;
-
     if (!username || !email) {
         throw new AppError('Username or Email is required', 400);
     }
@@ -210,5 +210,141 @@ const handleRefreshToken = async (cookies, res) => {
         })
 }
 
+const handleUsernameChange = async (req, userData) => {
+    if(!userData)
+    {
+        throw new AppError('Access denied. No user data provided.', 401)
+    }
+    if(!req.user)
+    {
+        throw new AppError('Access denied. No user provided.', 401)
+    }
 
-module.exports = { login, register, logout, verifyJWT, handleRefreshToken }; 
+    const newUserName = userData.username;
+    if(!newUserName)
+    {
+        throw new AppError('New Username Not Provided', 400);
+    }
+    if(newUserName.length < 8)
+    {
+        throw new AppError('New Username must be at least 8 characters', 400);
+    }
+    if(newUserName.length > 20)
+    {
+        throw new AppError('New Username must be at most 20 characters', 400);
+    }
+
+    const potentialUser = await prisma.user.findUnique({where : {username : newUserName}})
+    if(potentialUser)
+    {
+        throw new AppError('The new username you have provided is already taken.', 400);
+    }
+
+    await prisma.user.update({
+        where: { id: req.user.id },
+        data: { username: newUserName },
+    });
+
+    req.user.username  = newUserName;
+};
+
+const handleEmailChange = async (req, userData) => {
+    console.log(req.user);
+
+    if(!userData)
+    {
+        throw new AppError('Access denied. No user data provided.', 401)
+    }
+    if(!req.user)
+    {
+        throw new AppError('Access denied. No user provided.', 401)
+    }
+
+    const newEmail = userData.email;
+    if(!newEmail)
+    {
+        throw new AppError('New email Not Provided', 400);
+    }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(newEmail)) {
+        throw new AppError('Invalid email format', 400);
+    }
+    if(newEmail.length < 8)
+    {
+        throw new AppError('New email must be at least 8 characters', 400);
+    }
+    if(newEmail.length > 20)
+    {
+        throw new AppError('New email must be at most 20 characters', 400);
+    }
+
+    const potentialUser = await prisma.user.findUnique({where : {email : newEmail}})
+    if(potentialUser)
+    {
+        throw new AppError('The new email you have provided is already taken.', 400);
+    }
+
+    await prisma.user.update({
+        where: { id: req.user.id },
+        data: { email: newEmail },
+    });
+
+    req.user.email  = newEmail;
+};
+
+
+const handlePasswordChange = async (req, userData) => {
+    if(!userData)
+    {
+        throw new AppError('No user data provided. Please provide the required data.', 401)
+    }
+    if(!req.user)
+    {
+        throw new AppError('No user found in the request. Please authenticate and try again.', 401)
+    }
+
+    const {currentPassword, newPassword, confirmPassword} = userData;
+
+    const existingUser = await prisma.user.findUnique({where : {id : req.user.id}})
+    if (!existingUser) {
+        throw new AppError('User not found', 404);
+    }
+    if (!newPassword) {
+        throw new AppError('New Password is required', 400);
+    }
+    if (!confirmPassword) {
+        throw new AppError('Please Confirm Your New Password', 400);
+    }
+    if (newPassword.length < 8) {
+        throw new AppError('New Password must be at least 8 characters', 400);
+    }
+    if (newPassword.length > 20) {
+        throw new AppError('New Password must be at most 20 characters', 400);
+    }
+    if (newPassword !== confirmPassword) {
+        throw new AppError('Confirmed Password Does Not Match New Password', 400);
+    }
+    const isMatch = await bcrypt.compare(currentPassword, existingUser.password);
+    if(!isMatch)
+    {
+        throw new AppError('Current password is incorrect', 400);
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    await prisma.user.update({
+        where: { id: req.user.id },
+        data: { password: hashedPassword },
+    });
+    
+};
+
+const handleDeleteAccount = async (req) =>{
+    if(!req.user)
+    {
+        throw new AppError('Access denied. No user provided.', 401)
+    }
+    const userId = req.user.id;
+    userService.deleteUser(userId);
+}
+
+module.exports = { login, register, logout, verifyJWT, handleRefreshToken, handleUsernameChange, handleEmailChange, handlePasswordChange, handleDeleteAccount }; 
