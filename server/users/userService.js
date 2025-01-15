@@ -84,7 +84,7 @@ const deleteUser = async(id) => {
   if (!user) {
       throw new AppError('User does not exist');
   }
-  await eventService.deleteEventCreatedByUser(id)
+  await eventService.deleteEventsByUser(id)
   await reservationService.deleteAllReservationsForUser(id);
   await prisma.user.delete({
       where: { id: parseInt(id) },
