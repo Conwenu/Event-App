@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const {AppError} = require('../helpers/AppError')
-const userService = require("../users/userService");
 
 const validateReservationData = (reservationData, event) => {
   if (!reservationData) throw new AppError('reservationData is required', 400);
@@ -98,7 +97,10 @@ const getReservationsForEvent = async (eventId) => {
 
 // Gets the reservations for a given user
 const getReservationsForUser = async (userId) => {
-  const user = await userService.getUser(userId);
+  const user = await prisma.user.findUnique({
+    where: { id: parseInt(userId) },
+});
+  
   
   if (!user) {
     throw new AppError('User not found', 400)
