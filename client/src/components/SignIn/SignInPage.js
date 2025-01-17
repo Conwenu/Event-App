@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./SignInPage.css";
-import * as Yup from "yup"
-import { Formik, Field, Form, ErrorMessage } from "formik"
+import * as Yup from "yup";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
@@ -14,7 +15,7 @@ const signInSchema = Yup.object().shape({
     .test("email-or-username", "Invalid username or email", (value) => {
       const isEmailValid = Yup.string().email().isValidSync(value);
       const isUsernameValid = /^[a-zA-Z0-9]+$/.test(value);
-      return isEmailValid || isUsernameValid; 
+      return isEmailValid || isUsernameValid;
     }),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters long")
@@ -25,25 +26,41 @@ const signInSchema = Yup.object().shape({
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
+  const { auth } = useAuth();
+  const { setAuth } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleSignIn = async (values) => {
     try {
       const newValues = {
-        email: values.usernameOrEmail, 
+        email: values.usernameOrEmail,
         username: values.usernameOrEmail,
-        password: values.password
+        password: values.password,
       };
       axios.defaults.withCredentials = true;
-      const response = await axios.post(`${AUTH_URL}/login`, newValues);
+      const response = await axios.post(`${AUTH_URL}/login`, newValues, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
       console.log(response);
+      const user = response?.data?.user;
+      const accessToken = response?.data?.accessToken;
+      console.log("*", user, accessToken);
+      setAuth({
+        user : user,
+        id: user?.id,
+        username: user?.username,
+        email: user?.email,
+        accessToken : accessToken,
+      });
+      console.log("si", auth);
       // Set auth when true?
-      navigate("/");
+      navigate(from, {replace: true});
     } catch (error) {
-      console.error("Error Signing In:", error.response.data.error);
+      console.error("Error Signing In:", error);
     }
-    
-  }
+  };
 
   return (
     <div className="signin-container">
@@ -57,9 +74,13 @@ function SignInPage() {
           >
             {() => (
               <Form>
-                
                 <div className="mb-3">
-                  <label className="signin-form-label" htmlFor="usernameOrEmail">Username or Email</label>
+                  <label
+                    className="signin-form-label"
+                    htmlFor="usernameOrEmail"
+                  >
+                    Username or Email
+                  </label>
                   <Field
                     className="form-control"
                     id="usernameOrEmail"
@@ -67,12 +88,17 @@ function SignInPage() {
                     type="text"
                     placeholder="Username or Email"
                   />
-                  <ErrorMessage name="usernameOrEmail" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="usernameOrEmail"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
-         
                 <div className="mb-3 position-relative">
-                <label className="signin-form-label" htmlFor="password">Password</label>
+                  <label className="signin-form-label" htmlFor="password">
+                    Password
+                  </label>
                   <Field
                     className="form-control"
                     id="password"
@@ -80,19 +106,22 @@ function SignInPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                   />
-                  <ErrorMessage name="password" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
-                
                 <button className="signin-button btn w-100 mb-3" type="submit">
                   Sign In
                 </button>
               </Form>
             )}
           </Formik>
-     
+
           <div className="text-center">
-          <p className="mb-0">
+            <p className="mb-0">
               Forgot Password? <a href="/signup">Click here</a>
             </p>
             <p className="mb-0">
