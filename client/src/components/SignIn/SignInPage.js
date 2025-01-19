@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./SignInPage.css";
 import * as Yup from "yup";
+import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
@@ -26,10 +27,12 @@ const signInSchema = Yup.object().shape({
 function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { auth } = useAuth();
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
+  // const {auth} = useAuth();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+
+  
 
   const handleSignIn = async (values) => {
     try {
@@ -43,10 +46,8 @@ function SignInPage() {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(response);
       const user = response?.data?.user;
       const accessToken = response?.data?.accessToken;
-      console.log("*", user, accessToken);
       setAuth({
         user : user,
         id: user?.id,
@@ -54,13 +55,23 @@ function SignInPage() {
         email: user?.email,
         accessToken : accessToken,
       });
-      console.log("si", auth);
-      // Set auth when true?
       navigate(from, {replace: true});
     } catch (error) {
-      console.error("Error Signing In:", error);
+      if(!error?.response)
+      {
+        toast.error('No Server Response');
+      }
+        toast.error(`Error Signing In: ${error}`);
     }
   };
+
+  const togglePersist = () => {
+    setPersist(prev => !prev);
+  }
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist])
 
   return (
     <div className="signin-container">
@@ -126,6 +137,11 @@ function SignInPage() {
             </p>
             <p className="mb-0">
               Don't have an account? <a href="/signup">Register here</a>
+            </p>
+          
+            <p className="mb-0">
+            <input type='checkbox' onChange={togglePersist} checked={persist} id="persist"></input>
+              {" Keep Me Logged In"}
             </p>
           </div>
         </div>
