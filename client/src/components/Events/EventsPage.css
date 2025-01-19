@@ -101,3 +101,10 @@
     max-width: 100%; /* 1 col on extra small screens */
   }
 }
+
+/* in the sorting filter component */
+.events-page-sorting-filter{
+  background-color: var(--background2);
+  color: var(--text);
+  /* border: 0px; */
+}

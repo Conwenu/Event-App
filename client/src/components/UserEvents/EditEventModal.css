@@ -1,9 +1,9 @@
-.modal-content {
-    width: 100% !important;
+.edit-event-modal .modal-content {
+    width: 80% !important;
     max-width: 100% !important;
 }
 
-.modal-dialog {
+.edit-event-modal .modal-dialog {
     max-width: 60%;
     margin-right: auto;
     margin-left: auto;
@@ -11,7 +11,7 @@
 
 
 @media (max-width: 576px) {
-    .modal-dialog {
+    .edit-event-modal .modal-dialog {
         max-width: var(--bs-modal-width);
         margin-right: auto;
         margin-left: auto;
