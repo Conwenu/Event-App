@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./UserSettings.css";
 import * as Yup from "yup";
-import axios from "axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
+import useLogout from "../../hooks/useLogout";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 const usernameSchema = Yup.object().shape({
@@ -45,21 +45,8 @@ const UserSettings = () => {
   const [activeModal, setActiveModal] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
-  const handleLogOut = async () => {
-    try {
-      axios.defaults.withCredentials = true;
-      const response = await axios.post(`${AUTH_URL}/logout`);
-      if (response.status === 204) {
-        console.log(auth);
-        //setAuth({});
-
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { auth, setAuth } = useAuth();
+  const handleLogOut = useLogout();
 
   const handleModalShow = (modalName) => {
     setActiveModal(modalName);
@@ -75,7 +62,6 @@ const UserSettings = () => {
 
   // Focus the input field when the modal is shown
   useEffect(() => {
-    console.log(auth);
     if (activeModal === "username" && usernameInputRef.current) {
       usernameInputRef.current.focus();
     } else if (activeModal === "email" && emailInputRef.current) {
@@ -87,17 +73,12 @@ const UserSettings = () => {
 
   const handleChangeUsername = async (values) => {
     try {
-      const response = await axiosPrivate.put(
-        `${AUTH_URL}/updateUsername`,
-        values,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axiosPrivate.put(`/auth/updateUsername`, values, {
+        withCredentials: true,
+      });
       if (response.status === 200) {
         handleLogOut();
       }
-      console.log(response.data);
       setActiveModal(null);
     } catch (error) {
       console.error(error);
@@ -106,14 +87,10 @@ const UserSettings = () => {
 
   const handleEmailChange = async (values) => {
     try {
-      const response = await axiosPrivate.put(
-        `${AUTH_URL}/updateEmail`,
-        values
-      );
+      const response = await axiosPrivate.put(`/auth/updateEmail`, values);
       if (response.status === 200) {
         handleLogOut();
       }
-      console.log(response.data);
       setActiveModal(null);
     } catch (error) {
       console.error(error);
@@ -122,14 +99,10 @@ const UserSettings = () => {
 
   const handlePasswordChange = async (values) => {
     try {
-      const response = await axiosPrivate.put(
-        `${AUTH_URL}/updatePassword`,
-        values
-      );
+      const response = await axiosPrivate.put(`/auth/updatePassword`, values);
       if (response.status === 200) {
         handleLogOut();
       }
-      console.log(response.data);
       setActiveModal(null);
     } catch (error) {
       console.error(error);
@@ -138,14 +111,10 @@ const UserSettings = () => {
 
   const handleDeleteAccount = async (values) => {
     try {
-      const response = await axiosPrivate.delete(
-        `${AUTH_URL}/deleteAccount`,
-        values
-      );
+      const response = await axiosPrivate.delete(`/auth/deleteAccount`, values);
       if (response.status === 200) {
         handleLogOut();
       }
-      console.log(response.data);
       setActiveModal(null);
     } catch (error) {
       console.error(error);
