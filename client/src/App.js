@@ -1,4 +1,3 @@
-//import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
@@ -8,11 +7,11 @@ import EventPage from './components/Events/EventPage';
 import SignInPage from './components/SignIn/SignInPage';
 import RegisterPage from './components/Register/RegisterPage';
 import EventCard from './components/Events/EventCard';
-// import Navbar from './components/Navbar/Navbar';
-import Navbar2 from './components/Navbar/Navbar2';
 import AuthNavbar from './components/Navbar/AuthNavbar';
 import NonAuthNavbar from './components/Navbar/NonAuthNavbar';
 import UserProfile from './components/UserProfile/UserProfile';
+import RequireAuth from './components/RequireAuth/RequireAuth';
+import PersistLogin from './components/PersistLogin/PersistLogin';
 function App() {
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -49,14 +48,21 @@ function App() {
       </div>
       <div className="App">
         <Routes>
-          <Route path="/signup" element={<RegisterPage />} />
+          {/* <Route path="/" element={<EventsPage />} />
+          <Route path="/signup" element={<RegisterPage />} /> */}
           <Route path="/login" element={<SignInPage />} />
-          <Route path="/profile/:tabId/:userId/:innerTabId" element={<UserProfile />} />
-          {/* <Route path="/profile/:userId" element={<UserProfile />} /> */}
-          <Route path="/" element={<EventsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:eventId" element={<EventPage />} />
           <Route path="/test/event" element={<EventCard />} />
+          <Route element={<PersistLogin/>}>
+            <Route element = {<RequireAuth/>}>
+              <Route path="/" element={<EventsPage />} />
+              <Route path="/signup" element={<RegisterPage />} />
+              <Route path="/profile/:tabId/:userId/:innerTabId" element={<UserProfile />} />
+            </Route>
+          </Route>
+          {/* Create a catch all route */}
+          {/* <Route path="*" element={<></>}/> */}
         </Routes>
       </div>
     </Router>
