@@ -8,6 +8,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik"
 import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 const AUTH_URL = process.env.REACT_APP_AUTH_URL;
+
 const registrationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please provide a valid email address")
@@ -28,7 +29,6 @@ const registrationSchema = Yup.object().shape({
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   const handleRegistration = async (values) => {
     try {
       const response = await axios.post(`${AUTH_URL}/register`, values);
@@ -36,8 +36,6 @@ function RegisterPage() {
       if (response.status === 200) {
         navigate("/login");
       }
-      console.log(response);
-      console.log(values);
     } catch (error) {
       console.error("Error registering:", error.response.data.error);
     }
@@ -120,6 +118,7 @@ function RegisterPage() {
               Already registered? <a href="/login">Sign in here</a>
             </p>
           </div>
+          
         </div>
       </div>
     </div>
