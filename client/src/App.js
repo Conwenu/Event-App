@@ -12,12 +12,15 @@ import NonAuthNavbar from './components/Navbar/NonAuthNavbar';
 import UserProfile from './components/UserProfile/UserProfile';
 import RequireAuth from './components/RequireAuth/RequireAuth';
 import PersistLogin from './components/PersistLogin/PersistLogin';
+import useAuth from './hooks/useAuth';
 function App() {
 
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const {auth} = useAuth();
 
   // Check for saved theme preference on initial load
   useEffect(() => {
+    console.log('Saved theme preference', auth);
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setIsDarkMode(true);
@@ -40,11 +43,10 @@ function App() {
 
   return (
     <Router>
-      {/* <Navbar/> */}
       <div className='nav-container'>
-        {/* <NonAuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
-        <AuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/>
-        {/* <Navbar2 toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> */}
+        {auth?.accessToken ? 
+        <AuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/> 
+        : <NonAuthNavbar toggleTheme={toggleTheme} isDarkMode={isDarkMode}/>}
       </div>
       <div className="App">
         <Routes>
