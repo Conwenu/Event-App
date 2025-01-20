@@ -5,13 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './context/AuthProvider';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
       <App />
-      <ToastContainer />
+      <ToastContainer theme={localStorage.getItem("theme") === "light" ? "light" : "dark" } pauseOnHover={false} />
     </AuthProvider>
   </React.StrictMode>
 );
