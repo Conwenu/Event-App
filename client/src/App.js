@@ -20,7 +20,6 @@ function App() {
 
   // Check for saved theme preference on initial load
   useEffect(() => {
-    console.log('Saved theme preference', auth);
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setIsDarkMode(true);
