@@ -49,9 +49,12 @@
 .specific-event-reservation-button {
     display: flex;
     border-radius: 8px;
+    height: 2rem;
     background-color: var(--primary);
     justify-content: center;
     cursor: pointer;
+    align-items: center;
+    font-weight: bold;
 }
 
 .specific-event-info {
