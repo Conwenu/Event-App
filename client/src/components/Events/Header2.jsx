@@ -13,11 +13,11 @@ const Header2 = ({
   handleSearchButtonClick,
   toggleModal,
   isMobile,
+  toggleDesktopModal,
+  setToggleDesktopModal,
 }) => {
   return (
     <div className="event-page-heading">
-      <h1 className="event-page-heading-title">Events</h1>
-
       {isMobile ? (
         // Mobile Header
         <div className="event-page-heading-mobile">
@@ -49,29 +49,44 @@ const Header2 = ({
         </div>
       ) : (
         // Desktop Header
-        <div className="event-page-heading-filter-a">
-          <div className="searchBox">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchFilters}
-              onChange={(e) => onSearchChange(e.target.value)}
-              onKeyDown={handleSearchChange}
-            />
-            <img
-              src={search_icon}
-              alt="Search Icon"
-              className="navbar-search-icon"
-              onClick={handleSearchButtonClick}
-            />
-          </div>
-
-          <div className="event-page-heading-sort">
-            <span className="event-page-heading-span">Sort By</span>
-            <SortingFilters
-              selectedSorting={selectedSorting}
-              onSortingChange={onSortingChange}
-            />
+        <div>
+          <h1 className="event-page-heading-title">Events</h1>
+          <div className="event-page-heading-filter-a">
+            <div className="event-page-header-filter-section">
+              <img
+                src={FilterIcon}
+                alt="Filter"
+                className="mobile-filter-icon"
+                onClick={() => {
+                  setToggleDesktopModal(true);
+                  // Add functionality for the filter icon here
+                }}
+              />
+            </div>
+            <div className="event-page-header-filter-section-b">
+              <div className="searchBox">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchFilters}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  onKeyDown={handleSearchChange}
+                />
+                <img
+                  src={search_icon}
+                  alt="Search Icon"
+                  className="navbar-search-icon"
+                  onClick={handleSearchButtonClick}
+                />
+              </div>
+              <div className="event-page-heading-sort">
+                <span className="event-page-heading-span">Sort By</span>
+                <SortingFilters
+                  selectedSorting={selectedSorting}
+                  onSortingChange={onSortingChange}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

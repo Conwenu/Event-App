@@ -7,6 +7,7 @@ import Sidebar from "../Sidebar/Sidebar.jsx";
 import Header2 from "./Header2.jsx";
 import Sidebar2 from "../Sidebar/Sidebar2.jsx";
 import useAuth from "../../hooks/useAuth.js";
+import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate.js";
 const API_URL = process.env.REACT_APP_API_URL;
@@ -409,14 +410,6 @@ const EventsPage = () => {
           </>
         ) : (
           <div className="events-page">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Launch demo modal
-            </button>
             {/* <Sidebar2
               timeFilter={timeFilter}
               selectedYear={selectedYear}
@@ -446,46 +439,71 @@ const EventsPage = () => {
               showModal={showModal}
               toggleModal={toggleModal}
             /> */}
-
-            {
-              <div
-                className="modal fade"
-                id="exampleModal"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-                style={{ zIndex: "5000" }}
+            {toggleDesktopModal && (
+              <Modal
+                show={toggleDesktopModal}
+                onHide={() => setToggleDesktopModal(false)}
+                centered
               >
-                <div className="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Modal title
-                      </h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">...</div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="button" class="btn btn-primary">
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
+                <Modal.Header closeButton>
+                  <Modal.Title>Filters</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Sidebar2
+                    timeFilter={timeFilter}
+                    selectedYear={selectedYear}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onTimeFilterChange={handleTimeFilterChange}
+                    onDateRangeChange={handleDateRangeChange}
+                    setSelectedYear={setSelectedYear}
+                    selectedMonth={selectedMonth}
+                    setSelectedMonth={setSelectedMonth}
+                    selectedWeekday={selectedWeekday}
+                    setSelectedWeekday={setSelectedWeekday}
+                    selectedEventStatus={multipleFilters.eventStatus}
+                    onEventStatusChange={(value) =>
+                      handleMultipleFilterChange("eventStatus", value)
+                    }
+                    selectedReservationAbility={
+                      multipleFilters.reservationAbility
+                    }
+                    onReservationAbilityChange={(value) =>
+                      handleMultipleFilterChange("reservationAbility", value)
+                    }
+                    durationFilter={durationFilter}
+                    handleDurationChange={handleDurationChange}
+                    resetFilters={resetFilters}
+                    selectedSorting={selectedSorting}
+                    onSortingChange={handleSortingFilterChange}
+                    isMobile={isMobile}
+                    showModal={showModal}
+                    toggleModal={toggleModal}
+                  />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="secondary"
+                    onClick={() => setToggleDesktopModal(false)}
+                    style={{
+                      color: "var(--text)",
+                    }}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    variant="primary"
+                    style={{
+                      backgroundColor: "var(--primary)",
+                      borderColor: "var(--primary)",
+                      color: "var(--text)",
+                    }}
+                  >
+                    Reserve
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
               {isLoading ? (
                 <div
