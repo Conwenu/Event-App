@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { isCancel } from "axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate.js";
+import useAuth from "../../hooks/useAuth.js";
 import "./EventPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import EventHelperFunctions from "./EventHelperFunctions.js";
 import { Modal, Button, Form } from "react-bootstrap";
+import EditEventModal from "../UserEvents/EditEventModal.jsx";
+import { toast } from "react-toastify";
 const API_URL = process.env.REACT_APP_API_URL;
 // const idk =
 //   "Lorem ipsum odor amet, consectetuer adipiscing elit. Fames eleifend per magnis posuere mi porta eros ligula fermentum. Dictumst ultricies est ante bibendum mauris sagittis iaculis. Semper habitasse pulvinar; metus mauris hac velit praesent massa massa. Mus justo ante imperdiet laoreet lacus integer posuere gravida. Facilisis vivamus torquent elit vehicula nisi taciti. Gravida non sollicitudin varius nec conubia mollis aptent phasellus. Tristique nulla primis elementum justo a imperdiet! Consequat eget cras ante ipsum semper faucibus platea.";
@@ -29,31 +33,32 @@ const API_URL = process.env.REACT_APP_API_URL;
  * EventPage component that displays event details.
  * @returns {JSX.Element}
  */
-
+// EditEventModal
 const EventPage = () => {
   const { eventId } = useParams();
-  const userId = 10;
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const [event, setEvent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [editRSVPModalOpen, setEditRSVPModalOpen] = useState(false);
   const [reservedSeats, setReservedSeats] = useState(1);
-  const isLoggedIn = false;
   const [reservation, setReservation] = useState(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
+  const [editEventModalOpen, setEditEventModalOpen] = useState(false);
   const navigate = useNavigate();
-  // const hasRSVPd = true;
+  const isLoggedIn = auth.id ? true : false;
   const handleLoginRedirect = () => {
-    // Navigate the user to the login page
     navigate("/login");
-    setLoginModalOpen(false); // Close the modal after redirecting
+    setLoginModalOpen(false);
   };
   const getEvent = async () => {
     try {
       const response = await axios.get(`${API_URL}/event/${eventId}`);
       setEvent(response.data);
+      setIsCreator(parseInt(auth.id) === parseInt(response.data.creatorId));
     } catch (err) {
-      console.error("Error fetching event:", err);
-      alert(
+      toast.error(
         "Sorry, we couldn't load the event details. Please try again later."
       );
     }
@@ -61,13 +66,15 @@ const EventPage = () => {
 
   const getReservation = async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/reservation/${userId}/${eventId}`
+      const response = await axiosPrivate.get(
+        `${API_URL}/reservation/${auth.id}/${eventId}`
       );
       setReservation(response.data);
     } catch (err) {
       setReservation(null);
-      console.error(err);
+      toast.error(
+        "Sorry, we couldn't load the reservation details. Please try again later."
+      );
     }
   };
 
@@ -82,16 +89,25 @@ const EventPage = () => {
   const handleReserve = async () => {
     const postData = { seatsReserved: reservedSeats };
     try {
-      const response = await axios.post(
-        `${API_URL}/reservation/${userId}/${eventId}`,
-        postData
-      );
-      alert(`Reserved ${reservedSeats} seats for ${event.title}`);
-      setModalOpen(false);
-      console.log("Reservation successful:", response.data);
-      setReservation(response.data);
-      await getEvent();
-      await getReservation();
+      if (!auth || !auth.accessToken) {
+        toast.error("Please Login / Register To RSVP", {
+          autoClose: 1500,
+          hideProgressBar: true,
+        });
+      } else {
+        const response = await axiosPrivate.post(
+          `${API_URL}/reservation/${auth.id}/${eventId}`,
+          postData
+        );
+        alert(`Reserved ${reservedSeats} seats for ${event.title}`);
+        setModalOpen(false);
+        console.log("Reservation successful:", response.data);
+        setReservation(response.data);
+        await getEvent();
+        if (!isCreator) {
+          await getReservation();
+        }
+      }
     } catch (error) {
       console.error(
         "There was an error making the reservation:",
@@ -120,12 +136,16 @@ const EventPage = () => {
 
   const handleCancelReservation = async () => {
     try {
-      await axios.delete(`${API_URL}/reservation/${reservation.id}/${userId}`);
+      await axiosPrivate.delete(
+        `${API_URL}/reservation/${reservation.id}/${auth.id}`
+      );
       setEditRSVPModalOpen(false);
       alert(`Successfully cancelled reservation for ${event.title}`);
       setReservation(null);
       await getEvent();
-      await getReservation();
+      if (!isCreator) {
+        await getReservation();
+      }
     } catch (error) {
       console.error(error);
       setEditRSVPModalOpen(false);
@@ -137,7 +157,7 @@ const EventPage = () => {
     const postData = { seatsReserved: reservedSeats };
     try {
       const response = await axios.put(
-        `${API_URL}/reservation/${reservation.id}/${userId}`,
+        `${API_URL}/reservation/${reservation.id}/${auth.id}`,
         postData
       );
       setEditRSVPModalOpen(false);
@@ -146,7 +166,9 @@ const EventPage = () => {
       );
       setReservation(response.data);
       await getEvent();
-      await getReservation();
+      if (!isCreator) {
+        await getReservation();
+      }
     } catch (error) {
       console.error(
         "There was an error editing the reservation:",
@@ -161,7 +183,9 @@ const EventPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getEvent();
-      await getReservation();
+      if (!isCreator) {
+        await getReservation();
+      }
     };
     fetchData();
   }, []);
@@ -215,27 +239,34 @@ const EventPage = () => {
                   <div
                     className="specific-event-reservation-button"
                     onClick={() => {
-                      if (hasFinalRSVPTimePassed()) {
+                      if (isCreator) {
+                        setEditEventModalOpen(true);
+                      } else if (hasFinalRSVPTimePassed()) {
                         return;
+                      } else if (isLoggedIn) {
+                        if (reservation) {
+                          setEditRSVPModalOpen(true);
+                        } else {
+                          setModalOpen(true);
+                        }
+                      } else {
+                        setLoginModalOpen(true);
                       }
-                      isLoggedIn
-                        ? reservation
-                          ? setEditRSVPModalOpen(true)
-                          : setModalOpen(true)
-                        : setLoginModalOpen(true);
                     }}
                     style={{
-                      cursor: `${
-                        hasFinalRSVPTimePassed() ? "default" : "pointer"
-                      }`,
+                      cursor: `${"pointer"}`,
                       backgroundColor: `${
-                        hasFinalRSVPTimePassed()
+                        isCreator
+                          ? "var(--primary)"
+                          : hasFinalRSVPTimePassed()
                           ? "var(--bs-danger)"
                           : "var(--primary)"
                       }`,
                     }}
                   >
-                    {hasFinalRSVPTimePassed()
+                    {isCreator
+                      ? "Edit Event"
+                      : hasFinalRSVPTimePassed()
                       ? "RSVP Closed"
                       : isLoggedIn
                       ? reservation
@@ -494,6 +525,13 @@ const EventPage = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+      )}
+      {editEventModalOpen && (
+        <EditEventModal
+          setOpenEditModal={setEditEventModalOpen}
+          event={event}
+          fetchEvents={getEvent}
+        />
       )}
     </>
   );
