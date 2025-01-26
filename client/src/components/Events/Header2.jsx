@@ -52,7 +52,7 @@ const Header2 = ({
         <div>
           <h1 className="event-page-heading-title">Events</h1>
           <div className="event-page-heading-filter-a">
-            <div className="event-page-header-filter-section">
+            <div className="event-page-header-filter-section-1">
               <img
                 src={FilterIcon}
                 alt="Filter"
@@ -63,7 +63,7 @@ const Header2 = ({
                 }}
               />
             </div>
-            <div className="event-page-header-filter-section-b">
+            <div className="event-page-header-filter-section-2">
               <div className="searchBox">
                 <input
                   type="text"
