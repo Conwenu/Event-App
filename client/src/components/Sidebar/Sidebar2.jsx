@@ -351,9 +351,11 @@ const Sidebar2 = ({
             )}
             <hr />
           </div>
-          <div className="reset-filters" onClick={resetFilters}>
-            Reset Filters
-          </div>
+          {isMobile && (
+            <div className="reset-filters" onClick={resetFilters}>
+              Reset Filters
+            </div>
+          )}
         </div>
       )}
     </>
