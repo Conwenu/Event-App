@@ -9,7 +9,7 @@ const SortingFilters = ({ selectedSorting, onSortingChange }) => {
     <div>
       <select
         id="sortingFilter"
-        className="form-select"
+        className="form-select events-page-sorting-filter"
         aria-label="Sorting options"
         value={selectedSorting}
         onChange={handleSortingChange}
