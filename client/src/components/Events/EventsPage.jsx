@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { axiosPrivate } from "../../api/axios";
 import "./EventsPage.css";
 import EventCard from "./EventCard.jsx";
 import Sidebar from "../Sidebar/Sidebar.jsx";
 import Header2 from "./Header2.jsx";
 import Sidebar2 from "../Sidebar/Sidebar2.jsx";
-import { useSearchParams } from "react-router-dom";
+import useAuth from "../../hooks/useAuth.js";
+import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate.js";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const EventsPage = () => {
@@ -14,7 +17,11 @@ const EventsPage = () => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axios = useAxiosPrivate();
+  const [toggleDesktopModal, setToggleDesktopModal] = useState(false);
+  const { auth } = useAuth();
   const updateSearchParams = (filters) => {
     const currentParams = Object.fromEntries(searchParams.entries());
     const updatedParams = { ...currentParams, ...filters };
@@ -40,14 +47,18 @@ const EventsPage = () => {
         const apiParams = mapQueryToApiParams(
           Object.fromEntries(searchParams.entries())
         );
-        const response = await axios.get(`${API_URL}/events2`, {
+        const response = await axios.get(`/api/events2`, {
           params: apiParams,
         });
         setEvents(response.data.events);
         setIsError(false);
       } catch (err) {
         setIsError(true);
-        setError(err.message);
+        setError(err.response.data.error);
+        console.log(err);
+        if (err.status == 401) {
+          navigate("/login", { state: { from: location }, replace: true });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -328,6 +339,8 @@ const EventsPage = () => {
           handleSearchButtonClick={handleSearchButtonClick}
           toggleModal={toggleModal}
           isMobile={isMobile}
+          toggleDesktopModal={toggleDesktopModal}
+          setToggleDesktopModal={setToggleDesktopModal}
         />
         {isMobile ? (
           <>
@@ -396,7 +409,15 @@ const EventsPage = () => {
           </>
         ) : (
           <div className="events-page">
-            <Sidebar2
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Launch demo modal
+            </button>
+            {/* <Sidebar2
               timeFilter={timeFilter}
               selectedYear={selectedYear}
               startDate={startDate}
@@ -424,7 +445,47 @@ const EventsPage = () => {
               isMobile={isMobile}
               showModal={showModal}
               toggleModal={toggleModal}
-            />
+            /> */}
+
+            {
+              <div
+                className="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+                style={{ zIndex: "5000" }}
+              >
+                <div className="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        Modal title
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">...</div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-primary">
+                        Save changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
               {isLoading ? (
                 <div

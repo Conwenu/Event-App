@@ -57,14 +57,14 @@
   margin-left: 10px;
   display: grid;
   height: calc(100dvh - 85px);
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 15% 85%;
  }
 
- .events-page {
+ /* .events-page {
   display: grid;
   grid-template-columns: 20% 80%;
   gap: 20px;
- }
+ } */
 
 
 .event-container {
