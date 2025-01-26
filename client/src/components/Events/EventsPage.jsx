@@ -410,35 +410,6 @@ const EventsPage = () => {
           </>
         ) : (
           <div className="events-page">
-            {/* <Sidebar2
-              timeFilter={timeFilter}
-              selectedYear={selectedYear}
-              startDate={startDate}
-              endDate={endDate}
-              onTimeFilterChange={handleTimeFilterChange}
-              onDateRangeChange={handleDateRangeChange}
-              setSelectedYear={setSelectedYear}
-              selectedMonth={selectedMonth}
-              setSelectedMonth={setSelectedMonth}
-              selectedWeekday={selectedWeekday}
-              setSelectedWeekday={setSelectedWeekday}
-              selectedEventStatus={multipleFilters.eventStatus}
-              onEventStatusChange={(value) =>
-                handleMultipleFilterChange("eventStatus", value)
-              }
-              selectedReservationAbility={multipleFilters.reservationAbility}
-              onReservationAbilityChange={(value) =>
-                handleMultipleFilterChange("reservationAbility", value)
-              }
-              durationFilter={durationFilter}
-              handleDurationChange={handleDurationChange}
-              resetFilters={resetFilters}
-              selectedSorting={selectedSorting}
-              onSortingChange={handleSortingFilterChange}
-              isMobile={isMobile}
-              showModal={showModal}
-              toggleModal={toggleModal}
-            /> */}
             {toggleDesktopModal && (
               <Modal
                 show={toggleDesktopModal}
@@ -493,13 +464,14 @@ const EventsPage = () => {
                   </Button>
                   <Button
                     variant="primary"
+                    onClick={() => resetFilters()}
                     style={{
                       backgroundColor: "var(--primary)",
                       borderColor: "var(--primary)",
                       color: "var(--text)",
                     }}
                   >
-                    Reserve
+                    Reset Filters
                   </Button>
                 </Modal.Footer>
               </Modal>
