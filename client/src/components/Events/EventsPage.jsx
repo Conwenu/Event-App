@@ -409,105 +409,120 @@ const EventsPage = () => {
             </div>
           </>
         ) : (
-          <div className="events-page">
+          <div className="filter-events-modal">
             {toggleDesktopModal && (
-              <Modal
-                show={toggleDesktopModal}
-                onHide={() => setToggleDesktopModal(false)}
-                centered
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>Filters</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Sidebar2
-                    timeFilter={timeFilter}
-                    selectedYear={selectedYear}
-                    startDate={startDate}
-                    endDate={endDate}
-                    onTimeFilterChange={handleTimeFilterChange}
-                    onDateRangeChange={handleDateRangeChange}
-                    setSelectedYear={setSelectedYear}
-                    selectedMonth={selectedMonth}
-                    setSelectedMonth={setSelectedMonth}
-                    selectedWeekday={selectedWeekday}
-                    setSelectedWeekday={setSelectedWeekday}
-                    selectedEventStatus={multipleFilters.eventStatus}
-                    onEventStatusChange={(value) =>
-                      handleMultipleFilterChange("eventStatus", value)
-                    }
-                    selectedReservationAbility={
-                      multipleFilters.reservationAbility
-                    }
-                    onReservationAbilityChange={(value) =>
-                      handleMultipleFilterChange("reservationAbility", value)
-                    }
-                    durationFilter={durationFilter}
-                    handleDurationChange={handleDurationChange}
-                    resetFilters={resetFilters}
-                    selectedSorting={selectedSorting}
-                    onSortingChange={handleSortingFilterChange}
-                    isMobile={isMobile}
-                    showModal={showModal}
-                    toggleModal={toggleModal}
-                  />
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="secondary"
-                    onClick={() => setToggleDesktopModal(false)}
-                    style={{
-                      color: "var(--text)",
-                    }}
-                  >
-                    Close
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() => resetFilters()}
-                    style={{
-                      backgroundColor: "var(--primary)",
-                      borderColor: "var(--primary)",
-                      color: "var(--text)",
-                    }}
-                  >
-                    Reset Filters
-                  </Button>
-                </Modal.Footer>
-              </Modal>
+              <div>
+                <div
+                  className={`modal-backdrop ${
+                    toggleDesktopModal ? "show" : ""
+                  }`}
+                  onClick={() => setToggleDesktopModal(false)} // Close the modal on backdrop click
+                ></div>
+                <Modal
+                  show={toggleDesktopModal}
+                  onHide={() => setToggleDesktopModal(false)}
+                  dialogClassName="modal-dialog-left"
+                  keyboard={false}
+                  contentClassName="modal-content-left"
+                >
+                  <Modal.Body>
+                    <Sidebar2
+                      timeFilter={timeFilter}
+                      selectedYear={selectedYear}
+                      startDate={startDate}
+                      endDate={endDate}
+                      onTimeFilterChange={handleTimeFilterChange}
+                      onDateRangeChange={handleDateRangeChange}
+                      setSelectedYear={setSelectedYear}
+                      selectedMonth={selectedMonth}
+                      setSelectedMonth={setSelectedMonth}
+                      selectedWeekday={selectedWeekday}
+                      setSelectedWeekday={setSelectedWeekday}
+                      selectedEventStatus={multipleFilters.eventStatus}
+                      onEventStatusChange={(value) =>
+                        handleMultipleFilterChange("eventStatus", value)
+                      }
+                      selectedReservationAbility={
+                        multipleFilters.reservationAbility
+                      }
+                      onReservationAbilityChange={(value) =>
+                        handleMultipleFilterChange("reservationAbility", value)
+                      }
+                      durationFilter={durationFilter}
+                      handleDurationChange={handleDurationChange}
+                      resetFilters={resetFilters}
+                      selectedSorting={selectedSorting}
+                      onSortingChange={handleSortingFilterChange}
+                      isMobile={isMobile}
+                      showModal={showModal}
+                      toggleModal={toggleModal}
+                    />
+                  </Modal.Body>
+
+                  <Modal.Footer>
+                    <div className="d-flex w-100 gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setToggleDesktopModal(false)}
+                        className="flex-fill"
+                        style={{
+                          color: "var(--text)",
+                        }}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => resetFilters()}
+                        className="flex-fill"
+                        style={{
+                          backgroundColor: "var(--primary)",
+                          borderColor: "var(--primary)",
+                          color: "var(--text)",
+                        }}
+                      >
+                        Reset Filters
+                      </Button>
+                    </div>
+                  </Modal.Footer>
+                </Modal>
+              </div>
             )}
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
-              {isLoading ? (
-                <div
-                  className="d-flex justify-content-center align-items-center w-100"
-                  style={{ height: "300px" }}
-                >
-                  <div className="loading-container">
-                    <div className="spinner"></div>
-                    <h4>Loading events...</h4>
+
+            <div className="events-page">
+              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 event-container">
+                {isLoading ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center w-100"
+                    style={{ height: "300px" }}
+                  >
+                    <div className="loading-container">
+                      <div className="spinner"></div>
+                      <h4>Loading events...</h4>
+                    </div>
                   </div>
-                </div>
-              ) : isError ? (
-                <div
-                  className="d-flex justify-content-center align-items-center w-100"
-                  style={{ height: "300px" }}
-                >
-                  <h4 className="">Error loading events: {error}</h4>
-                </div>
-              ) : events && events.length > 0 ? (
-                events.map((event) => (
-                  <div className="col" key={event.id}>
-                    <EventCard {...event} />
+                ) : isError ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center w-100"
+                    style={{ height: "300px" }}
+                  >
+                    <h4 className="">Error loading events: {error}</h4>
                   </div>
-                ))
-              ) : (
-                <div
-                  className="d-flex justify-content-center align-items-center w-100"
-                  style={{ height: "200px" }}
-                >
-                  <h4 className="text-center mb-0">No events found</h4>
-                </div>
-              )}
+                ) : events && events.length > 0 ? (
+                  events.map((event) => (
+                    <div className="col" key={event.id}>
+                      <EventCard {...event} />
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    className="d-flex justify-content-center align-items-center w-100"
+                    style={{ height: "200px" }}
+                  >
+                    <h4 className="text-center mb-0">No events found</h4>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
