@@ -38,14 +38,12 @@ const passwordSchema = Yup.object().shape({
     .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 const UserSettings = () => {
-  const username = "JohnDoe";
-  const email = "JohnDoe@gmail.com";
-  const password = "password";
-  const [showPassword, setShowPassword] = useState(false);
   const [activeModal, setActiveModal] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
+  const username = auth.username;
+  const email = auth.email;
   const handleLogOut = useLogout();
 
   const handleModalShow = (modalName) => {
